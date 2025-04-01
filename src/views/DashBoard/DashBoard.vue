@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import LeftManuBar from '../../components/layout/LeftManuBar.vue';
+import LeftManuBar from '../../components/common/LeftManuBar.vue';
 </script>
 
 <style scoped>
