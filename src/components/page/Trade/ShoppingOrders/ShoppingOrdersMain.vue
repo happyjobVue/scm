@@ -3,10 +3,14 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Pagination from '../../../common/Pagination.vue';
+import { useModalStore } from '../../../../stores/modalState';
+import ShoppingOrdersDeliveryModal from './ShoppingOrdersDeliveryModal.vue';
 
 const shoppingOrdersList = ref();
 const route = useRoute();
 const cPage = ref(1);
+const orderId = ref(0);
+const modalState = useModalStore();
 
 const searchList = () => {
   const param = {
@@ -19,6 +23,11 @@ const searchList = () => {
   });
 };
 
+const handlerModal = (id) => {
+  orderId.value = id;
+  modalState.setModalState();
+};
+
 onMounted(() => {
   searchList();
 });
@@ -26,6 +35,9 @@ onMounted(() => {
 
 <template>
   <div class="divShoppingOrdersList">
+    <ShoppingOrdersDeliveryModal v-if="modalState.modalState" 
+      :id="orderId"
+    />
     <table>
       <colgroup>
         <col width="5%" />
@@ -77,7 +89,7 @@ onMounted(() => {
               <td>
                 <template v-if="shoppingOrders.salesState === 'ordering' || shoppingOrders.salesState === 'salesRequest'">
                   <template v-if="shoppingOrders.totalQuantity >= shoppingOrders.count && shoppingOrders.orderingState !== 'return'">
-                    <button>배송</button>
+                    <button @click="handlerModal(shoppingOrders.orderId)">배송</button>
                   </template>
                 </template>
                 <template v-else-if="shoppingOrders.salesState === 'delivery'">
