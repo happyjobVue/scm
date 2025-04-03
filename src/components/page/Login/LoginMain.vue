@@ -3,13 +3,15 @@ import { useRouter } from 'vue-router';
 import logo from '../../../assets/logo.png';
 import { nullCheck } from '../../../common/nullCheck';
 import { useUserInfo } from '../../../stores/userInfo';
-import { useModalStore } from '../../../stores/modalState';
+import { useModalStore } from '../../../stores/modalStore';
 import SignUpModal from './SignUpModal.vue';
+import FindInfoMoal from './FindInfoModal.vue'
 
 const loginInfo = ref({});
 const userInfo = useUserInfo();
 const router = useRouter();
-const modalState = useModalStore();
+
+const modalStore = useModalStore();
 
 const handlerLogin = async () => {
     const isNull = nullCheck([
@@ -28,14 +30,16 @@ const handlerLogin = async () => {
 };
 
 const handlerSignUpModal = () => {
-    modalState.setModalState();
+    
 }
 </script>
 
 <template>
     <div class="login-container">
-        <SignUpModal v-if="modalState.modalState" />
+        <SignUpModal v-if="modalStore.isOpen('signUp')" />
+        <FindInfoMoal v-if="modalStore.isOpen('findInfo')"/>
         <div>
+            
             <div class="login-text">
                 <div class="login-image">
                     <img alt="" :src="logo" />
@@ -64,8 +68,8 @@ const handlerSignUpModal = () => {
                         <input required type="password" v-model="loginInfo.pwd" />
                     </div>
                     <div class="joinDiv">
-                        <strong class="strong" @click="handlerSignUpModal()">[일반회원가입]</strong>
-                        <strong class="strong">[아이디/비밀번호 찾기]</strong>
+                        <strong class="strong" @click="modalStore.open('signUp');">[일반회원가입]</strong>
+                        <strong class="strong" @click="modalStore.open('findInfo');">[아이디/비밀번호 찾기]</strong>
                     </div>
                     <div>
                         <button class="login-button" @click="handlerLogin">Login</button>
@@ -87,6 +91,7 @@ const handlerSignUpModal = () => {
     width: 100%;
     text-align: center;
     background-image: radial-gradient(ellipse farthest-corner at 0 140%, #5d9dff 0%, #2178ff 70%, #3585ff 70%);
+
 }
 
 .login-image {
@@ -162,4 +167,5 @@ button:hover {
 .strong {
     cursor: pointer;
 }
+
 </style>
