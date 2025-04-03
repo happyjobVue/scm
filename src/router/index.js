@@ -6,6 +6,7 @@ import Notice from '../views/Management/Notice.vue';
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
+import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
 
 const routes = [
     {
@@ -53,6 +54,11 @@ const routes = [
                         path: 'orders',
                         name: 'orders',
                         component: Orders,
+                    },
+                    {
+                        path: 'shopping-return',
+                        name: 'shopping-return',
+                        component: ShoppingReturn,
                     },
                 ],
             },
