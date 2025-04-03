@@ -14,13 +14,18 @@ declare module 'vue' {
     NoticeMain: typeof import('./src/components/page/Management/Notice/NoticeMain.vue')['default']
     NoticeModal: typeof import('./src/components/page/Management/Notice/NoticeModal.vue')['default']
     NoticeSearch: typeof import('./src/components/page/Management/Notice/NoticeSearch.vue')['default']
+    OrdersMain: typeof import('./src/components/page/Tasks/Orders/OrdersMain.vue')['default']
+    OrdersSearch: typeof import('./src/components/page/Tasks/Orders/OrdersSearch.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ShoppingMain: typeof import('./src/components/page/Tasks/Shopping/ShoppingMain.vue')['default']
+    ShoppingModal: typeof import('./src/components/page/Tasks/Shopping/ShoppingModal.vue')['default']
     ShoppingOrdersDeliveryModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersDeliveryModal.vue')['default']
     ShoppingOrdersMain: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersMain.vue')['default']
     ShoppingOrdersModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersModal.vue')['default']
     ShoppingOrdersOrderModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersOrderModal.vue')['default']
     ShoppingOrdersSearch: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersSearch.vue')['default']
+    ShoppingSearch: typeof import('./src/components/page/Tasks/Shopping/ShoppingSearch.vue')['default']
   }
 }
