@@ -16,17 +16,14 @@ const modalState = useModalStore();
 const deliveryId = ref(0);
 
 const searchDeliveryOrderList = () => {
-    console.log('route.query', route.query);
     const param = new URLSearchParams({
         ...route.query,
         pageSize: 5,
         currentPage: cPage.value,
     });
-    axios
-        .post('/api/tasks/shopping/deliveryOrderListBody.do', param)
-        .then(res => {
-            deliveryOrderList.value = res.data;
-        });
+    axios.post('/api/tasks/deliveryOrderListBody.do', param).then(res => {
+        deliveryOrderList.value = res.data;
+    });
 };
 
 const handlerDeliveryOrderModal = id => {
@@ -44,10 +41,10 @@ watch(() => route.query, searchDeliveryOrderList);
         <ShoppingModal v-if="modalState.modalState" :id="deliveryId" />
         <table>
             <colgroup>
-                <col width="20%" />
-                <col width="40%" />
-                <col width="20%" />
-                <col width="20%" />
+                <col width="15%" />
+                <col width="45%" />
+                <col width="15%" />
+                <col width="25%" />
             </colgroup>
 
             <thead>
