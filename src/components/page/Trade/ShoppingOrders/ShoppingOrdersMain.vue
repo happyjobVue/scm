@@ -5,12 +5,14 @@ import { useRoute } from 'vue-router';
 import Pagination from '../../../common/Pagination.vue';
 import { useModalStore } from '../../../../stores/modalState';
 import ShoppingOrdersDeliveryModal from './ShoppingOrdersDeliveryModal.vue';
+import ShoppingOrdersOrderModal from './ShoppingOrdersOrderModal.vue';
 
 const shoppingOrdersList = ref();
 const route = useRoute();
 const cPage = ref(1);
 const orderId = ref(0);
 const modalState = useModalStore();
+const modalType = ref('');
 
 const searchList = () => {
   const param = {
@@ -23,9 +25,23 @@ const searchList = () => {
   });
 };
 
-const handlerModal = (id) => {
+const handlerDeliveryModal = (id) => {
   orderId.value = id;
+  modalType.value = 'delivery';
   modalState.setModalState();
+};
+
+const handlerOrderModal = (id) => {
+  console.log('orderModal');
+  orderId.value = id;
+  modalType.value = 'order';
+  modalState.setModalState();
+};
+
+const onPostSuccess = ()=> {
+    modalState.setModalState(false);
+    modalType.value = '';
+    searchList();
 };
 
 onMounted(() => {
@@ -35,8 +51,16 @@ onMounted(() => {
 
 <template>
   <div class="divShoppingOrdersList">
-    <ShoppingOrdersDeliveryModal v-if="modalState.modalState" 
+    <ShoppingOrdersDeliveryModal v-if="modalState.modalState && modalType === 'delivery'" 
       :id="orderId"
+      @modalClose="orderId = $event"
+      @postSuccess="onPostSuccess"
+    />
+    <ShoppingOrdersOrderModal 
+      v-if="modalState.modalState && modalType === 'order'"
+      :id="orderId"
+      @modalClose="orderId = $event"
+      @postSuccess="onPostSuccess"
     />
     <table>
       <colgroup>
@@ -89,7 +113,7 @@ onMounted(() => {
               <td>
                 <template v-if="shoppingOrders.salesState === 'ordering' || shoppingOrders.salesState === 'salesRequest'">
                   <template v-if="shoppingOrders.totalQuantity >= shoppingOrders.count && shoppingOrders.orderingState !== 'return'">
-                    <button @click="handlerModal(shoppingOrders.orderId)">배송</button>
+                    <button @click="handlerDeliveryModal(shoppingOrders.orderId)">배송</button>
                   </template>
                 </template>
                 <template v-else-if="shoppingOrders.salesState === 'delivery'">
@@ -105,18 +129,16 @@ onMounted(() => {
               <td>
                 <template v-if="shoppingOrders.salesState === 'ordering'">
                   <template v-if="!shoppingOrders.requestsReturnDate && shoppingOrders.orderingState !== 'return'">
-                    <template v-if="!shoppingOrders.requestsReturnDate && shoppingOrders.orderingState !== 'return'">
-                      <div>
-                        <span style="color: green; font-weight: bold;">발주처리</span>
-                      </div>
-                    </template>
+                    <div>
+                      <span style="color: green; font-weight: bold;">발주처리</span>
+                    </div>
                   </template>
                   <template v-else>
-                    <button>발주</button>
+                    <button @click="handlerOrderModal(shoppingOrders.orderId)">발주</button>
                   </template>
                 </template>
-                <template v-if="shoppingOrders.salesState === 'salesRequest'">
-                  <button v-if="shoppingOrders.totalQuantity < shoppingOrders.count">발주</button>
+                <template v-else-if="shoppingOrders.salesState === 'salesRequest'">
+                  <button v-if="shoppingOrders.totalQuantity < shoppingOrders.count" @click="handlerOrderModal(shoppingOrders.orderId)">발주</button>
                 </template>                
               </td>
             </tr>
@@ -162,11 +184,5 @@ table {
         white-space: nowrap;
     }
 
-    /* 테이블 올렸을 때 */
-    tbody tr:hover {
-        background-color: #d3d3d3;
-        opacity: 0.9;
-        cursor: pointer;
-    }
 }
 </style>
