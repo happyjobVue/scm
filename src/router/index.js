@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login/Login.vue';
 import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Management/Notice.vue';
+import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
 
-const routes = [
-    {
+const routes = [{
         path: '/',
         name: 'login',
         component: Login,
@@ -14,17 +14,23 @@ const routes = [
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [
-            {
+        children: [{
                 path: 'management',
                 name: 'management',
-                children: [
-                    {
-                        path: 'notice',
-                        name: 'notice',
-                        component: Notice,
-                    },
-                ],
+                children: [{
+                    path: 'notice',
+                    name: 'notice',
+                    component: Notice,
+                }, ],
+            },
+            {
+                path: 'trade',
+                name: 'trade',
+                children: [{
+                    path: 'shopping-orders',
+                    name: 'shopping-orders',
+                    component: ShoppingOrders,
+                }, ],
             },
             {
                 path: 'tasks',
