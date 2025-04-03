@@ -26,8 +26,8 @@ onMounted(() => {
                 <label>배송 지시서 상세 목록</label>
                 <table>
                     <colgroup>
-                        <col width="50%" />
-                        <col width="50%" />
+                        <col width="40%" />
+                        <col width="60%" />
                     </colgroup>
                     <tr>
                         <th>주문일자</th>
@@ -69,31 +69,17 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .backdrop {
-    top: 0%;
-    left: 0%;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     position: fixed;
     display: flex;
-    flex-flow: row wrep;
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    z-index: 10;
     font-weight: bold;
-}
-
-label {
-    display: flex;
-    flex-direction: column;
-}
-
-input[type='text'] {
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
 }
 
 .container {
@@ -102,51 +88,60 @@ input[type='text'] {
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     position: relative;
-    width: 400px;
+    width: 30%;
+    max-width: 800px;
+    z-index: 11;
 }
 
-img {
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background: #f4f4f4;
+    text-align: center;
+}
+
+.product-image {
     width: 100px;
     height: 100px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    background: white;
 }
 
-.img-label {
-    margin-top: 10px;
-    padding: 6px 25px;
-    background-color: #ccc;
+.text-area {
+    width: 100%;
+    height: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    color: rgba(0, 0, 0, 0.9);
-    cursor: pointer;
-
-    &:hover {
-        background-color: #45a049;
-        color: white;
-    }
-
-    &:active {
-        background-color: #3e8e41;
-        box-shadow: 0 2px #666;
-        transform: translateY(2px);
-    }
+    resize: none;
+    box-sizing: border-box;
 }
 
 .button-box {
     text-align: right;
     margin-top: 10px;
 }
+
 button {
     background-color: #3bb2ea;
     border: none;
     color: white;
-    padding: 10px 22px;
-    text-align: right;
-    text-decoration: none;
-    display: inline-block;
+    padding: 10px 20px;
     font-size: 16px;
-    margin: 4px 2px;
     cursor: pointer;
-    border-radius: 12px;
-    box-shadow: 0 4px #999;
+    border-radius: 6px;
+    box-shadow: 0 2px #999;
     transition: 0.3s;
 
     &:hover {
@@ -160,31 +155,7 @@ button {
     }
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0px 0px 0px;
-    font-size: 18px;
-    text-align: left;
-
-    th,
-    td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        text-align: center;
-    }
-
-    th {
-        background-color: #2676bf;
-        color: #ddd;
-    }
-
-    /* 테이블 올렸을 때 */
-    tbody tr:hover {
-        background-color: #d3d3d3;
-        opacity: 0.9;
-        cursor: pointer;
-    }
+.font_red {
+    color: #fe1414;
 }
 </style>
