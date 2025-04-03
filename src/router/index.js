@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login/Login.vue';
 import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Management/Notice.vue';
+
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
 
@@ -17,11 +18,13 @@ const routes = [{
         children: [{
                 path: 'management',
                 name: 'management',
-                children: [{
-                    path: 'notice',
-                    name: 'notice',
-                    component: Notice,
-                }, ],
+                children: [
+                    {
+                        path: 'notice',
+                        name: 'notice',
+                        component: Notice,
+                    },
+                ],
             },
             {
                 path: 'trade',
