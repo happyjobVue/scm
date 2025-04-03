@@ -20,6 +20,7 @@ declare module 'vue' {
     ShoppingOrdersDeliveryModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersDeliveryModal.vue')['default']
     ShoppingOrdersMain: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersMain.vue')['default']
     ShoppingOrdersModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersModal.vue')['default']
+    ShoppingOrdersOrderModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersOrderModal.vue')['default']
     ShoppingOrdersSearch: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersSearch.vue')['default']
   }
 }
