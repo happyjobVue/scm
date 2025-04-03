@@ -17,5 +17,9 @@ declare module 'vue' {
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ShoppingMain: typeof import('./src/components/page/Tasks/Shopping/ShoppingMain.vue')['default']
+    ShoppingModal: typeof import('./src/components/page/Tasks/Shopping/ShoppingModal.vue')['default']
+    ShoppingOrdersModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersModal.vue')['default']
+    ShoppingSearch: typeof import('./src/components/page/Tasks/Shopping/ShoppingSearch.vue')['default']
   }
 }
