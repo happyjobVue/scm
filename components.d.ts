@@ -23,9 +23,12 @@ declare module 'vue' {
     ShoppingModal: typeof import('./src/components/page/Tasks/Shopping/ShoppingModal.vue')['default']
     ShoppingOrdersDeliveryModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersDeliveryModal.vue')['default']
     ShoppingOrdersMain: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersMain.vue')['default']
-    ShoppingOrdersModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersModal.vue')['default']
     ShoppingOrdersOrderModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersOrderModal.vue')['default']
     ShoppingOrdersSearch: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersSearch.vue')['default']
+    ShoppingReturnMain: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppingReturnMain.vue')['default']
+    ShoppingReturnSearch: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppingReturnSearch.vue')['default']
     ShoppingSearch: typeof import('./src/components/page/Tasks/Shopping/ShoppingSearch.vue')['default']
+    ShoppinReturnMain: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppinReturnMain.vue')['default']
+    ShoppinReturnSearch: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppinReturnSearch.vue')['default']
   }
 }
