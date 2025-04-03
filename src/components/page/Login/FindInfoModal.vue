@@ -2,23 +2,123 @@
 import emailjs from 'emailjs-com';
 import { ref } from 'vue';
 import { useModalStore } from '../../../stores/modalStore';
+import axios from 'axios';
 
 const findId = ref(true);
 const findPwd = ref(false);
+const checkLoginID = ref(false);
+const checkEmail = ref(false);
+const email = ref('');
+const loginID = ref('');
+const timer = ref(0);
 const generatedCode = ref('');
 const userInputCode = ref('');
 
 const modalStore = useModalStore();
 
-/* ======================= handler: 아이디 찾기, 비밀번호 찾기 ==================== */
+/* ======================= handler ==================== */
 const handlerFindId = () =>{
     findId.value = true;
     findPwd.value = false;
+    email.value = '';
+    generatedCode.value = '';
+    timer.value = 0;
+    checkEmail.value = false;
+    loginID.value = '';
+    checkLoginID.value = false;
+    userInputCode.value = '';
 }
 
 const handlerFindPwd = () => {
     findId.value = false;
     findPwd.value = true;
+    email.value = '';
+    generatedCode.value = '';
+    timer.value = 0;
+    checkEmail.value = false;
+    loginID.value = '';
+    checkLoginID.value = false;
+    userInputCode.value = '';
+}
+
+const handlerSendMail = () => {
+    const param = new URLSearchParams({email: email.value});
+    axios.post('/api/selectFindInfoId.do', param)
+        .then(res => {
+            console.log(res)
+            if(res.data.result === "SUCCESS"){
+                checkEmail.value = true;
+                sendVerificationCode();
+                startTimer();
+                loginID.value = res.data.resultModel.loginID;
+            } else {
+                alert("존재하지 않는 메일입니다.");
+            }
+        });
+}
+
+const handlerValidateFindIdCode = () => {
+    if(generatedCode.value!==userInputCode.value) return alert("잘못된 코드가 입력되었습니다.");
+    const param = new URLSearchParams({email: email.value});
+    axios.post('/api/selectFindInfoId.do', param)
+        .then(res => {
+            if(res.data.result === "SUCCESS"){
+                alert("아이디: " + res.data.resultModel.loginID);
+            } else {
+                alert("존재하지 않는 메일입니다.");
+            }
+        });
+    alert("아이디: " + loginID.value);
+}
+
+
+const handlerCheckId = () => {
+    const param = new URLSearchParams({loginID: loginID.value});
+    axios.post('/api/registerIdCheck.do', param)
+        .then(res => {
+            console.log(res)
+            if(res.data.result === "SUCCESS"){
+                checkLoginID.value = true;
+            } else {
+                alert("존재하지 않는 아이디입니다.");
+            }
+        });
+
+}
+
+const handlerCheckInfo = () => {
+    const param = new URLSearchParams({
+        loginID: loginID.value
+        ,email: email.value
+    });
+    axios.post('/api/selectFindInfoPw.do', param)
+        .then(res => {
+            console.log(res)
+            if(res.data.result === "SUCCESS"){
+                checkEmail.value = true;
+                sendVerificationCode();
+                startTimer();
+            } else {
+                alert("존재하지 않는 정보입니다.");
+            }
+        });
+}
+
+const handlerValidateFindPwdCode = () =>{
+    if(generatedCode.value!==userInputCode.value) return alert("잘못된 코드가 입력되었습니다.")
+    const param = new URLSearchParams({
+        loginID: loginID.value
+        ,email: email.value
+    });
+    axios.post('/api/selectFindInfoPw.do', param)
+        .then(res => {
+            if(res.data.result === "SUCCESS"){
+                alert("비밀번호: " + res.data.resultModel.password);
+            } else {
+                alert("존재하지 않는 정보입니다.");
+            }
+        });
+    
 }
 
 /* ============================ function: 기능 구현============================== */
@@ -29,28 +129,47 @@ const generateCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
+/* ===================== 인증 메일 보내기 ====================== */
 const sendVerificationCode = async () => {
-  generatedCode.value = generateCode();
 
-  const templateParams = {
-    to_email: email.value,
-    code: generatedCode.value,
-  };
+    generatedCode.value = generateCode();
 
-  try {
+    const templateParams = {
+        to_email: email.value,
+        code: generatedCode.value,
+    };
+
+    try {
     await emailjs.send(
-      'your_service_id',
-      'your_template_id',
+      'service_0htybpt',
+      'template_rvl8ir9',
       templateParams,
-      'your_user_public_key'
+      '0AM_7oBQUDRLAuHD8'
     );
     alert('인증번호가 전송되었습니다.');
   } catch (err) {
     console.error('메일 전송 실패:', err);
   }
 };
-
-
+/* ==================== 타이머 ====================== */
+const timerText = computed(() => {
+  const min = String(Math.floor(timer.value / 60)).padStart(2, '0');
+  const sec = String(timer.value % 60).padStart(2, '0');
+  return `${min}:${sec}`;
+});
+let timerInterval = null;
+const startTimer = () => {
+  clearInterval(timerInterval);
+  timer.value = 180;
+  timerInterval = setInterval(() => {
+    if (timer.value > 0) {
+      timer.value--;
+    } else {
+      clearInterval(timerInterval);
+      alert("인증 시간이 만료되었습니다.");
+    }
+  }, 1000);
+};
 </script>
 
 <template>
@@ -80,31 +199,37 @@ const sendVerificationCode = async () => {
                                     이메일<span class="font_red">*</span>
                                 </th>
                                 <td >
-                                <input type="text" id="emailText"
-                                    data-code="I" placeholder="가입하신 이메일을 입력하세요" size="34"
-                                    style="height: 30px;" /> 
-                                    <a href=""
-                                    class="btnType blue" id="findIdSubmit">
-                                        <span id="timerBtn">이메일 전송</span></a>
+                                <input 
+                                type="text" 
+                                placeholder="이메일을 입력하세요." 
+                                v-model="email"
+                                size="34" 
+                                style="height: 30px;" /> 
+                                    <button @click="handlerSendMail()">
+                                        <span id="timerBtn">이메일 전송</span></button>
                                     </td>
                             </tr>
-                            <tr id="confirm">		
+                            <tr v-if="checkEmail">		
                                 <th scope="row" style="width: 85px;" >
                                     인증번호<span class="font_red">*</span>
                                 </th>
                                 <td >
-                                    <input type="text" id="emailNum" name="authnum"
-                                    placeholder="전송된 인증번호를 입력하세요" size="34" style="height: 30px;" />
-                                    <a href="javascript:SendComplete();" class="btnType blue"
-                                    id="sendMail"><span>인증하기</span></a>
+                                    <input 
+                                    type="text"
+                                    placeholder="전송된 인증번호를 입력하세요" 
+                                    size="34" 
+                                    style="height: 30px;" 
+                                    v-model="userInputCode"
+                                    />
+                                    <button @click="handlerValidateFindIdCode"><span>인증하기</span></button>
                                 </td>
                             </tr>
-                            <tr id="expirationTime">		
+                            <tr v-if="checkEmail">		
                                 <th scope="row" style="width: 85px;" >
                                     유효시간<span class="font_red">*</span>
                                 </th>
                                 <td id="">
-                                    <span id="timer"></span>
+                                    <span>{{ timerText }}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -117,30 +242,49 @@ const sendVerificationCode = async () => {
                                     아이디<span class="font_red">*</span>
                                 </th>
                                 <td >
-                                <input type="text" id="emailIdText"
-                                    placeholder="가입하신 아이디를 입력하세요" size="34" style="height: 30px;" />
-                                    <a href="javascript:RegisterIdCheck();" class="btnType blue" id="">
-                                    <span>아이디 체크</span></a>
+                                <input 
+                                type="text" 
+                                placeholder="가입하신 아이디를 입력하세요" 
+                                size="34" style="height: 30px;" 
+                                v-model="loginID"
+                                />
+                                    <button @click="handlerCheckId">
+                                    <span>가입 여부 확인</span></button>
                                 </td>
                             </tr>
-                            <tr id="loginEmail">
+                            <tr v-if="checkLoginID">
                                 <th scope="row" style="width: 85px;" >
                                     이메일<span class="font_red">*</span>
                                 </th>
-                                <td ><input type="text" id="emailPwdText"
-                                    data-code="P" placeholder="가입하신 이메일을 입력하세요" size="34"
-                                    style="height: 30px;" /> <a href="javascript:SendPwdEmail();"
-                                    class="btnType blue" id=""><span>이메일 전송</span></a></td>
+                                <td >
+                                    <input 
+                                    type="text" 
+                                    v-model="email"
+                                    placeholder="가입하신 이메일을 입력하세요" 
+                                    size="34"
+                                    style="height: 30px;" /> 
+                                    <button @click="handlerCheckInfo"><span>인증 메일 전송</span></button></td>
                         </tr>
-                        <tr id="loginPwd">
+                        <tr v-if="checkEmail">
                                 <th scope="row" style="width: 85px;" >
                                     인증번호<span class="font_red">*</span>
                                 </th>
-                                <td ><input type="text" id="emailPwdNum"
-                                    data-code="P" placeholder="인증번호를 입력하세요" size="34"
-                                    style="height: 30px;" /> <a
-                                    href="javascript:SendCompletePwd();" class="btnType blue"
-                                    id="emailOk"><span>인증하기</span></a></td>
+                                <td >
+                                    <input 
+                                    type="text" 
+                                    placeholder="인증번호를 입력하세요" 
+                                    size="34"
+                                    style="height: 30px;" 
+                                    v-model="userInputCode"
+                                    /> <button @click="handlerValidateFindPwdCode"><span>인증하기</span></button></td>
+                            </tr>
+                            <tr v-if="checkEmail">		
+                                <th scope="row" style="width: 85px;" >
+                                    유효시간<span class="font_red">*</span>
+                                </th>
+                                <td id="">
+                                    <span>{{ timerText }}</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
