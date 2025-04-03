@@ -24,6 +24,8 @@ declare module 'vue' {
     ShoppingModal: typeof import('./src/components/page/Tasks/Shopping/ShoppingModal.vue')['default']
     ShoppingOrdersDeliveryModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersDeliveryModal.vue')['default']
     ShoppingOrdersMain: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersMain.vue')['default']
+    ShoppingOrdersModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersModal.vue')['default']
+    ShoppingOrdersOrderModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersOrderModal.vue')['default']
     ShoppingOrdersSearch: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersSearch.vue')['default']
     ShoppingSearch: typeof import('./src/components/page/Tasks/Shopping/ShoppingSearch.vue')['default']
     SignUpModal: typeof import('./src/components/page/Login/SignUpModal.vue')['default']

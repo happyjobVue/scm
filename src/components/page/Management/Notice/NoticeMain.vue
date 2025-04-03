@@ -31,7 +31,7 @@ const handlerModal = (id) => {
 const onPostSuccess = ()=> {
     modalState.setModalState();
     searchList();
-}
+};
 
 onMounted(() => {
     searchList();
