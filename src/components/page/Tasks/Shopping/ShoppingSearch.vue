@@ -11,6 +11,7 @@ const handlerSearchDeliveryOrderList = () => {
     !customerName.value || query.push(`customerName=${customerName.value}`);
     !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
     !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
+
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
