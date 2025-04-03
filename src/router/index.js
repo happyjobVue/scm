@@ -5,8 +5,10 @@ import Notice from '../views/Management/Notice.vue';
 
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
+import Orders from '../views/Tasks/Orders.vue';
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'login',
         component: Login,
@@ -15,7 +17,8 @@ const routes = [{
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [{
+        children: [
+            {
                 path: 'management',
                 name: 'management',
                 children: [
@@ -29,11 +32,13 @@ const routes = [{
             {
                 path: 'trade',
                 name: 'trade',
-                children: [{
-                    path: 'shopping-orders',
-                    name: 'shopping-orders',
-                    component: ShoppingOrders,
-                }, ],
+                children: [
+                    {
+                        path: 'shopping-orders',
+                        name: 'shopping-orders',
+                        component: ShoppingOrders,
+                    },
+                ],
             },
             {
                 path: 'tasks',
@@ -43,6 +48,11 @@ const routes = [{
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
+                    },
+                    {
+                        path: 'orders',
+                        name: 'orders',
+                        component: Orders,
                     },
                 ],
             },
