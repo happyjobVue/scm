@@ -41,7 +41,7 @@ watch(() => route.query, searchList);
 
 watch(noticeId, () => {
     console.log(noticeId.value);
-})
+});
 </script>
 
 <template>
