@@ -44,9 +44,9 @@ watch(() => route.query, searchDeliveryOrderList);
         <ShoppingModal v-if="modalState.modalState" :id="deliveryId" />
         <table>
             <colgroup>
-                <col width="10%" />
-                <col width="60%" />
-                <col width="10%" />
+                <col width="20%" />
+                <col width="40%" />
+                <col width="20%" />
                 <col width="20%" />
             </colgroup>
 
@@ -78,7 +78,7 @@ watch(() => route.query, searchDeliveryOrderList);
                     </template>
                     <template v-else>
                         <tr>
-                            <td colspan="4">일치하는 검색 결과가 없습니다</td>
+                            <td colspan="4">데이터가 존재하지 않습니다.</td>
                         </tr>
                     </template>
                 </template>
