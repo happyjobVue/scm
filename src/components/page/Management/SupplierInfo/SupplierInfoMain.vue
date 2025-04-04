@@ -29,7 +29,6 @@ const searchList = () => {
     });
     axios.post('/api/management/supplierListBody.do', param).then(res => {
         supplierInfoList.value = res.data;
-        console.log(supplierInfoList.value);
     });
 };
 
@@ -70,9 +69,7 @@ const searchDetailList = id => {
         currentPage: cPageDetail.value,
         pageSize: 5,
     });
-
     axios.post('/api/management/supplierDetailBody.do', param).then(res => {
-        console.log(res.data);
         supplierDetail.value = res.data;
         console.log(supplierDetail.value);
     });
@@ -122,16 +119,25 @@ onMounted(() => {
                         <tr
                             v-for="supplierInfo in supplierInfoList.supplier"
                             :key="supplierInfo.supplyId"
-                            @click="openGrid(supplierInfo.supplyId)"
                             :class="{
                                 highlight: isHighlighted(supplierInfo.supplyId),
                             }"
                         >
-                            <td>{{ supplierInfo.name }}</td>
-                            <td>{{ supplierInfo.manager }}</td>
-                            <td>{{ supplierInfo.phone }}</td>
-                            <td>{{ supplierInfo.address }}</td>
-                            <td>{{ supplierInfo.tradeState }}</td>
+                            <td @click="openGrid(supplierInfo.supplyId)">
+                                {{ supplierInfo.name }}
+                            </td>
+                            <td @click="openGrid(supplierInfo.supplyId)">
+                                {{ supplierInfo.manager }}
+                            </td>
+                            <td @click="openGrid(supplierInfo.supplyId)">
+                                {{ supplierInfo.phone }}
+                            </td>
+                            <td @click="openGrid(supplierInfo.supplyId)">
+                                {{ supplierInfo.address }}
+                            </td>
+                            <td @click="openGrid(supplierInfo.supplyId)">
+                                {{ supplierInfo.tradeState }}
+                            </td>
                             <td>
                                 <button
                                     @click="openModal(supplierInfo.supplyId)"
@@ -260,6 +266,6 @@ button {
 }
 
 .highlight {
-    background-color: #d3d3d3;
+    background-color: #b8b8b8;
 }
 </style>
