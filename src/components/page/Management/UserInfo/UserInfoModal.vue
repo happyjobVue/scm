@@ -287,6 +287,7 @@ watch(() => userInfoDetail.value.userType, handleUserType);
 
 onMounted(() => {
     id && searchDetail();
+    console.log('check');
 });
 onUnmounted(() => {
     emit('modalClose', 0);

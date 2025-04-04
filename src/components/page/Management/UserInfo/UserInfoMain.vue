@@ -35,7 +35,13 @@ const onPostSuccess = () => {
     searchList();
 };
 
-watch(() => route.query, searchList);
+watch(
+    () => route.query,
+    () => {
+        cPage.value = 1;
+        searchList();
+    }
+);
 onMounted(() => {
     searchList();
 });
