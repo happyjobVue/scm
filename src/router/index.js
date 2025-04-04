@@ -7,6 +7,7 @@ import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
+import Inventory from '../views/Trade/Inventory.vue';
 
 const routes = [{
         path: '/',
@@ -38,6 +39,11 @@ const routes = [{
                         path: 'shopping-return-list',
                         name: 'shopping-return-list',
                         component: ShoppingReturnList,
+                    },
+                    {
+                        path: 'inventory',
+                        name: 'inventory',
+                        component: Inventory,
                     },
                 ],
             },
