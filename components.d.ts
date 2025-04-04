@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
+    EmailModal: typeof import('./src/components/page/Management/UserInfo/EmailModal.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LeftManuBar: typeof import('./src/components/common/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
@@ -17,5 +18,9 @@ declare module 'vue' {
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UserInfo: typeof import('./src/components/page/Management/UserInfo/UserInfo.vue')['default']
+    UserInfoMain: typeof import('./src/components/page/Management/UserInfo/UserInfoMain.vue')['default']
+    UserInfoModal: typeof import('./src/components/page/Management/UserInfo/UserInfoModal.vue')['default']
+    UserInfoSearch: typeof import('./src/components/page/Management/UserInfo/UserInfoSearch.vue')['default']
   }
 }
