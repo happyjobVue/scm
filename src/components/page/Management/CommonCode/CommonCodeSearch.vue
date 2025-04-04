@@ -1,9 +1,12 @@
 <script setup>
+import { useModalStore } from '../../../../stores/modalStore';
 
+
+const modalStore = useModalStore();
 </script>
 
 <template>
-    <div class="search">
+    <div class="search-box">
         <div class="search-container">        
             <select>
                 <option value="groupName">그룹코드명</option>
@@ -11,17 +14,17 @@
             </select>
             <input/>
             <button>검색</button>
-            <button>등록</button>
+            <button @click="modalStore.open('commonCode')">등록</button>
 
         </div>
     </div>
 </template>
 
 <style scoped>
-.search{
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
+.search-box {
+    margin-bottom: 10px;
+    display: block;
+    float: inline-end;
 }
 .search-container{
     display: flex;
