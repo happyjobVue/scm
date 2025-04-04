@@ -11,6 +11,7 @@ import Shopping from '../views/Tasks/Shopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
+import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
 
 const routes = [{
         path: '/',
@@ -79,6 +80,11 @@ const routes = [{
                         path: 'orders',
                         name: 'orders',
                         component: Orders,
+                    },
+                    {
+                        path: 'shopping-return',
+                        name: 'shopping-return',
+                        component: ShoppingReturn,
                     },
                 ],
             },
