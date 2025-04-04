@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CommonCodeMain: typeof import('./src/components/page/Management/Common-Code/CommonCodeMain.vue')['default']
+    CommonCodeSearch: typeof import('./src/components/page/Management/Common-Code/CommonCodeSearch.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
     FindInfoModal: typeof import('./src/components/page/Login/FindInfoModal.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']

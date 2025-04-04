@@ -6,6 +6,8 @@ import Notice from '../views/Management/Notice.vue';
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
+import CommonCode from '../views/Management/CommonCode.vue'
+
 
 const routes = [
     {
@@ -26,6 +28,11 @@ const routes = [
                         path: 'notice',
                         name: 'notice',
                         component: Notice,
+                    },
+                    {
+                        path: 'common-code',
+                        name: 'common-code',
+                        component: CommonCode,
                     },
                 ],
             },
