@@ -13,15 +13,16 @@ const options = [
 ];
 
 const handlerSearchOrderList = () => {
-    const query = [];
-    !searchTag || query.push(`searchTag=${searchTag.value}`);
-    !searchTitle || query.push(`searchTitle=${searchTitle.value}`);
-    !searchStDate || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate || query.push(`searchEdDate=${searchEdDate.value}`);
+    const searchParamObj = {
+        searchTag: searchTag.value,
+        searchTitle: searchTitle.value,
+        searchStDate: searchStDate.value,
+        searchEdDate: searchEdDate.value,
+    };
 
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
-
-    router.push(queryString);
+    router.push({
+        params: { ...searchParamObj },
+    });
 };
 
 onMounted(() => {
