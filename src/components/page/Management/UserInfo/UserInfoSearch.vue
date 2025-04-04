@@ -1,44 +1,52 @@
-<!-- setup을 적어야 Composition API를 사용할 수 있다.  -->
 <script setup>
 import router from '@/router';
-import { onMounted } from 'vue';
+import UserInfoModal from './UserInfoModal.vue';
 import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();
-const searchTitle = ref('');
-const searchStDate = ref('');
-const searchEdDate = ref('');
 
+const groupCodeSelect = ref('name');
+const searchTitle = ref('');
+const deleteInfoCheck = ref(false);
+
+const handleCheck = () => {
+    deleteInfoCheck.value = !deleteInfoCheck.value;
+    handlerSearch();
+};
 const handlerSearch = () => {
     const query = [];
+    query.push(`inforAll=${deleteInfoCheck.value ? 1 : 0}`);
+    !groupCodeSelect.value ||
+        query.push(`groupCodeSelect=${groupCodeSelect.value}`);
     !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
 };
 
-// 새로고침 시 queryParam만 없애고 싶음
-// 1. 만약에, noticeSearch라는 컴포넌트가 열릴 때, url에 queryParam이 남아있는지를 확인을 할겁니다.
-// 2. 남아 있는 경우, 경로(queryParam을 제외한 나머지)로 현재 url을 대체 시킬 것
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
 </script>
-
 <template>
     <div class="search-box">
+        <UserInfoModal v-if="modalState.modalState" />
         <!-- v-model을 이용하여 양방향 바인딩을 쉽게 할 수 있다. -->
+        <select v-model="groupCodeSelect">
+            <option value="name">직원명/성명</option>
+            <option value="manager">담당자</option>
+            <option value="userClass">담당업무</option>
+        </select>
         <input v-model.lazy="searchTitle" />
-        <input type="date" v-model.lazy="searchStDate" />
-        <input type="date" v-model.lazy="searchEdDate" />
+        삭제된 정보 표시
+        <input type="checkbox" @click="handleCheck" />
         <!-- v-on:click="" 또는 @click=""으로 이벤트를 설정한다. -->
         <button @click="handlerSearch">검색</button>
-        <button @click="modalState.setModalState()">신규등록</button>
+        <button @click="modalState.modalState = !modalState.modalState">
+            등록
+        </button>
     </div>
 </template>
-
 <style lang="scss" scoped>
 .search-box {
     margin-bottom: 10px;
@@ -80,5 +88,14 @@ button {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
+}
+select {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 120px;
+    text-align: center;
 }
 </style>

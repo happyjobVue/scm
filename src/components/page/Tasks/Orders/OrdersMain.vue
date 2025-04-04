@@ -10,22 +10,24 @@ const orderList = ref({});
 
 const cPage = ref(1);
 const searchOrderList = () => {
-    const param = new URLSearchParams({
-        ...route.query,
+    const param = {
+        searchTag: route.params.searchTag || '',
+        searchTitle: route.params.searchTitle || '',
+        searchStDate: route.params.searchStDate || '',
+        searchEdDate: route.params.searchEdDate || '',
         currentPage: cPage.value,
         pageSize: 5,
-    });
+    };
     axios.post('/api/tasks/orderListBody.do', param).then(res => {
         orderList.value = res.data;
     });
 };
-55;
 
 onMounted(() => {
     searchOrderList();
 });
 
-watch(() => route.query, searchOrderList);
+watch(() => route.params, searchOrderList);
 </script>
 <template>
     <div class="divOrderList">

@@ -8,7 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
+    EmailModal: typeof import('./src/components/page/Management/UserInfo/EmailModal.vue')['default']
+    FindInfoModal: typeof import('./src/components/page/Login/FindInfoModal.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    InventoryMain: typeof import('./src/components/page/Trade/Inventory/InventoryMain.vue')['default']
+    InventorySearch: typeof import('./src/components/page/Trade/Inventory/InventorySearch.vue')['default']
     LeftManuBar: typeof import('./src/components/common/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
     NoticeMain: typeof import('./src/components/page/Management/Notice/NoticeMain.vue')['default']
@@ -25,10 +29,15 @@ declare module 'vue' {
     ShoppingOrdersMain: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersMain.vue')['default']
     ShoppingOrdersOrderModal: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersOrderModal.vue')['default']
     ShoppingOrdersSearch: typeof import('./src/components/page/Trade/ShoppingOrders/ShoppingOrdersSearch.vue')['default']
+    ShoppingReturnListMain: typeof import('./src/components/page/Trade/ShoppingReturnList/ShoppingReturnListMain.vue')['default']
+    ShoppingReturnListModal: typeof import('./src/components/page/Trade/ShoppingReturnList/ShoppingReturnListModal.vue')['default']
+    ShoppingReturnListSearch: typeof import('./src/components/page/Trade/ShoppingReturnList/ShoppingReturnListSearch.vue')['default']
     ShoppingReturnMain: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppingReturnMain.vue')['default']
     ShoppingReturnSearch: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppingReturnSearch.vue')['default']
     ShoppingSearch: typeof import('./src/components/page/Tasks/Shopping/ShoppingSearch.vue')['default']
-    ShoppinReturnMain: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppinReturnMain.vue')['default']
-    ShoppinReturnSearch: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppinReturnSearch.vue')['default']
+    SignUpModal: typeof import('./src/components/page/Login/SignUpModal.vue')['default']
+    UserInfoMain: typeof import('./src/components/page/Management/UserInfo/UserInfoMain.vue')['default']
+    UserInfoModal: typeof import('./src/components/page/Management/UserInfo/UserInfoModal.vue')['default']
+    UserInfoSearch: typeof import('./src/components/page/Management/UserInfo/UserInfoSearch.vue')['default']
   }
 }

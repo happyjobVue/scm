@@ -16,11 +16,13 @@ const modalState = useModalStore();
 const deliveryId = ref(0);
 
 const searchDeliveryOrderList = () => {
-    const param = new URLSearchParams({
-        ...route.query,
+    const param = {
+        customerName: route.params.customerName || '',
+        searchStDate: route.params.searchStDate || '',
+        searchEdDate: route.params.searchEdDate || '',
         pageSize: 5,
         currentPage: cPage.value,
-    });
+    };
     axios.post('/api/tasks/deliveryOrderListBody.do', param).then(res => {
         deliveryOrderList.value = res.data;
     });
@@ -34,7 +36,7 @@ onMounted(() => {
     searchDeliveryOrderList();
 });
 
-watch(() => route.query, searchDeliveryOrderList);
+watch(() => route.params, searchDeliveryOrderList);
 </script>
 <template>
     <div class="divDeliveryOrderList">
