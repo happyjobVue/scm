@@ -9,3 +9,12 @@ export const useModalStore = defineStore('modalState', () => {
 
     return { modalState, setModalState };
 });
+export const useModalStore2 = defineStore('modalState2', () => {
+    const modalState2 = ref(false);
+
+    const setModalState2 = () => {
+        modalState2.value = !modalState2.value;
+    };
+
+    return { modalState2, setModalState2 };
+});
