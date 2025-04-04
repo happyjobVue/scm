@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useModalStore } from '../../../../stores/modalState';
 import NoticeModal from './NoticeModal.vue';
-import Pagination from '../../../common/Pagination.vue'
+import Pagination from '../../../common/Pagination.vue';
 
 const route = useRoute();
 const noticeList = ref();
@@ -21,17 +21,17 @@ const searchList = () => {
     axios.post('/api/management/noticeListBody.do', param).then(res => {
         noticeList.value = res.data;
     });
-}
+};
 
-const handlerModal = (id) => {
+const handlerModal = id => {
     noticeId.value = id;
     modalState.setModalState();
 };
 
-const onPostSuccess = ()=> {
+const onPostSuccess = () => {
     modalState.setModalState();
     searchList();
-}
+};
 
 onMounted(() => {
     searchList();
@@ -46,12 +46,13 @@ watch(noticeId, () => {
 
 <template>
     <div class="divNoticeList">
-        <NoticeModal v-if="modalState.modalState" 
-            :id="noticeId" 
+        <NoticeModal
+            v-if="modalState.modalState"
+            :id="noticeId"
             @modalClose="noticeId = $event"
             @postSuccess="onPostSuccess"
         />
-        현재 페이지: {{ cPage }} 총 개수: {{ noticeList?.noticeCnt }} 
+        현재 페이지: {{ cPage }} 총 개수: {{ noticeList?.noticeCnt }}
         <table>
             <colgroup>
                 <col width="10%" />
@@ -66,13 +67,13 @@ watch(noticeId, () => {
                     <th scope="col">제목</th>
                     <th scope="col">작성일</th>
                     <th scope="col">작성자</th>
-
                 </tr>
             </thead>
             <tbody>
                 <template v-if="noticeList">
                     <template v-if="noticeList.noticeCnt > 0">
-                        <tr v-for="notice in noticeList.noticeList" 
+                        <tr
+                            v-for="notice in noticeList.noticeList"
                             :key="notice.noticeId"
                             @click="handlerModal(notice.noticeId)"
                         >
@@ -87,13 +88,11 @@ watch(noticeId, () => {
                             <td colspan="4">일치하는 검색 결과가 없습니다</td>
                         </tr>
                     </template>
-                    
                 </template>
-                
             </tbody>
         </table>
-        <Pagination 
-            :totalItems = "noticeList?.noticeCnt"
+        <Pagination
+            :totalItems="noticeList?.noticeCnt"
             :items-per-page="5"
             :max-pages-shown="5"
             :onClick="searchList"

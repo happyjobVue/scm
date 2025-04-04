@@ -2,13 +2,17 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login/Login.vue';
 import DashBoard from '../views/DashBoard/DashBoard.vue';
 import Notice from '../views/Management/Notice.vue';
+import UserInfo from '../views/Management/UserInfo.vue';
+import SupplierInfo from '../views/Management/SupplierInfo.vue';
+import Inquiry from '../views/Management/Inquiry.vue';
 
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import Shopping from '../views/Tasks/Shopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
+import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
+import Inventory from '../views/Trade/Inventory.vue';
 
-const routes = [
-    {
+const routes = [{
         path: '/',
         name: 'login',
         component: Login,
@@ -17,8 +21,7 @@ const routes = [
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [
-            {
+        children: [{
                 path: 'management',
                 name: 'management',
                 children: [
@@ -27,24 +30,47 @@ const routes = [
                         name: 'notice',
                         component: Notice,
                     },
+                    {
+                        path: 'user-info',
+                        name: 'user-info',
+                        component: UserInfo,
+                    },
+                    {
+                        path: 'supplier-info',
+                        name: 'supplier-info',
+                        component: SupplierInfo,
+                    },
+                    {
+                        path: 'inquiry',
+                        name: 'inquiry',
+                        component: Inquiry,
+                    },
                 ],
             },
             {
                 path: 'trade',
                 name: 'trade',
-                children: [
-                    {
+                children: [{
                         path: 'shopping-orders',
                         name: 'shopping-orders',
                         component: ShoppingOrders,
+                    },
+                    {
+                        path: 'shopping-return-list',
+                        name: 'shopping-return-list',
+                        component: ShoppingReturnList,
+                    },
+                    {
+                        path: 'inventory',
+                        name: 'inventory',
+                        component: Inventory,
                     },
                 ],
             },
             {
                 path: 'tasks',
                 name: 'tasks',
-                children: [
-                    {
+                children: [{
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
