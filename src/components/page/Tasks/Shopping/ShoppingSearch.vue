@@ -7,14 +7,15 @@ const searchStDate = ref('');
 const searchEdDate = ref('');
 
 const handlerSearchDeliveryOrderList = () => {
-    const query = [];
-    !customerName.value || query.push(`customerName=${customerName.value}`);
-    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
+    const searchParamObj = {
+        customerName: customerName.value,
+        searchStDate: searchStDate.value,
+        searchEdDate: searchEdDate.value,
+    };
 
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
-
-    router.push(queryString);
+    router.push({
+        params: { ...searchParamObj },
+    });
 };
 
 onMounted(() => {
