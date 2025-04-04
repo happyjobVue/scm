@@ -1,23 +1,80 @@
 <script setup>
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import router from '@/router';
 
+const productList = ref();
+const supplyList = ref();
+const warehouseList = ref();
+const searchProduct = ref("");
+const searchSupply = ref("");
+const searchWarehouse = ref("");
+
+const searchList = () => {
+    const param = {
+        searchProduct: searchProduct.value,
+        searchSupply: searchSupply.value,
+        searchWarehouse: searchWarehouse.value,
+    }
+    axios.post('/api/trade/inventorySelectBoxBody.do', param).then(res => {
+        productList.value = res.data.detailValue.productList;
+        supplyList.value = res.data.detailValue.supplyList;
+        warehouseList.value = res.data.detailValue.warehouseList;
+    });
+};
+
+const handlerSearch = () => {
+    const query = [];
+    !searchProduct.value || query.push(`searchProduct=${searchProduct.value}`);
+    !searchSupply.value || query.push(`searchSupply=${searchSupply.value}`);
+    !searchWarehouse.value || query.push(`searchWarehouse=${searchWarehouse.value}`);
+    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+    router.push(queryString);
+}
+
+onMounted(() => {
+    searchList();
+    window.location.search && router.replace(window.location.pathname);
+});
 </script>
 
 <template>
   <div class="search-box">
     제품명:
-    <select>
-
+    <select v-model.lazy="searchProduct">
+        <option value="">전체</option>
+        <option
+            v-for="product in productList"
+            :key="product.selectBoxId"
+            :value="product.selectBoxId"
+        >
+            {{ product.selectBoxName }}
+        </option>
     </select>
     제조사명:
-    <select>
-
+    <select v-model.lazy="searchSupply">
+        <option value="">전체</option>
+        <option
+            v-for="supply in supplyList"
+            :key="supply.selectBoxId"
+            :value="supply.selectBoxId"
+        >
+            {{ supply.selectBoxName }}
+        </option>
     </select>
     창고명:
-    <select>
-
+    <select v-model.lazy="searchWarehouse">
+        <option value="">전체</option>
+        <option
+            v-for="warehouse in warehouseList"
+            :key="warehouse.selectBoxId"
+            :value="warehouse.selectBoxId"
+        >
+            {{ warehouse.selectBoxName }}
+        </option>
     </select>
-    <input />
-    <button>검색</button>
+    <button @click="handlerSearch()">검색</button>
   </div>
 </template>
 

@@ -13,6 +13,7 @@ declare module 'vue' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InventoryMain: typeof import('./src/components/page/Trade/Inventory/InventoryMain.vue')['default']
     InventorySearch: typeof import('./src/components/page/Trade/Inventory/InventorySearch.vue')['default']
+    InventorySubgrid: typeof import('./src/components/page/Trade/Inventory/InventorySubgrid.vue')['default']
     LeftManuBar: typeof import('./src/components/common/LeftManuBar.vue')['default']
     LoginMain: typeof import('./src/components/page/Login/LoginMain.vue')['default']
     NoticeMain: typeof import('./src/components/page/Management/Notice/NoticeMain.vue')['default']
