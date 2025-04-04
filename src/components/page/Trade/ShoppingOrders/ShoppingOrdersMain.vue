@@ -32,7 +32,6 @@ const handlerDeliveryModal = (id) => {
 };
 
 const handlerOrderModal = (id) => {
-  console.log('orderModal');
   orderId.value = id;
   modalType.value = 'order';
   modalState.setModalState();
