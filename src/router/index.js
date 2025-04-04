@@ -6,6 +6,10 @@ import UserInfo from '../views/Management/UserInfo.vue';
 import SupplierInfo from '../views/Management/SupplierInfo.vue';
 import Inquiry from '../views/Management/Inquiry.vue';
 
+import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
+import Shopping from '../views/Tasks/Shopping.vue';
+import Orders from '../views/Tasks/Orders.vue';
+
 const routes = [
     {
         path: '/',
@@ -40,6 +44,33 @@ const routes = [
                         path: 'inquiry',
                         name: 'inquiry',
                         component: Inquiry,
+                    },
+                ],
+            },
+            {
+                path: 'trade',
+                name: 'trade',
+                children: [
+                    {
+                        path: 'shopping-orders',
+                        name: 'shopping-orders',
+                        component: ShoppingOrders,
+                    },
+                ],
+            },
+            {
+                path: 'tasks',
+                name: 'tasks',
+                children: [
+                    {
+                        path: 'shopping',
+                        name: 'shopping',
+                        component: Shopping,
+                    },
+                    {
+                        path: 'orders',
+                        name: 'orders',
+                        component: Orders,
                     },
                 ],
             },
