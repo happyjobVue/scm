@@ -5,31 +5,34 @@ import axios from 'axios';
 import { useModalStore } from '../../../../stores/modalStore';
 
 const route = useRoute();
-const commonCodeList = ref();
-const commonCodeId = ref(0);
+const detailCodeList = ref();
+const detailCodeId = ref(0);
+const { groupCode } = defineProps(['groupCode']);
 
 const cPage = ref(1);
 const modalStore = useModalStore();
-const emit = defineEmits(['openDetail']);
+
+
+
 
 const searchList = () => {
+    console.log('detail code',groupCode);
+
     const param ={
         ...route.query,
         pageSize: 5,
         currentPage: cPage.value,
+        groupCode: groupCode
     };
-    axios.post('/api/management/commonCodeListBody.do', param).then(res => {
-        commonCodeList.value = res.data;
+    console.log(param);
+    axios.post('/api/management/commonDetailCodeListJson.do', param).then(res => {
+        detailCodeList.value = res.data;
     });
 }
 
-const handlerOpenDetail = (groupCode) => {
-    emit('openDetail', groupCode);
-}
-
 const handlerUpdate = (id) => {
-    commonCodeId.value = id;
-    modalStore.open('commonCode');
+    detailCodeId.value = id;
+    modalStore.open('detailCode');
 }
 
 
@@ -43,14 +46,15 @@ watch(() => route.query, searchList);
 
 <template>
     <div class="commoncode-main">
-        <CommonCodeModal 
-        v-if="modalStore.isOpen('commonCode')"
-        :id="commonCodeId"
-        @modalClose="commonCodeId = $event"
+        <DetailCodeModal 
+        v-if="modalStore.isOpen('detailCode')"
+        :id="detailCodeId"
+        :groupCode="groupCode"
+        @modalClose="detailCodeId = $event"
         @postSuccess = "searchList()"
         
         />
-        현재 페이지: {{ cPage }} 총 개수 : {{ commonCodeList?.commonCodeCnt }}
+        현재 페이지: {{ cPage }} 총 개수 : {{ detailCodeList?.commonDetailCodeCnt	 }}
         <table>
             <colgroup>
                 <col width="10%">  <!-- 번호 -->
@@ -67,9 +71,9 @@ watch(() => route.query, searchList);
                 <tr>
                     <th scope="col">번호</th>
                     <th scope="col">그룹코드</th>
-                    <th scope="col">그룹코드명</th>
-                    <th scope="col">그룹코드설명</th>
-                    <th scope="col">등록일</th>
+                    <th scope="col">상세코드</th>
+                    <th scope="col">상세코드명</th>
+                    <th scope="col">상세코드설명</th>
                     <th scope="col">사용여부</th>
                     <th scope="col">비고</th>
                 </tr>
@@ -77,21 +81,19 @@ watch(() => route.query, searchList);
             
             <!-- 리스트 내용행 -->
             <tbody>
-                <template v-if="commonCodeList">
-                    <template v-if="commonCodeList.commonCodeCnt > 0">
-                        <tr v-for="commonCode in commonCodeList.commonCode" 
-                            :key="commonCode.groupIdx"
+                <template v-if="detailCodeList">
+                    <template v-if="detailCodeList.commonDetailCodeCnt > 0">
+                        <tr v-for="detailCode in detailCodeList.commonDetailCode" 
+                            :key="detailCode.groupIdx"
                         >
-                            <td>{{ commonCode.groupIdx }}</td>
-                            <td class="td-hover"
-                                @click="handlerOpenDetail(commonCode.groupCode)"
-                            >{{ commonCode.groupCode }}</td>
-                            <td>{{ commonCode.groupName }}</td>
-                            <td>{{ commonCode.note }}</td>
-                            <td>{{ commonCode.createdDate.substr(0, 10) }}</td>
-                            <td>{{ commonCode.useYn }}</td>
+                            <td>{{ detailCode.detailIdx }}</td>
+                            <td>{{ detailCode.groupCode }}</td>
+                            <td>{{ detailCode.detailCode }}</td>
+                            <td>{{ detailCode.detailName }}</td>
+                            <td>{{ detailCode.note }}</td>
+                            <td>{{ detailCode.useYn }}</td>
                             <td><button
-                                 @click="handlerUpdate(commonCode.groupIdx)">
+                                 @click="handlerUpdate(detailCode.detailIdx)">
                                  수정</button>
                                 </td>
                         </tr>
@@ -107,7 +109,7 @@ watch(() => route.query, searchList);
             
         <!-- 페이징 처리  -->
         <Pagination 
-            :totalItems = "commonCodeList?.commonCodeCnt"
+            :totalItems = "detailCodeList?.commonDetailCodeCnt"
             :items-per-page="5"
             :max-pages-shown="5"
             :onClick="searchList"

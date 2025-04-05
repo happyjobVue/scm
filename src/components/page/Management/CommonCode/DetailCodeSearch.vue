@@ -3,15 +3,15 @@ import { useModalStore } from '../../../../stores/modalStore';
 import router from '@/router';
 
 const modalStore = useModalStore();
-const groupCodeSelect = ref('groupName');
-const searchTitle = ref('');
+const detailCodeSelect = ref('detailCodeName');
+const detailCodeSearchTitle = ref('');
 
-
+const { groupCode } = defineProps(['groupCode']);
 
 const handlerSearch = () => {
     const query = [];
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !groupCodeSelect.value || query.push(`groupCodeSelect=${groupCodeSelect.value}`);
+    !detailCodeSearchTitle.value || query.push(`detailCodeSearchTitle=${detailCodeSearchTitle.value}`);
+    !detailCodeSelect.value || query.push(`detailCodeSelect=${detailCodeSelect.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
@@ -25,13 +25,13 @@ onMounted(() => {
 <template>
     <div class="search-box">
         <div class="search-container">        
-            <select v-model="groupCodeSelect">
-                <option value="groupName">그룹코드명</option>
-                <option value="groupCode">그룹코드</option>
+            <select v-model="detailCodeSelect">
+                <option value="detailCodeName">상세코드명</option>
+                <option value="detailCode">상세코드</option>
             </select>
-            <input v-model.lazy="searchTitle"/>
+            <input v-model.lazy="detailCodeSearchTitle"/>
             <button @click="handlerSearch">검색</button>
-            <button @click="modalStore.open('commonCode')">등록</button>
+            <button @click="modalStore.open('detailCode', groupCode)">등록</button>
 
         </div>
     </div>
