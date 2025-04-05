@@ -2,20 +2,18 @@
 import { onMounted, ref } from 'vue';
 import router from '@/router';
 
-const customerName = ref('');
+const searchKeyword = ref('');
 const searchStDate = ref('');
 const searchEdDate = ref('');
 
-const handlerSearchDeliveryOrderList = () => {
+const handlerSearchShoppingReturnList = () => {
     const searchParamObj = {
-        customerName: customerName.value,
+        searchKeyword: searchKeyword.value,
         searchStDate: searchStDate.value,
         searchEdDate: searchEdDate.value,
     };
 
-    router.push({
-        params: { ...searchParamObj },
-    });
+    router.push({ params: { ...searchParamObj } });
 };
 
 onMounted(() => {
@@ -25,16 +23,18 @@ onMounted(() => {
 <template>
     <div class="search-box">
         <label
-            >고객 기업명:
-            <input v-model.lazy="customerName" />
+            >제품명:
+            <input v-model="searchKeyword" />
         </label>
         <label
             >기간:
-            <input type="date" v-model="searchStDate" />
-            ~
-            <input type="date" v-model="searchEdDate" />
+            <span>
+                <input type="date" v-model="searchStDate" />
+                ~
+                <input type="date" v-model="searchEdDate" />
+            </span>
         </label>
-        <button @click="handlerSearchDeliveryOrderList">검색</button>
+        <button @click="handlerSearchShoppingReturnList">검색</button>
     </div>
 </template>
 <style lang="scss" scoped>

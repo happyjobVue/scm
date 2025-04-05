@@ -1,44 +1,44 @@
-<!-- setup을 적어야 Composition API를 사용할 수 있다.  -->
 <script setup>
 import router from '@/router';
 import { onMounted } from 'vue';
-import { useModalStore } from '../../../../stores/modalState';
+import { useModalStore } from '../../../../stores/modalStore';
+import SupplierInfoModal from './SupplierInfoModal.vue';
 
 const modalState = useModalStore();
+
+const groupCodeSelect = ref('searchSupplier');
 const searchTitle = ref('');
-const searchStDate = ref('');
-const searchEdDate = ref('');
 
 const handlerSearch = () => {
     const query = [];
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
+    !groupCodeSelect.value ||
+        query.push(`searchOption=${groupCodeSelect.value}`);
+    !searchTitle.value || query.push(`searchKeyword=${searchTitle.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
 };
 
-// 새로고침 시 queryParam만 없애고 싶음
-// 1. 만약에, noticeSearch라는 컴포넌트가 열릴 때, url에 queryParam이 남아있는지를 확인을 할겁니다.
-// 2. 남아 있는 경우, 경로(queryParam을 제외한 나머지)로 현재 url을 대체 시킬 것
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
 </script>
-
 <template>
     <div class="search-box">
+        <SupplierInfoModal v-if="modalState.modalState" />
         <!-- v-model을 이용하여 양방향 바인딩을 쉽게 할 수 있다. -->
+        <select v-model="groupCodeSelect">
+            <option value="searchSupplier">납품업체명</option>
+            <option value="searchProduct">제품명</option>
+        </select>
         <input v-model.lazy="searchTitle" />
-        <input type="date" v-model.lazy="searchStDate" />
-        <input type="date" v-model.lazy="searchEdDate" />
         <!-- v-on:click="" 또는 @click=""으로 이벤트를 설정한다. -->
         <button @click="handlerSearch">검색</button>
-        <button @click="modalState.setModalState()">신규등록</button>
+        <button @click="modalState.modalState = !modalState.modalState">
+            등록
+        </button>
     </div>
 </template>
-
 <style lang="scss" scoped>
 .search-box {
     margin-bottom: 10px;
@@ -80,5 +80,14 @@ button {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
+}
+select {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 120px;
+    text-align: center;
 }
 </style>
