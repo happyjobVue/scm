@@ -7,8 +7,14 @@ export {};
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CommonCodeMain: typeof import('./src/components/page/Management/CommonCode/CommonCodeMain.vue')['default']
+    CommonCodeModal: typeof import('./src/components/page/Management/CommonCode/CommonCodeModal.vue')['default']
+    CommonCodeSearch: typeof import('./src/components/page/Management/CommonCode/CommonCodeSearch.vue')['default']
     ContextBox: typeof import('./src/components/common/ContextBox.vue')['default']
     EmailModal: typeof import('./src/components/page/Management/UserInfo/EmailModal.vue')['default']
+    DetailCodeMain: typeof import('./src/components/page/Management/CommonCode/DetailCodeMain.vue')['default']
+    DetailCodeModal: typeof import('./src/components/page/Management/CommonCode/DetailCodeModal.vue')['default']
+    DetailCodeSearch: typeof import('./src/components/page/Management/CommonCode/DetailCodeSearch.vue')['default']
     FindInfoModal: typeof import('./src/components/page/Login/FindInfoModal.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InventoryMain: typeof import('./src/components/page/Trade/Inventory/InventoryMain.vue')['default']
