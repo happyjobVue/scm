@@ -16,13 +16,13 @@ const searchOrderDetailJson = () => {
 const getIsOrderStateStr = isOrderState => {
     switch (isOrderState) {
         case 'purchase':
-            return '발주진행';
+            return '발주단계';
             break;
         case 'delivery':
-            return '배송진행';
+            return '배송단계';
             break;
         case 'executive':
-            return '승인대기';
+            return '승인단계';
             break;
         case 'return':
             return '반품처리';
