@@ -15,6 +15,7 @@ import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
+import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
 
 const routes = [
     {
@@ -102,6 +103,11 @@ const routes = [
                         path: 'orders-list',
                         name: 'orders-list',
                         component: OrdersList,
+                    },
+                    {
+                        path: 'orders-return-list',
+                        name: 'orders-return-list',
+                        component: OrdersReturnList,
                     },
                 ],
             },
