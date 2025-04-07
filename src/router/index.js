@@ -12,12 +12,13 @@ import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
+import Sinquiry from '../views/Support/Sinquiry.vue';
+
 import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
-
 
 const routes = [
     {
@@ -118,7 +119,6 @@ const routes = [
                 name: 'delivery',
                 children: [
                     {
-
                         path: 'shopping-list',
                         name: 'shopping-list',
                         component: ShoppingList,
@@ -127,6 +127,17 @@ const routes = [
                         path: 'shopping-return-list',
                         name: 'delivery-shopping-return-list',
                         component: DeliveryShoppingReturnList,
+                    },
+                ],
+            },
+            {
+                path: 'support',
+                name: 'support',
+                children: [
+                    {
+                        path: 'inquiry',
+                        name: 'sinquiry',
+                        component: Sinquiry,
                     },
                 ],
             },
