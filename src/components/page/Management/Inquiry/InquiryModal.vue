@@ -9,7 +9,15 @@ const fileDetail = ref({});
 const modalState = useModalStore();
 const imageUrl = ref('');
 const fileData = ref('');
-// const userInfo = useUserInfo();
+const selectMenu = ref([
+    '카테고리 선택',
+    '이용문의',
+    '구매',
+    '환불/교환/반품',
+    '제품',
+    '개인정보',
+    '기타',
+]);
 
 const searchDetail = () => {
     axios
@@ -131,12 +139,19 @@ onMounted(() => {
                         <th>카테고리</th>
                         <td colspan="3">
                             <select v-model="inquiryDetail.category">
-                                <option>이용문의</option>
+                                <!-- <option>이용문의</option>
                                 <option>구매</option>
                                 <option>환불/교환/반품</option>
                                 <option>제품</option>
                                 <option>개인정보</option>
-                                <option>기타</option>
+                                <option>기타</option> -->
+                                <option
+                                    v-for="(list, index) in selectMenu"
+                                    :key="index"
+                                    :disabled="inquiryDetail.category !== list"
+                                >
+                                    {{ list }}
+                                </option>
                             </select>
                         </td>
                     </tr>
@@ -303,9 +318,6 @@ button {
     justify-content: center;
 }
 
-.content {
-    // min-height: 100px;
-}
 textarea {
     width: 345px;
     resize: none;
