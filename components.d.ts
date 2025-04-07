@@ -28,6 +28,7 @@ declare module 'vue' {
     OrdersListMain: typeof import('./src/components/page/Tasks/OrdersList/OrdersListMain.vue')['default']
     OrdersListSearch: typeof import('./src/components/page/Tasks/OrdersList/OrdersListSearch.vue')['default']
     OrdersMain: typeof import('./src/components/page/Tasks/Orders/OrdersMain.vue')['default']
+    OrdersModal: typeof import('./src/components/page/Tasks/Orders/OrdersModal.vue')['default']
     OrdersSearch: typeof import('./src/components/page/Tasks/Orders/OrdersSearch.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     ProductInfoMain: typeof import('./src/components/page/Management/ProductInfo/ProductInfoMain.vue')['default']
