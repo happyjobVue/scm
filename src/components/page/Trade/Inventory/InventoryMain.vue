@@ -1,5 +1,53 @@
 <script setup>
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import Pagination from '../../../common/Pagination.vue';
+import { useRoute } from 'vue-router';
+import InventorySubgrid from './InventorySubgrid.vue';
+import { useModalStore } from '../../../../stores/modalState';
 
+const route = useRoute();
+const inventoryList = ref();
+const inventoryId = ref(0);
+const productId = ref(0);
+const supplyId = ref(0);
+const warehouseId = ref(0);
+const cPage = ref(1);
+const modalState = useModalStore();
+const modalType = ref('');
+
+const searchList =  () => {
+    const param = {
+        ...route.query,
+        pageSize: 5,
+        currentPage: cPage.value,
+    };
+
+    axios.post('/api/trade/inventoryListBody.do', param).then(res => {
+        inventoryList.value = res.data;        
+    });
+};
+
+const onPostSuccess = ()=> {
+    modalState.setModalState(false);
+    modalType.value = '';
+    searchList();
+};
+
+const handlerSubgrid = (inventory, product, supply, warehouse) => {
+    inventoryId.value = inventory;
+    productId.value = product;
+    supplyId.value = supply;
+    warehouseId.value = warehouse;
+    modalType.value = 'inventoryDetail';
+    modalState.setModalState();
+};
+
+onMounted(() => {
+    searchList();
+});
+
+watch(() => route.query, searchList);
 </script>
 
 <template>
@@ -7,11 +55,11 @@
     <table>
         <colgroup>
             <col width="30%" />
+            <col width="20%" />
             <col width="30%" />
-            <col width="30%" />
-            <col width="10%" />
+            <col width="20%" />
         </colgroup>
-        <thead>
+        <thead>            
             <tr>
                 <th scope="col">제품명</th>
                 <th scope="col">제조사명</th>
@@ -20,16 +68,43 @@
             </tr>
         </thead>
         <tbody>
-            <template>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <template v-if="inventoryList">
+                <template v-if="inventoryList.inventoryCnt > 0">
+                    <tr 
+                        v-for="inventory in inventoryList.inventoryList"
+                        :key="inventory.inventoryId"
+                        @click="handlerSubgrid(inventory.inventoryId, inventory.productId, inventory.supplyId, inventory.warehouseId)"
+                    >
+                        <td>{{ inventory.productName }}</td>
+                        <td>{{ inventory.supplyName }}</td>
+                        <td>{{ inventory.warehouseName }}</td>
+                        <td>{{ inventory.quantity }}</td>
+                    </tr>
+                </template>  
+                <template v-else>
+                    <tr>
+                        <td colspan="4">일치하는 검색 결과가 없습니다</td>
+                    </tr>
+                </template>              
             </template>
         </tbody>
     </table>
+    <Pagination
+        :totalItems="inventoryList?.inventoryCnt"
+        :items-per-page="5"
+        :max-pages-shown="5"
+        :onclick="searchList"
+        v-model="cPage"
+    />
+    <InventorySubgrid
+        v-if="modalState.modalState && modalType === 'inventoryDetail'" 
+        :inventoryId="inventoryId"
+        :productId="productId"
+        :supplyId="supplyId"
+        :warehouseId="warehouseId"
+        @modalClose="inventoryId=$event"
+        @onPostSuccess="onPostSuccess"
+    />
   </div>
 </template>
 

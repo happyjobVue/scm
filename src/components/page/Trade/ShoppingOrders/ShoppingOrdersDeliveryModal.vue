@@ -53,8 +53,9 @@ const handlerAddBtn = () => {
 
     selectedWarehouseValue.value.push({
         orderCount: inputCount.value,
-        warehouseId: selectedWarehouseId
+        warehouseId: selectedWarehouseId.value
     });
+    console.log(selectedWarehouseValue.value);
 
     totalCount.value = addedWarehouseItems.value.reduce(
         (sum, item) => sum + item.count,
