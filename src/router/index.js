@@ -12,12 +12,15 @@ import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
-import ShoppingList from '../views/Delivery/ShoppingList.vue'
-import CommonCode from '../views/Management/CommonCode.vue'
 import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
+import ShoppingList from '../views/Delivery/ShoppingList.vue';
+import CommonCode from '../views/Management/CommonCode.vue';
+import OrdersList from '../views/Tasks/OrdersList.vue';
+import ProductInfo from '../views/Management/ProductInfo.vue';
 
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'login',
         component: Login,
@@ -26,10 +29,12 @@ const routes = [{
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [{
+        children: [
+            {
                 path: 'management',
                 name: 'management',
-                children: [{
+                children: [
+                    {
                         path: 'notice',
                         name: 'notice',
                         component: Notice,
@@ -54,12 +59,18 @@ const routes = [{
                         name: 'common-code',
                         component: CommonCode,
                     },
+                    {
+                        path: 'product-info',
+                        name: 'product-info',
+                        component: ProductInfo,
+                    },
                 ],
             },
             {
                 path: 'trade',
                 name: 'trade',
-                children: [{
+                children: [
+                    {
                         path: 'shopping-orders',
                         name: 'shopping-orders',
                         component: ShoppingOrders,
@@ -79,7 +90,8 @@ const routes = [{
             {
                 path: 'tasks',
                 name: 'tasks',
-                children: [{
+                children: [
+                    {
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
@@ -94,12 +106,19 @@ const routes = [{
                         name: 'shopping-return',
                         component: ShoppingReturn,
                     },
+                    {
+                        path: 'orders-list',
+                        name: 'orders-list',
+                        component: OrdersList,
+                    },
                 ],
             },
             {
                 path: 'delivery',
                 name: 'delivery',
-                children: [{
+                children: [
+                    {
+
                         path: 'shopping-list',
                         name: 'shopping-list',
                         component: ShoppingList,

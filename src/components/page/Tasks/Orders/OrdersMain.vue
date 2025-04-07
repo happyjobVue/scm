@@ -1,14 +1,20 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Pagination from '../../../common/Pagination.vue';
 import { useRoute } from 'vue-router';
+import { useModalStore } from '../../../../stores/modalState';
+import OrdersModal from './OrdersModal.vue';
 
 const route = useRoute();
 
 const orderList = ref({});
 
 const cPage = ref(1);
+
+const modalState = useModalStore();
+const orderId = ref(0);
+
 const searchOrderList = () => {
     const param = {
         searchTag: route.params.searchTag || '',
@@ -23,6 +29,11 @@ const searchOrderList = () => {
     });
 };
 
+const handlerOrderDetailJsonModal = id => {
+    orderId.value = id;
+    modalState.setModalState();
+};
+
 onMounted(() => {
     searchOrderList();
 });
@@ -31,6 +42,7 @@ watch(() => route.params, searchOrderList);
 </script>
 <template>
     <div class="divOrderList">
+        <OrdersModal v-if="modalState.modalState" :id="orderId" />
         <table>
             <colgroup>
                 <col width="20%" />
@@ -54,6 +66,7 @@ watch(() => route.params, searchOrderList);
                         <tr
                             v-for="order in orderList.orderList"
                             :key="order.orderId"
+                            @click="handlerOrderDetailJsonModal(order.orderId)"
                         >
                             <td>{{ order.productNumber }}</td>
                             <td>{{ order.productName }}</td>

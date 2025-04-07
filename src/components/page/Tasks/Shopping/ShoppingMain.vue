@@ -8,7 +8,7 @@ import { useModalStore } from '../../../../stores/modalState';
 
 const route = useRoute();
 
-const deliveryOrderList = ref();
+const deliveryOrderList = ref({});
 
 const cPage = ref(1);
 
