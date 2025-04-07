@@ -38,8 +38,6 @@ const updateReturn = () => {
                 icon: "success",
                 title: "승인 완료",
                 confirmButtonText: "확인",
-            }).then(() => {
-                postSuccess();
             });
         }
     });

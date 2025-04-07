@@ -12,6 +12,7 @@ import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
+import ShoppingList from '../views/Delivery/ShoppingList.vue'
 import CommonCode from '../views/Management/CommonCode.vue'
 
 
@@ -27,8 +28,7 @@ const routes = [{
         children: [{
                 path: 'management',
                 name: 'management',
-                children: [
-                    {
+                children: [{
                         path: 'notice',
                         name: 'notice',
                         component: Notice,
@@ -94,6 +94,15 @@ const routes = [{
                         component: ShoppingReturn,
                     },
                 ],
+            },
+            {
+                path: 'delivery',
+                name: 'delivery',
+                children: [{
+                    path: 'shopping-list',
+                    name: 'shopping-list',
+                    component: ShoppingList,
+                }, ],
             },
         ],
     },
