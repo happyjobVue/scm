@@ -13,6 +13,8 @@ import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue'
+import CommonCode from '../views/Management/CommonCode.vue'
+
 
 const routes = [{
         path: '/',
@@ -45,6 +47,11 @@ const routes = [{
                         path: 'inquiry',
                         name: 'inquiry',
                         component: Inquiry,
+                    },
+                    {
+                        path: 'common-code',
+                        name: 'common-code',
+                        component: CommonCode,
                     },
                 ],
             },
