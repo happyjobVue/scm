@@ -16,20 +16,23 @@ const searchDetail = () => {
         .post('/api/support/inquiryDetailBody.do', { inquiryId: id })
         .then(res => {
             inquiryDetail.value = res.data.detailValue;
-            fileDetail.value = res.data.fileValue;
-            const imageExtensions = [
-                'jpg',
-                'jpeg',
-                'png',
-                'gif',
-                'bmp',
-                'webp',
-            ];
-
-            if (
-                imageExtensions.some(ext => ext === fileDetail.value.fileType)
-            ) {
-                getFileImage();
+            if (res.data.fileValue) {
+                fileDetail.value = res.data.fileValue;
+                const imageExtensions = [
+                    'jpg',
+                    'jpeg',
+                    'png',
+                    'gif',
+                    'bmp',
+                    'webp',
+                ];
+                if (
+                    imageExtensions.some(
+                        ext => ext === fileDetail.value.fileType
+                    )
+                ) {
+                    getFileImage();
+                }
             }
         });
 };
@@ -66,13 +69,42 @@ const downloadFile = () => {
         });
 };
 
+const fileRemove = () => {
+    axios
+        .post('/api/support/inquiryFileRemoveBody.do', { inquiryId: id })
+        .then(res => {
+            if (res.data.result === 'success') {
+                searchDetail();
+            }
+        });
+};
+
 const answerSave = () => {
+    if (!inquiryDetail.value.ansContent) {
+        alert('답변을 입력해 주세요!');
+        return;
+    }
     const param = new URLSearchParams();
     param.append('inquiryId', id);
     param.append('fileAnsContent', inquiryDetail.value.ansContent);
     axios.post('/api/management/inquiryAnsSaveBody.do', param).then(res => {
         console.log(res.data);
+        if (res.data.result === 'success') {
+            alert('답변이 등록되었습니다.');
+            emit('postSuccess');
+        }
     });
+};
+
+const deleteInquiry = () => {
+    axios
+        .post('/api/support/inquiryFileDeleteBody.do', { inquiryId: id })
+        .then(res => {
+            if (res.data.result === 'success') {
+                alert('삭제되었습니다.');
+                emit('postSuccess');
+            }
+        });
 };
 
 onMounted(() => {
@@ -92,7 +124,7 @@ onMounted(() => {
                     <tr>
                         <th>작성자</th>
                         <td>{{ inquiryDetail.author }}</td>
-                        <th>작성일</th>
+                        <th>작성일시</th>
                         <td>{{ inquiryDetail.createdDate }}</td>
                     </tr>
                     <tr>
@@ -151,7 +183,7 @@ onMounted(() => {
                         </td>
                         <td>
                             <template v-if="fileDetail.fileName">
-                                <button>파일삭제</button>
+                                <button @click="fileRemove">파일삭제</button>
                             </template>
                         </td>
                     </tr>
@@ -166,7 +198,7 @@ onMounted(() => {
                 </table>
                 <div class="button_area">
                     <button @click="answerSave">답변등록</button>
-                    <button>삭제</button>
+                    <button @click="deleteInquiry">삭제</button>
                     <button @click="modalState.setModalState()">닫기</button>
                 </div>
             </div>
