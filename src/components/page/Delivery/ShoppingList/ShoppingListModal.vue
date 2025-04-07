@@ -2,10 +2,11 @@
 import axios from 'axios';
 import { useModalStore } from '../../../../stores/modalState';
 import { ref } from 'vue';
+import Swal from 'sweetalert2';
 
 const emit = defineEmits([`modalClose`, 'postSuccess']);
 const modalState = useModalStore();
-const { id } = defineProps(['id']);
+const { id, state } = defineProps(['id', 'state']);
 
 const deliveryDetail = ref();
 const deliveryId = ref();
@@ -29,18 +30,28 @@ const updateDeliveryState = () => {
     const param = {
         orderId: id,
         deliveryState:"배송완료",
-		salesState:"deliveryComplete",
-        deliverId: deliveryId.value,
+		    salesState:"deliveryComplete",
+        deliveryId: deliveryId.value,
         productId: productId.value,
         supplyId: supplyId.value,
         startLocation: startLocation.value,
         output: output.value,
     };
-    axios.post('/api/delivery/updateDeliveryStateBody.do', param);
-}
+    axios.post('/api/delivery/updateDeliveryStateBody.do', param).then(res => {
+      if(res.data.result === "success") {
+          emit('postSuccess');
+          Swal.fire({
+              icon: "success",
+              title: "배송 완료",
+              confirmButtonText: "확인",
+          });
+      }
+    });
+};
 
 onMounted(() => {
     id && searchDetail();
+    console.log(state);
 });
 
 onUnmounted(() => {
@@ -74,7 +85,9 @@ onUnmounted(() => {
                     </tbody>
                 </table>
                 <div class="button-box">
-                    <button @click="updateDeliveryState()">배달완료</button>
+                    <template v-if="state === '배송중'">
+                      <button @click="updateDeliveryState()">배달완료</button>
+                    </template>                    
                     <button @click="modalState.setModalState()">나가기</button>
                 </div>
             </div>

@@ -8,8 +8,10 @@ import ShoppingListModal from './ShoppingListModal.vue';
 
 const route = useRoute();
 const modalState = useModalStore();
+
 const shoppingList = ref();
 const deliveryId = ref(0);
+const deliveryState = ref("");
 const cPage = ref(1);
 
 const searchList = () => {
@@ -24,8 +26,9 @@ const searchList = () => {
     });
 };
 
-const handlerModal = (id) => {
+const handlerModal = (id, state) => {
     deliveryId.value = id;
+    deliveryState.value = state;
     modalState.setModalState();
 };
 
@@ -46,6 +49,7 @@ watch(() => route.query, searchList);
     <ShoppingListModal 
         v-if="modalState.modalState"
         :id="deliveryId"
+        :state="deliveryState"
         @modalClose="deliveryId=$event"
         @postSuccess="onPostSuccess"
     />
@@ -71,7 +75,7 @@ watch(() => route.query, searchList);
                 <template v-if="shoppingList.shoppingDeliveryListCnt > 0">
                     <tr v-for="shoppingDelivery in shoppingList.shoppingDeliveryList"
                         :key="shoppingDelivery.deliveryId"
-                        @click="handlerModal(shoppingDelivery.deliveryId)"
+                        @click="handlerModal(shoppingDelivery.deliveryId, shoppingDelivery.deliveryState)"
                     >
                         <td>{{ shoppingDelivery.deliveryId }}</td>
                         <td>{{ shoppingDelivery.deliveryManager }}</td>
