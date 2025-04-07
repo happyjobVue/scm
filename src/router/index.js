@@ -12,8 +12,11 @@ import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
+import OrdersList from '../views/Tasks/OrdersList.vue';
+import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'login',
         component: Login,
@@ -22,7 +25,8 @@ const routes = [{
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [{
+        children: [
+            {
                 path: 'management',
                 name: 'management',
                 children: [
@@ -51,7 +55,8 @@ const routes = [{
             {
                 path: 'trade',
                 name: 'trade',
-                children: [{
+                children: [
+                    {
                         path: 'shopping-orders',
                         name: 'shopping-orders',
                         component: ShoppingOrders,
@@ -71,7 +76,8 @@ const routes = [{
             {
                 path: 'tasks',
                 name: 'tasks',
-                children: [{
+                children: [
+                    {
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
@@ -85,6 +91,11 @@ const routes = [{
                         path: 'shopping-return',
                         name: 'shopping-return',
                         component: ShoppingReturn,
+                    },
+                    {
+                        path: 'orders-list',
+                        name: 'orders-list',
+                        component: OrdersList,
                     },
                 ],
             },
