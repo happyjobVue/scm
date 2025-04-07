@@ -36,7 +36,6 @@ const searchDetail = () => {
                 ...res.data.detailValue,
                 tradeFlag: res.data.detailValue.tradeState,
             };
-            console.log(supplyDetail.value);
         });
 };
 
@@ -388,9 +387,7 @@ onUnmounted(() => {
                         </button>
                         <button
                             class="button"
-                            @click="
-                                modalState.modalState = !modalState.modalState
-                            "
+                            @click="modalState.modalState = false"
                         >
                             취소
                         </button>
