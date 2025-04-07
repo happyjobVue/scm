@@ -14,6 +14,7 @@ import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue'
 import CommonCode from '../views/Management/CommonCode.vue'
+import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
 
 
 const routes = [{
@@ -65,7 +66,7 @@ const routes = [{
                     },
                     {
                         path: 'shopping-return-list',
-                        name: 'shopping-return-list',
+                        name: 'trade-shopping-return-list',
                         component: ShoppingReturnList,
                     },
                     {
@@ -99,10 +100,16 @@ const routes = [{
                 path: 'delivery',
                 name: 'delivery',
                 children: [{
-                    path: 'shopping-list',
-                    name: 'shopping-list',
-                    component: ShoppingList,
-                }, ],
+                        path: 'shopping-list',
+                        name: 'shopping-list',
+                        component: ShoppingList,
+                    },
+                    {
+                        path: 'shopping-return-list',
+                        name: 'delivery-shopping-return-list',
+                        component: DeliveryShoppingReturnList,
+                    },
+                ],
             },
         ],
     },
