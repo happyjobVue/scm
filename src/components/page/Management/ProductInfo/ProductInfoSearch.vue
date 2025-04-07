@@ -7,7 +7,7 @@ const searchOption = ref('searchAll');
 const searchKeyword = ref('');
 
 
-
+/* ===================== handler ===================== */
 const handlerSearch = () => {
     const query = [];
     !searchKeyword.value || query.push(`searchKeyword=${searchKeyword.value}`);
@@ -16,6 +16,8 @@ const handlerSearch = () => {
 
     router.push(queryString);
 }
+
+/* =========================== hook: 생명주기 ============================== */
 
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);

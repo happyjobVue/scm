@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useModalStore } from '../../../../stores/modalState';
 import axios from 'axios';
 
 
 const selectedFileName = ref('');
 const imageUrl = ref('');
+const fileName = ref('');
 const fileData = ref('');
 const modalState = useModalStore();
 const productInfoDetail = ref({
@@ -15,6 +16,36 @@ const productInfoDetail = ref({
 const supplierList = ref({});
 const categoryList = ref({});
 const emit = defineEmits(['postSuccess']);
+const { id } = defineProps(['id']);
+
+/* =================== function: 렌더링에 필요한 데이터 ======================= */
+
+const searchDetail = () => {
+    if(id == 0) return;
+    axios.post('/api/management/productDetailBody.do', {productId: id}).then(res => {
+        productInfoDetail.value = res.data.detailValue;
+
+        if(productInfoDetail.value.filePath == null) return;
+
+        selectedFileName.value = productInfoDetail.value.fileName;
+
+        const fullPath = productInfoDetail.value.filePath;
+        const basePath = "V:\\FileRepository";
+        fileName.value = fullPath.slice(basePath.length);
+        getFileImage();
+    })
+}
+
+const getFileImage = () => {
+    axios.get('/api/image/showImg.do',{
+            params: { fileName: fileName.value },
+            responseType: 'arraybuffer'})
+            .then(res => {
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                imageUrl.value = url;
+    });
+};
+
 
 const searchSupplierList = () => {
     axios.get('/api/management/supplierNameListBody.do')
@@ -40,7 +71,9 @@ const handleFile = (e) => {
     selectedFileName.value = file ? file.name : '';
 
     if(fileExtension === 'jpg' || fileExtension === 'gif' || fileExtension === 'png') {
+        console.log('fileInfo[0] ', fileInfo[0]);
         imageUrl.value = URL.createObjectURL(fileInfo[0]);
+        console.log('imageUrl.value ', imageUrl.value)
     }
     fileData.value = fileInfo[0];
 };
@@ -55,7 +88,6 @@ const handlerSave = () => {
     }
     if(fileData.value) formData.append('file', fileData.value);
 
-    console.log(formData)
     axios.post('/api/management/productSave.do', formData)
     .then(res => {
         if(res.data.result != "success") return alert("제품 등록에 실패하였습니다.");
@@ -66,10 +98,58 @@ const handlerSave = () => {
     });
 }
 
+const handlerUpdate = () => {
+    if(productInfoDetail.value.supplyId == 0) return alert("납품업체를 선택해주세요.");
+    if(productInfoDetail.value.categoryCode == 0) return alert("카테고리를 선택해주세요.");
+
+    const formData = new FormData();
+    for (const key in productInfoDetail.value) {
+        formData.append(key, productInfoDetail.value[key]);
+    }
+    if(fileData.value) formData.append('file', fileData.value);
+
+    axios.post('/api/management/productUpdate.do', formData)
+    .then(res => {
+        if(res.data.result != "success") return alert("제품 수정에 실패하였습니다.");
+        
+        alert("제품정보 수정에 성공하였습니다.");
+        emit('postSuccess');
+        modalState.setModalState();
+    });
+}
+
+const handlerDeleteImage = () => {
+    axios.post('/api/management/productFileDeleteBody.do', {productId: id}).then(res =>{
+        if(res.data.result != "success") return alert('이미지 삭제에 실패하였습니다.');
+
+        alert('이미지 삭제에 성공하였습니다.');
+        selectedFileName.value = '';
+        imageUrl.value = '';
+        productInfoDetail.value.fileName = '';
+    })
+}
+
+const handlerDelete = () => {
+    axios.post('/api/management/productDeleteBody.do', {productId: id}).then(res =>{
+        if(res.data.result != "success") return alert('제품 정보 삭제에 실패하였습니다.');
+
+        alert('제품 정보 삭제에 성공하였습니다.');
+        emit('postSuccess');
+        modalState.setModalState();
+    })
+}
+
+/* =========================== hook: 생명주기 ============================== */
+
 onMounted(() => {
+    searchDetail();
     searchSupplierList();
     searchCategoryList();
 })
+
+onUnmounted(() => {
+    emit('modalClose', 0);
+});
 
 </script>
 
@@ -154,9 +234,9 @@ onMounted(() => {
                             </select>
                         </td>
                     </tr>
-                    <tr id="fileNo">
+                    <tr v-if="!productInfoDetail.fileName">
                         <th scope="row">파일</th>
-                        <td colspan="2">
+                        <td colspan="2" class=" custom-td">
                             <input type="text" :value="selectedFileName" disabled />
                         </td>
                         <td colspan="1">
@@ -168,24 +248,31 @@ onMounted(() => {
 
                         </td>
                     </tr>
-                    <tr id="fileYes">
+                    <tr v-if="productInfoDetail.fileName">
                         <th scope="row">파일</th>
-                        <td colspan="2">
-                            
+                        <td colspan="2" class=" custom-td">
+                            <input type="text" :value="selectedFileName" disabled />
                         </td>
-                        <td colspan="1"><button>파일 삭제</button></td>
+                        <td colspan="1">
+                            <button
+                            @click="handlerDeleteImage"
+                            >파일 삭제</button>
+                        </td>
                     </tr> 
                     <tr>
                         <th scope="row">미리보기</th>
-                        <td colspan="3" id="preview"></td>
+                        <td colspan="3"> 
+                            <div>
+                                <img :src="imageUrl" class="product-image"/> 
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
                 </table>
                 
                 <div class="button-box">
-                    <button @click="handlerSave">저장</button>
-                    <button>수정</button>
-                    <button style="margin-left: 16px;">삭제</button>
+                    <button @click="id ? handlerUpdate() : handlerSave() "> {{ id ? '수정': '저장' }}</button>
+                    <button @click="handlerDelete()" style="margin-left: 16px;">삭제</button>
                     <button style="margin-left: 16px;" @click="modalState.setModalState()">취소</button>
                 </div>
             </dd>
@@ -313,5 +400,13 @@ button {
         transform: translateY(2px);
     }
 }
+.custom-td{
+    width: 40%;
+}
+
+input{
+    width: 100%;
+}
+
 
 </style>

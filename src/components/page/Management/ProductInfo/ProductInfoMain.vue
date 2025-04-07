@@ -6,9 +6,12 @@ import ProductInfoModal from './ProductInfoModal.vue';
 import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();
-const productInfoList = ref({});
 const route = useRoute();
+const productInfoList = ref({});
+const productId = ref(0);
 const cPage = ref(1);
+
+/* =================== function: 렌더링에 필요한 데이터 ======================= */
 
 const searchList = () => {
     const {searchKeyword = '', searchOption = 'searchAll'} = route.query;
@@ -28,11 +31,20 @@ const searchList = () => {
 const onPostSuccess = () =>{
     searchList();
 }
+/* ===================== handler ===================== */
+
+const handlerUpdate = (id) =>{
+    productId.value = id;
+    modalState.setModalState();
+}
+
+/* =========================== hook: 생명주기 ============================== */
 
 onMounted(() => {
     searchList();
 });
 
+/* ============================== 변경 감지 =============================== */
 watch(() => route.query, searchList);
 
 </script>
@@ -41,6 +53,8 @@ watch(() => route.query, searchList);
     <ProductInfoModal 
     v-if="modalState.modalState"
     @postSuccess="onPostSuccess()"
+    @modalClose="productId = $event"
+    :id="productId"
     />
     <div>
         <table style="width: 100%;">
@@ -64,7 +78,9 @@ watch(() => route.query, searchList);
                         <tr v-for="productInfo in productInfoList.productList"
                         :key="productInfo.productId">
                             <td>{{ productInfo.productNumber }}</td>
-                            <td>{{ productInfo.name }}</td>
+                            <td class="td-hover"
+                            @click="handlerUpdate(productInfo.productId)"
+                            >{{ productInfo.name }}</td>
                             <td>{{ productInfo.supplier }}</td>
                             <td>{{ productInfo.sellPrice }}</td>
                         </tr>
@@ -90,6 +106,14 @@ watch(() => route.query, searchList);
 </template>
 
 <style scoped>
+.td-hover {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.td-hover:hover {
+  text-decoration: underline;
+  color: #fe1414;
+}
 
 table {
     width: 100%;
