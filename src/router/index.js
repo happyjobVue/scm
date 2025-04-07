@@ -15,6 +15,8 @@ import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
+import ProductInfo from '../views/Management/ProductInfo.vue';
+
 
 const routes = [
     {
@@ -55,6 +57,11 @@ const routes = [
                         path: 'common-code',
                         name: 'common-code',
                         component: CommonCode,
+                    },
+                    {
+                        path: 'product-info',
+                        name: 'product-info',
+                        component: ProductInfo,
                     },
                 ],
             },
