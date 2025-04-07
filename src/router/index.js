@@ -141,6 +141,27 @@ const routes = [
                     },
                 ],
             },
+            {
+                path: 'sales',
+                name: 'sales',
+                children: [
+                    {
+                        path: 'performance',
+                        name: 'performance',
+                        component: Performance,
+                    },
+                    {
+                        path: 'top-sales',
+                        name: 'top-sales',
+                        component: TopSales,
+                    },
+                    {
+                        path: 'profit-check',
+                        name: 'profit-check',
+                        component: ProfitCheck,
+                    },
+                ],
+            },
         ],
     },
 ];
