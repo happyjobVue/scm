@@ -19,11 +19,14 @@ import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
+import Performance from '../views/Sales/Performance.vue';
+import TopSales from '../views/Sales/TopSales.vue';
+import ProfitCheck from '../views/Sales/ProfitCheck.vue';
 import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 
-
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'login',
         component: Login,
@@ -32,10 +35,12 @@ const routes = [{
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [{
+        children: [
+            {
                 path: 'management',
                 name: 'management',
-                children: [{
+                children: [
+                    {
                         path: 'notice',
                         name: 'notice',
                         component: Notice,
@@ -75,7 +80,8 @@ const routes = [{
             {
                 path: 'trade',
                 name: 'trade',
-                children: [{
+                children: [
+                    {
                         path: 'shopping-orders',
                         name: 'shopping-orders',
                         component: ShoppingOrders,
@@ -95,7 +101,8 @@ const routes = [{
             {
                 path: 'tasks',
                 name: 'tasks',
-                children: [{
+                children: [
+                    {
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
@@ -146,6 +153,27 @@ const routes = [{
                         path: 'inquiry',
                         name: 'sinquiry',
                         component: Sinquiry,
+                    },
+                ],
+            },
+            {
+                path: 'sales',
+                name: 'sales',
+                children: [
+                    {
+                        path: 'performance',
+                        name: 'performance',
+                        component: Performance,
+                    },
+                    {
+                        path: 'top-sales',
+                        name: 'top-sales',
+                        component: TopSales,
+                    },
+                    {
+                        path: 'profit-check',
+                        name: 'profit-check',
+                        component: ProfitCheck,
                     },
                 ],
             },
