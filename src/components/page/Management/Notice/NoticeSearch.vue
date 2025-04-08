@@ -1,7 +1,7 @@
 <!-- setup을 적어야 Composition API를 사용할 수 있다.  -->
 <script setup>
 import router from '@/router';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();

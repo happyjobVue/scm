@@ -17,10 +17,10 @@ import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
+import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 
 
-const routes = [
-    {
+const routes = [{
         path: '/',
         name: 'login',
         component: Login,
@@ -29,12 +29,10 @@ const routes = [
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [
-            {
+        children: [{
                 path: 'management',
                 name: 'management',
-                children: [
-                    {
+                children: [{
                         path: 'notice',
                         name: 'notice',
                         component: Notice,
@@ -69,8 +67,7 @@ const routes = [
             {
                 path: 'trade',
                 name: 'trade',
-                children: [
-                    {
+                children: [{
                         path: 'shopping-orders',
                         name: 'shopping-orders',
                         component: ShoppingOrders,
@@ -90,8 +87,7 @@ const routes = [
             {
                 path: 'tasks',
                 name: 'tasks',
-                children: [
-                    {
+                children: [{
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
@@ -116,8 +112,7 @@ const routes = [
             {
                 path: 'delivery',
                 name: 'delivery',
-                children: [
-                    {
+                children: [{
 
                         path: 'shopping-list',
                         name: 'shopping-list',
@@ -127,6 +122,11 @@ const routes = [
                         path: 'shopping-return-list',
                         name: 'delivery-shopping-return-list',
                         component: DeliveryShoppingReturnList,
+                    },
+                    {
+                        path: 'orders-list',
+                        name: 'delivery-orders-list',
+                        component: DeliveryOrdersList,
                     },
                 ],
             },
