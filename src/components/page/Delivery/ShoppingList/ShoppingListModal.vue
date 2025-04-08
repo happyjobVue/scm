@@ -51,7 +51,6 @@ const updateDeliveryState = () => {
 
 onMounted(() => {
     id && searchDetail();
-    console.log(state);
 });
 
 onUnmounted(() => {
