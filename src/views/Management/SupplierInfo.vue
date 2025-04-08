@@ -1,7 +1,9 @@
 <template>
-    <ContextBox>납품업체정보</ContextBox>
-    <SupplierInfoSearch />
-    <SupplierInfoMain />
+    <div>
+        <ContextBox>납품업체정보</ContextBox>
+        <SupplierInfoSearch />
+        <SupplierInfoMain />
+    </div>
 </template>
 
 <script setup>

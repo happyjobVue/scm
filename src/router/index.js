@@ -19,6 +19,10 @@ import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
+import Performance from '../views/Sales/Performance.vue';
+import TopSales from '../views/Sales/TopSales.vue';
+import ProfitCheck from '../views/Sales/ProfitCheck.vue';
+import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 import Products from '../views/Mall/Products.vue';
 
@@ -135,6 +139,11 @@ const routes = [
                         name: 'delivery-shopping-return-list',
                         component: DeliveryShoppingReturnList,
                     },
+                    {
+                        path: 'orders-list',
+                        name: 'delivery-orders-list',
+                        component: DeliveryOrdersList,
+                    },
                 ],
             },
             {
@@ -145,6 +154,27 @@ const routes = [
                         path: 'inquiry',
                         name: 'sinquiry',
                         component: Sinquiry,
+                    },
+                ],
+            },
+            {
+                path: 'sales',
+                name: 'sales',
+                children: [
+                    {
+                        path: 'performance',
+                        name: 'performance',
+                        component: Performance,
+                    },
+                    {
+                        path: 'top-sales',
+                        name: 'top-sales',
+                        component: TopSales,
+                    },
+                    {
+                        path: 'profit-check',
+                        name: 'profit-check',
+                        component: ProfitCheck,
                     },
                 ],
             },

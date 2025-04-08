@@ -202,4 +202,20 @@ img {
         transform: translateY(2px);
     }
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #f4f4f4;
+    text-align: center;
+}
 </style>

@@ -192,39 +192,29 @@ onUnmounted(() => {
 <template>
     <Teleport to="body">
         <div class="backdrop">
-            <div class="container">
-                <div>
+            <div class="container" :class="{ small_table: id === 0 }">
+                <div style="width: 100%">
                     <h3 style="text-align: center">납품 업체 등록</h3>
                     <table>
                         <colgroup>
-                            <col width="20%" />
-                            <col width="30%" />
-                            <col width="20%" />
-                            <col width="30%" />
+                            <col width="25%" />
+                            <col width="25%" />
+                            <col width="25%" />
+                            <col width="25%" />
                         </colgroup>
                         <tbody>
                             <tr v-if="id !== 0">
                                 <th>작성자</th>
                                 <td>
-                                    <input
-                                        type="text"
-                                        class="small_input"
-                                        readonly
-                                        v-model="supplyDetail.author"
-                                    />
+                                    {{ supplyDetail.author }}
                                 </td>
                                 <th>작성일</th>
                                 <td>
-                                    <input
-                                        type="text"
-                                        class="small_input"
-                                        readonly
-                                        v-model="supplyDetail.createdDate"
-                                    />
+                                    {{ supplyDetail.createdDate.substr(0, 10) }}
                                 </td>
                             </tr>
                             <tr>
-                                <th>아이디</th>
+                                <th>아이디<span class="font_red">*</span></th>
                                 <td colspan="2" v-if="id === 0">
                                     <input
                                         type="text"
@@ -240,18 +230,16 @@ onUnmounted(() => {
                                         readonly
                                     />
                                 </td>
-                                <td>
-                                    <button
-                                        class="Abutton"
-                                        v-if="id === 0"
-                                        @click="checkId"
-                                    >
+                                <td v-if="id === 0">
+                                    <button class="Abutton" @click="checkId">
                                         중복확인
                                     </button>
                                 </td>
                             </tr>
                             <tr>
-                                <th>납품업체명</th>
+                                <th>
+                                    납품업체명<span class="font_red">*</span>
+                                </th>
                                 <td colspan="3">
                                     <input
                                         type="text"
@@ -260,7 +248,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>담당자명</th>
+                                <th>담당자명<span class="font_red">*</span></th>
                                 <td colspan="3">
                                     <input
                                         type="text"
@@ -269,7 +257,9 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>담당자 연락처</th>
+                                <th>
+                                    담당자 연락처<span class="font_red">*</span>
+                                </th>
                                 <td colspan="3">
                                     <input
                                         type="text"
@@ -279,7 +269,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>우편번호</th>
+                                <th>우편번호<span class="font_red">*</span></th>
                                 <td colspan="2">
                                     <input
                                         type="text"
@@ -298,7 +288,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>주소</th>
+                                <th>주소<span class="font_red">*</span></th>
                                 <td colspan="3">
                                     <input
                                         type="text"
@@ -308,7 +298,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>상세주소</th>
+                                <th>상세주소<span class="font_red">*</span></th>
                                 <td colspan="3">
                                     <input
                                         type="text"
@@ -317,7 +307,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>패스워드</th>
+                                <th>패스워드<span class="font_red">*</span></th>
                                 <td colspan="3">
                                     <input
                                         type="password"
@@ -326,7 +316,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>거래상태</th>
+                                <th>거래상태<span class="font_red">*</span></th>
                                 <td colspan="3">
                                     <div style="display: flex">
                                         <label>
@@ -457,11 +447,6 @@ select {
 .Abutton {
     width: 120px;
     text-align: center;
-    margin-left: 20px;
-}
-
-table {
-    width: 550px;
 }
 
 .big_input {
@@ -472,6 +457,7 @@ table {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 
 .container {
@@ -480,8 +466,8 @@ table {
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     position: relative;
-    width: 600px;
-    height: 600px;
+    width: 630px;
+    height: 750px;
     display: flex;
     justify-content: center;
 }
@@ -539,5 +525,27 @@ img {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #f4f4f4;
+    text-align: center;
+}
+.small_table {
+    height: 680px;
+}
+.font_red {
+    color: #fe1414;
 }
 </style>

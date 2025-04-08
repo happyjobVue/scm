@@ -103,7 +103,7 @@ watch(() => route.query, searchList);
         :supplyId="supplyId"
         :warehouseId="warehouseId"
         @modalClose="inventoryId=$event"
-        @onPostSuccess="onPostSuccess"
+        @postSuccess="onPostSuccess"
     />
   </div>
 </template>
