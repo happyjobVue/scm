@@ -21,10 +21,8 @@ const searchList = () => {
         , currentPage : cPage.value
         , pageSize: 5
     });
-    console.log('param ', param)
     axios.post('/api/management/warehouseInfoListBody.do', param).then(res => {
         warehouseInfoList.value = res.data;
-        console.log(warehouseInfoList.value);
     });
 }
 

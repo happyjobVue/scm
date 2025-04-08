@@ -8,9 +8,7 @@ const modalState = useModalStore();
 const emit = defineEmits(['postSuccess', 'modalClose'])
 const { id } = defineProps(['id']); 
 
-const warehouseInfoDetail = ref({
-
-});
+const warehouseInfoDetail = ref({});
 
 const searchDetail = () => {
     if(id == 0) return
@@ -70,7 +68,7 @@ const handlerSave = () => {
 
     axios.post('/api/management/warehouseInfoSave.do', param).then(res => {
         if(res.data.result != "success") return alert('창고 정보 저장에 실패하였습니다.');
-
+        console.log('')
         alert('창고 정보 저장에 성공하였습니다.');
         emit('postSuccess');
         modalState.setModalState();
@@ -230,7 +228,7 @@ onUnmounted(() => {
                 
                 <div class="button-box">
                     <button
-                    @click="id ? handlerUpdate : handlerSave"
+                    @click="id ? handlerUpdate() : handlerSave()"
                     >
                         {{ id ? '수정' : '저장' }}
                     </button>
