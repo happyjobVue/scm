@@ -69,5 +69,8 @@ declare module 'vue' {
     UserInfoMain: typeof import('./src/components/page/Management/UserInfo/UserInfoMain.vue')['default']
     UserInfoModal: typeof import('./src/components/page/Management/UserInfo/UserInfoModal.vue')['default']
     UserInfoSearch: typeof import('./src/components/page/Management/UserInfo/UserInfoSearch.vue')['default']
+    WarehouseInfoMain: typeof import('./src/components/page/Management/WarehouseInfo/WarehouseInfoMain.vue')['default']
+    WarehouseInfoModal: typeof import('./src/components/page/Management/WarehouseInfo/WarehouseInfoModal.vue')['default']
+    WarehouseInfoSearch: typeof import('./src/components/page/Management/WarehouseInfo/WarehouseInfoSearch.vue')['default']
   }
 }

@@ -19,6 +19,7 @@ import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
+import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 
 const routes = [
     {
@@ -64,6 +65,11 @@ const routes = [
                         path: 'product-info',
                         name: 'product-info',
                         component: ProductInfo,
+                    },
+                    {
+                        path: 'warehouse-info',
+                        name: 'warehouse-info',
+                        component: WarehouseInfo,
                     },
                 ],
             },
