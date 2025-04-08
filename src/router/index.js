@@ -12,10 +12,15 @@ import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
+import Sinquiry from '../views/Support/Sinquiry.vue';
+
+import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
+import ProductInfo from '../views/Management/ProductInfo.vue';
+import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 
 const routes = [
     {
@@ -57,6 +62,16 @@ const routes = [
                         name: 'common-code',
                         component: CommonCode,
                     },
+                    {
+                        path: 'product-info',
+                        name: 'product-info',
+                        component: ProductInfo,
+                    },
+                    {
+                        path: 'warehouse-info',
+                        name: 'warehouse-info',
+                        component: WarehouseInfo,
+                    },
                 ],
             },
             {
@@ -70,7 +85,7 @@ const routes = [
                     },
                     {
                         path: 'shopping-return-list',
-                        name: 'shopping-return-list',
+                        name: 'trade-shopping-return-list',
                         component: ShoppingReturnList,
                     },
                     {
@@ -119,6 +134,22 @@ const routes = [
                         path: 'shopping-list',
                         name: 'shopping-list',
                         component: ShoppingList,
+                    },
+                    {
+                        path: 'shopping-return-list',
+                        name: 'delivery-shopping-return-list',
+                        component: DeliveryShoppingReturnList,
+                    },
+                ],
+            },
+            {
+                path: 'support',
+                name: 'support',
+                children: [
+                    {
+                        path: 'inquiry',
+                        name: 'sinquiry',
+                        component: Sinquiry,
                     },
                 ],
             },

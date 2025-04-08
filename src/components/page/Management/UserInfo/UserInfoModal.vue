@@ -43,7 +43,6 @@ const searchDetail = () => {
                 ...res.data.detailValue,
                 password2: res.data.detailValue.password,
             };
-            console.log(res.data.detailValue);
         });
 };
 
@@ -183,7 +182,6 @@ const checkId = () => {
             loginID: userInfoDetail.value.loginID,
         })
         .then(res => {
-            console.log(res.data);
             if (res.data.duplicCnt === 0) {
                 alert('사용가능한 ID 입니다.');
                 idCheck.value = true;
@@ -246,7 +244,6 @@ const regiserInfo = () => {
     }
     userInfoDetail.value.action = 'I';
     axios.put('/api/registerScmBody2.do', userInfoDetail.value).then(res => {
-        console.log(res.data);
         if (res.data.result === 'SUCCESS') {
             alert('가입 성공!');
             emit('postSuccess');
@@ -278,7 +275,6 @@ const restoreInfo = () => {
         });
 };
 const emailChage = email => {
-    console.log(email);
     userInfoDetail.value.email = email;
     modalState2.modalState2 = !modalState2.modalState2;
 };
@@ -287,7 +283,6 @@ watch(() => userInfoDetail.value.userType, handleUserType);
 
 onMounted(() => {
     id && searchDetail();
-    console.log('check');
 });
 onUnmounted(() => {
     emit('modalClose', 0);
@@ -525,9 +520,7 @@ onUnmounted(() => {
                             복구
                         </button>
                         <button
-                            @click="
-                                modalState.modalState = !modalState.modalState
-                            "
+                            @click="modalState.setModalState()"
                             class="button"
                         >
                             닫기
