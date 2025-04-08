@@ -20,6 +20,7 @@ import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
+import Products from '../views/Mall/Products.vue';
 
 const routes = [
     {
@@ -144,6 +145,17 @@ const routes = [
                         path: 'inquiry',
                         name: 'sinquiry',
                         component: Sinquiry,
+                    },
+                ],
+            },
+            {
+                path: 'mall',
+                name: 'mall',
+                children: [
+                    {
+                        path: 'products',
+                        name: 'products',
+                        component: Products,
                     },
                 ],
             },
