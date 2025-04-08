@@ -71,7 +71,6 @@ const searchDetailList = id => {
     });
     axios.post('/api/management/supplierDetailBody.do', param).then(res => {
         supplierDetail.value = res.data;
-        console.log(supplierDetail.value);
     });
 };
 
