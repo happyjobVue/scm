@@ -297,7 +297,7 @@ onUnmounted(() => {
         />
         <div class="backdrop">
             <div class="container">
-                <div>
+                <div style="width: 100%">
                     <h2 style="text-align: center">기업고객 / 직원정보 관리</h2>
                     <table>
                         <colgroup>
@@ -307,7 +307,7 @@ onUnmounted(() => {
                             <col width="30%" />
                         </colgroup>
                         <tr>
-                            <th>직원 유형</th>
+                            <th>직원 유형<span class="font_red">*</span></th>
                             <td>
                                 <select v-model="userInfoDetail.userType">
                                     <option value="N">선택</option>
@@ -318,7 +318,7 @@ onUnmounted(() => {
                                     <option value="C">기업 고객</option>
                                 </select>
                             </td>
-                            <th>담당업무</th>
+                            <th>담당업무<span class="font_red">*</span></th>
                             <td>
                                 <select v-model="userInfoDetail.detailCode">
                                     <option value="N">선택</option>
@@ -337,7 +337,7 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>아이디</th>
+                            <th>아이디<span class="font_red">*</span></th>
                             <td>
                                 <input
                                     type="text"
@@ -351,21 +351,18 @@ onUnmounted(() => {
                                     v-model="userInfoDetail.loginID"
                                     v-bind:readonly="id !== 0"
                                     placeholder="숫자, 영문자 조합 6~20자리"
-                                    style="width: 230px"
+                                    style="width: 210px"
                                     v-if="id !== 0"
                                 />
                                 <button
-                                    style="
-                                        margin-left: 10px;
-                                        margin-right: -10px;
-                                    "
+                                    style="margin-left: 5px; margin-right: 0px"
                                     v-if="id === 0"
                                     @click="checkId"
                                 >
-                                    중복확인
+                                    중복체크
                                 </button>
                             </td>
-                            <th>비밀번호</th>
+                            <th>비밀번호<span class="font_red">*</span></th>
                             <td>
                                 <input
                                     type="password"
@@ -375,14 +372,16 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>이름/회사명</th>
+                            <th>이름/회사명<span class="font_red">*</span></th>
                             <td>
                                 <input
                                     type="text"
                                     v-model="userInfoDetail.name"
                                 />
                             </td>
-                            <th>비밀번호 확인</th>
+                            <th>
+                                비밀번호 확인<span class="font_red">*</span>
+                            </th>
                             <td>
                                 <input
                                     type="password"
@@ -400,7 +399,7 @@ onUnmounted(() => {
                                     v-bind:readonly="id !== 0"
                                 />
                             </td>
-                            <th>전화번호</th>
+                            <th>전화번호<span class="font_red">*</span></th>
                             <td>
                                 <input
                                     type="text"
@@ -409,7 +408,7 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>성별</th>
+                            <th>성별<span class="font_red">*</span></th>
                             <td>
                                 <select v-model="userInfoDetail.sex">
                                     <option value="N">선택</option>
@@ -417,7 +416,7 @@ onUnmounted(() => {
                                     <option value="2">여자</option>
                                 </select>
                             </td>
-                            <th>생년월일</th>
+                            <th>생년월일<span class="font_red">*</span></th>
                             <td>
                                 <input
                                     type="date"
@@ -426,7 +425,7 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>이메일</th>
+                            <th>이메일<span class="font_red">*</span></th>
                             <td colspan="3">
                                 <input
                                     type="text"
@@ -455,7 +454,7 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>우편번호</th>
+                            <th>우편번호<span class="font_red">*</span></th>
                             <td colspan="3">
                                 <input
                                     type="text"
@@ -469,13 +468,15 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="1">주소</th>
+                            <th colspan="1">
+                                주소<span class="font_red">*</span>
+                            </th>
                             <td colspan="3">
                                 <input
                                     type="text"
                                     v-model="userInfoDetail.address"
                                     readonly
-                                    class="big_input"
+                                    class="large_input"
                                 />
                             </td>
                         </tr>
@@ -485,7 +486,7 @@ onUnmounted(() => {
                                 <input
                                     type="text"
                                     v-model="userInfoDetail.detailAddress"
-                                    class="big_input"
+                                    class="large_input"
                                 />
                             </td>
                         </tr>
@@ -565,7 +566,7 @@ input {
     margin-bottom: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    width: 230px;
+    width: 210px;
 }
 select {
     padding: 8px;
@@ -573,7 +574,7 @@ select {
     margin-bottom: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    width: 250px;
+    width: 230px;
 }
 
 .Abutton {
@@ -582,18 +583,18 @@ select {
     margin-left: 20px;
 }
 
-table {
-    width: 750px;
-}
-
 .big_input {
     width: 450px;
+}
+.large_input {
+    width: 590px;
 }
 
 .button_area {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 
 .container {
@@ -602,8 +603,8 @@ table {
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     position: relative;
-    width: 850px;
-    height: 600px;
+    width: 820px;
+    height: 720px;
     display: flex;
     justify-content: center;
 }
@@ -661,5 +662,24 @@ img {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #f4f4f4;
+    text-align: center;
+}
+.font_red {
+    color: #fe1414;
 }
 </style>

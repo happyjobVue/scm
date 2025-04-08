@@ -189,7 +189,7 @@ onUnmounted(() => {
                             <td>{{ inquiryDetail.createdDate }}</td>
                         </tr>
                         <tr>
-                            <th>카테고리</th>
+                            <th>카테고리<span class="font_red">*</span></th>
                             <td colspan="3">
                                 <select v-model="inquiryDetail.category">
                                     <option
@@ -203,7 +203,7 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>제목</th>
+                            <th>제목<span class="font_red">*</span></th>
                             <td colspan="3">
                                 <input
                                     type="text"
@@ -213,7 +213,7 @@ onUnmounted(() => {
                             </td>
                         </tr>
                         <tr>
-                            <th>내용</th>
+                            <th>내용<span class="font_red">*</span></th>
                             <td colspan="3">
                                 <textarea
                                     rows="5"
@@ -234,7 +234,14 @@ onUnmounted(() => {
                         </tr>
                         <tr>
                             <th>파일</th>
-                            <td colspan="2">
+                            <td
+                                :colspan="
+                                    fileDetail.fileName &&
+                                    inquiryDetail.ansState === 'N'
+                                        ? 2
+                                        : 3
+                                "
+                            >
                                 <template v-if="fileDetail.fileName">
                                     {{ fileDetail.fileName }}
                                 </template>
@@ -256,15 +263,13 @@ onUnmounted(() => {
                                 </template>
                                 <template v-else>파일이 없습니다.</template>
                             </td>
-                            <td>
-                                <template v-if="fileDetail.fileName">
-                                    <button
-                                        @click="fileRemove"
-                                        v-if="inquiryDetail.ansState === 'N'"
-                                    >
-                                        파일삭제
-                                    </button>
-                                </template>
+                            <td
+                                v-if="
+                                    fileDetail.fileName &&
+                                    inquiryDetail.ansState === 'N'
+                                "
+                            >
+                                <button @click="fileRemove">파일삭제</button>
                             </td>
                         </tr>
                         <tr>
@@ -408,6 +413,7 @@ button {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 
 textarea {
@@ -424,5 +430,24 @@ select {
 }
 .long_input {
     width: 332px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #f4f4f4;
+    text-align: center;
+}
+.font_red {
+    color: #fe1414;
 }
 </style>

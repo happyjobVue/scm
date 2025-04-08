@@ -1,7 +1,9 @@
 <template>
-    <ContextBox>문의내역</ContextBox>
-    <InquirySearch />
-    <InquiryMain />
+    <div>
+        <ContextBox>문의내역</ContextBox>
+        <InquirySearch />
+        <InquiryMain />
+    </div>
 </template>
 
 <script setup>
