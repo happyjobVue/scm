@@ -19,7 +19,7 @@ const searchDetail = () => {
     axios.post('/api/trade/inventoryDetailBody.do', param).then(res => {
         inventoryDetail.value = res.data.detailValue;
     });
-}
+};
 
 onMounted(() => {
     inventoryId && productId && supplyId && warehouseId && searchDetail();
@@ -45,15 +45,18 @@ onUnmounted(() => {
             <col width="10%" />
         </colgroup>
         <thead>
-            <th scope="col">제품명</th>
-            <th scope="col">제조사명</th>
-            <th scope="col">창고명</th>
-            <th scope="col">창고코드</th>
-            <th scope="col">창고위치</th>
-            <th scope="col">담당자</th>
-            <th scope="col" style="color: blue; font-weight: bold;">입고량</th>
-            <th scope="col" style="color: red; font-weight: bold;">출고량</th>
-            <th scope="col">결과수량</th>
+            <tr>
+                <th scope="col">제품명</th>
+                <th scope="col">제조사명</th>
+                <th scope="col">창고명</th>
+                <th scope="col">창고코드</th>
+                <th scope="col">창고위치</th>
+                <th scope="col">담당자</th>
+                <th scope="col" style="color: blue; font-weight: bold;">입고량</th>
+                <th scope="col" style="color: red; font-weight: bold;">출고량</th>
+                <th scope="col">결과수량</th>
+            </tr>
+            
         </thead>
         <tbody>
             <tr

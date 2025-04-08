@@ -30,6 +30,7 @@ declare module 'vue' {
     NoticeSearch: typeof import('./src/components/page/Management/Notice/NoticeSearch.vue')['default']
     OrdersListMain: typeof import('./src/components/page/Tasks/OrdersList/OrdersListMain.vue')['default']
     OrdersListSearch: typeof import('./src/components/page/Tasks/OrdersList/OrdersListSearch.vue')['default']
+    OrdersListSubgrid: typeof import('./src/components/page/Delivery/OrdersList/OrdersListSubgrid.vue')['default']
     OrdersMain: typeof import('./src/components/page/Tasks/Orders/OrdersMain.vue')['default']
     OrdersModal: typeof import('./src/components/page/Tasks/Orders/OrdersModal.vue')['default']
     OrdersSearch: typeof import('./src/components/page/Tasks/Orders/OrdersSearch.vue')['default']
@@ -72,5 +73,8 @@ declare module 'vue' {
     UserInfoMain: typeof import('./src/components/page/Management/UserInfo/UserInfoMain.vue')['default']
     UserInfoModal: typeof import('./src/components/page/Management/UserInfo/UserInfoModal.vue')['default']
     UserInfoSearch: typeof import('./src/components/page/Management/UserInfo/UserInfoSearch.vue')['default']
+    WarehouseInfoMain: typeof import('./src/components/page/Management/WarehouseInfo/WarehouseInfoMain.vue')['default']
+    WarehouseInfoModal: typeof import('./src/components/page/Management/WarehouseInfo/WarehouseInfoModal.vue')['default']
+    WarehouseInfoSearch: typeof import('./src/components/page/Management/WarehouseInfo/WarehouseInfoSearch.vue')['default']
   }
 }

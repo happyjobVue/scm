@@ -22,6 +22,8 @@ import ProductInfo from '../views/Management/ProductInfo.vue';
 import Performance from '../views/Sales/Performance.vue';
 import TopSales from '../views/Sales/TopSales.vue';
 import ProfitCheck from '../views/Sales/ProfitCheck.vue';
+import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
+import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 
 const routes = [
     {
@@ -67,6 +69,11 @@ const routes = [
                         path: 'product-info',
                         name: 'product-info',
                         component: ProductInfo,
+                    },
+                    {
+                        path: 'warehouse-info',
+                        name: 'warehouse-info',
+                        component: WarehouseInfo,
                     },
                 ],
             },
@@ -130,6 +137,11 @@ const routes = [
                         path: 'shopping-return-list',
                         name: 'delivery-shopping-return-list',
                         component: DeliveryShoppingReturnList,
+                    },
+                    {
+                        path: 'orders-list',
+                        name: 'delivery-orders-list',
+                        component: DeliveryOrdersList,
                     },
                 ],
             },
