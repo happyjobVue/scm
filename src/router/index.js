@@ -24,6 +24,7 @@ import TopSales from '../views/Sales/TopSales.vue';
 import ProfitCheck from '../views/Sales/ProfitCheck.vue';
 import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
+import Products from '../views/Mall/Products.vue';
 
 const routes = [
     {
@@ -174,6 +175,17 @@ const routes = [
                         path: 'profit-check',
                         name: 'profit-check',
                         component: ProfitCheck,
+                    },
+                ],
+            },
+            {
+                path: 'mall',
+                name: 'mall',
+                children: [
+                    {
+                        path: 'products',
+                        name: 'products',
+                        component: Products,
                     },
                 ],
             },
