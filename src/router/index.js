@@ -19,6 +19,9 @@ import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
+import Performance from '../views/Sales/Performance.vue';
+import TopSales from '../views/Sales/TopSales.vue';
+import ProfitCheck from '../views/Sales/ProfitCheck.vue';
 
 const routes = [
     {

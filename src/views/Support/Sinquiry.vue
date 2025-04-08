@@ -4,7 +4,9 @@ import SinquiryMain from '../../components/page/Support/Sinquiry/SinquiryMain.vu
 import SinquirySearch from '../../components/page/Support/Sinquiry/SinquirySearch.vue';
 </script>
 <template>
-    <ContextBox>문의내역</ContextBox>
-    <SinquirySearch />
-    <SinquiryMain />
+    <div>
+        <ContextBox>문의내역</ContextBox>
+        <SinquirySearch />
+        <SinquiryMain />
+    </div>
 </template>

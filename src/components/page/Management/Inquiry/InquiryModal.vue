@@ -316,6 +316,7 @@ button {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 
 textarea {
@@ -332,5 +333,21 @@ select {
 }
 .long_input {
     width: 332px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #f4f4f4;
+    text-align: center;
 }
 </style>
