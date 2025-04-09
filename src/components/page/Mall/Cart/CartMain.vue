@@ -1,19 +1,73 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
+import { useCartStore } from '../../../../stores/cartState';
 
+
+
+const cartState = useCartStore();
 
 const cartList = ref({});
+const detailId = ref(0);
+const today = new Date().toISOString().slice(0, 10);
 
-const searchList = () => {
-    axios.post('/api/mall/cartDetailList.do',{}).then(res => {
-        console.log(res.data)
-        cartList.value = res.data;
+const searchList = async () => {
+    const res = await axios.post('/api/mall/cartDetailList.do', {});
+    const formatCartList = res.data.cartDetailWithImage;
+
+    for (const item of formatCartList) {
+        item.imageUrl = await getImageURL(item.image.filePath);
+
+        const rawDate = item.cartDetail.requestedDeliveryDate;
+        if (rawDate) {
+            item.cartDetail.requestedDeliveryDate = rawDate.slice(0, 10);
+        }
+        item.isSelect = false
+    }
+    cartList.value = {
+        ...res.data,
+        cartDetailWithImage: formatCartList,
+    };
+    
+    /* cartState.cartList = cartList.value */
+    cartState.setCartList(cartList.value);
+
+};
+
+const getImageURL = async (filePath) => {
+    const basePath = "V:\\FileRepository";
+    const fileName = filePath.slice(basePath.length);
+
+    const res = await axios.get('/api/image/showImg.do', {
+        params: { fileName },
+        responseType: 'arraybuffer'
+    });
+
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    return url;
+};
+
+
+
+
+const handlerDelete = (id) => {
+    detailId.value = id;
+    axios.post('/api/mall/cartDetailDeleteBody.do',{cartdetailId: detailId.value}).then(res => {
+        if(res.data.result != 'success') return alert('장바구니 삭제에 실패하였습니다.');
+        alert('장바구니 삭제에 성공하였습니다.');
+        searchList();
     })
 }
 
 onMounted(() => {
     searchList();
+})
+
+watch(() => cartState.triggerRefresh, (val) => {
+  if (val) {
+    searchList();
+    cartState.triggerRefresh = false ;
+  }
 })
 
 </script>
@@ -54,11 +108,16 @@ onMounted(() => {
                             :key="cart.cartDetail.cartdetailId"
                             >
                                 <td>
-                                    <input type="checkbox">
+                                    <input 
+                                    type="checkbox"
+                                    v-model="cart.isSelect"
+                                    >
                                 </td>
-                                <td></td>
+                                <td>
+                                    <img :src="cart.imageUrl" class="product-image">
+                                </td>
                                 <td>{{ cart.cartDetail.name }}</td>
-                                <td>{{ cart.cartDetail.price }}</td>
+                                <td>{{ cart.cartDetail.price.toLocaleString() }}</td>
                                 <td>
                                     <input type="number"
                                     v-model="cart.cartDetail.count"
@@ -66,13 +125,19 @@ onMounted(() => {
                                     style="width: 36px;"
                                     >
                                 </td>
-                                <td>{{ cart.cartDetail.price*cart.cartDetail.count }}</td>
+                                <td>{{ (cart.cartDetail.price*cart.cartDetail.count).toLocaleString() }}</td>
                                 <td>
                                     <input type="date"
                                             v-model="cart.cartDetail.requestedDeliveryDate"
+                                            :min="today"
 										    />
                                 </td>
-                                <td><button>삭제</button></td>
+                                <td>
+                                    <button
+                                    @click="handlerDelete(cart.cartDetail.cartdetailId)">
+                                        삭제
+                                    </button>
+                                </td>
                             </tr>
                         </template>
                         <template v-else>
@@ -86,16 +151,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.td-hover {
-    cursor: pointer;
-    transition: color 0.3s ease;
-    font-weight: bold;
-}
-.td-hover:hover {
-  text-decoration: underline;
-  color: #fe1414;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -148,5 +203,13 @@ button {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
+}
+
+.product-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    background: white;
 }
 </style>
