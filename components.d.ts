@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CartMain: typeof import('./src/components/page/Mall/Cart/CartMain.vue')['default']
+    CartSummary: typeof import('./src/components/page/Mall/Cart/CartSummary.vue')['default']
     CommonCodeMain: typeof import('./src/components/page/Management/CommonCode/CommonCodeMain.vue')['default']
     CommonCodeModal: typeof import('./src/components/page/Management/CommonCode/CommonCodeModal.vue')['default']
     CommonCodeSearch: typeof import('./src/components/page/Management/CommonCode/CommonCodeSearch.vue')['default']
