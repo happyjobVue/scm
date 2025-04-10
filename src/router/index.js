@@ -18,7 +18,7 @@ import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import TasksOrdersList from '../views/Tasks/TasksOrdersList.vue';
-import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
+import TasksOrdersReturnList from '../views/Tasks/TasksOrdersReturnList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
 import Performance from '../views/Sales/Performance.vue';
 import TopSales from '../views/Sales/TopSales.vue';
@@ -130,7 +130,7 @@ const routes = [
                     {
                         path: 'orders-return-list',
                         name: 'orders-return-list',
-                        component: OrdersReturnList,
+                        component: TasksOrdersReturnList,
                     },
                 ],
             },
