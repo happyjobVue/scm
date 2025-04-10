@@ -2,12 +2,10 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useModalStore } from '../../../../stores/modalState';
 import Pagination from '../../../common/Pagination.vue';
 import OrdersListSubgrid from './OrdersListSubgrid.vue';
 
 const route = useRoute();
-const modalState = useModalStore();
 const modalType = ref('');
 
 const ordersList = ref();
@@ -27,14 +25,17 @@ const searchList = () => {
 };
 
 const handlerSubgrid = (id, date) => {
-  supplyId.value = id;
-  orderDirectionDate.value = date;
-  modalType.value = 'ordersListDetail';
-  modalState.setModalState();
+  if(supplyId.value + orderDirectionDate.value === id + date) {
+      modalType.value = '';
+      supplyId.value = undefined;
+      orderDirectionDate.value = undefined;
+  } else {
+      supplyId.value = id;
+      orderDirectionDate.value = date;
+  }
 };
 
 const onPostSuccess = ()=> {
-    modalState.setModalState(false);
     modalType.value = '';
     searchList();
 };
@@ -44,6 +45,12 @@ onMounted(() => {
 });
 
 watch(() => route.query, searchList);
+
+watch(supplyId, (newVal) => {
+    if (newVal) {
+        modalType.value = 'ordersListDetail';
+    }
+});
 </script>
 
 <template>
@@ -93,10 +100,11 @@ watch(() => route.query, searchList);
       v-model="cPage"
     />
     <OrdersListSubgrid 
-      v-if="modalState.modalState && modalType === 'ordersListDetail'"
+      v-if="modalType === 'ordersListDetail'"
       :id="supplyId"
       :date="orderDirectionDate"
-      @modalClose="supplyId=$event"
+      :key="supplyId + '_' + orderDirectionDate"
+      @modalClose="modalType=$event"
       @postSuccess="onPostSuccess"
     />
   </div>
