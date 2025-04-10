@@ -13,9 +13,7 @@ const refundCount = ref(0);
 const isChecked = ref(false);
 
 const searchDetail = () => {
-    console.log('orderId.value ', orderId.value)
     axios.post('/api/mall/historyDetailBody.do', {orderId: orderId.value}).then(res => {
-        console.log('res.data ', res.data )
         historyDetail.value = res.data;
     });
 };

@@ -15,7 +15,6 @@ export const useHistoryStore = defineStore('history', () => {
         }
         detailState.value = true;
         orderId.value = id;
-        console.log('orderId.value in historystate ', orderId.value)
     }
 
     const mainRendering = () => {

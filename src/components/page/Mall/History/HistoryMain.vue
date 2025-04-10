@@ -17,7 +17,6 @@ const searchList = () => {
         , pageSize: 5
     };
     axios.post('/api/mall/historyListBody.do', param).then(res => {
-        console.log('res.data ', res.data);
         historyList.value = res.data;
     });
 }
