@@ -2,7 +2,6 @@
 import router from '@/router';
 import { onMounted } from 'vue';
 import { useModalStore } from '../../../../stores/modalStore';
-import SupplierInfoModal from './SupplierInfoModal.vue';
 
 const modalState = useModalStore();
 
@@ -25,14 +24,11 @@ onMounted(() => {
 </script>
 <template>
     <div class="search-box">
-        <SupplierInfoModal v-if="modalState.modalState" />
-        <!-- v-model을 이용하여 양방향 바인딩을 쉽게 할 수 있다. -->
         <select v-model="groupCodeSelect">
             <option value="searchSupplier">납품업체명</option>
             <option value="searchProduct">제품명</option>
         </select>
         <input v-model.lazy="searchTitle" />
-        <!-- v-on:click="" 또는 @click=""으로 이벤트를 설정한다. -->
         <button @click="handlerSearch">검색</button>
         <button @click="modalState.modalState = !modalState.modalState">
             등록

@@ -18,12 +18,20 @@ import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
+import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
+import Performance from '../views/Sales/Performance.vue';
+import TopSales from '../views/Sales/TopSales.vue';
+import ProfitCheck from '../views/Sales/ProfitCheck.vue';
 import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 import DeliveryOrdersReturnList from '../views/Delivery/DeliveryOrdersReturnList.vue';
+import Products from '../views/Mall/Products.vue';
+import Cart from '../views/Mall/Cart.vue';
+import ApprovalOrders from '../views/Approval/ApprovalOrders.vue'
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'login',
         component: Login,
@@ -32,10 +40,12 @@ const routes = [{
         path: '/vue',
         name: 'vue',
         component: DashBoard,
-        children: [{
+        children: [
+            {
                 path: 'management',
                 name: 'management',
-                children: [{
+                children: [
+                    {
                         path: 'notice',
                         name: 'notice',
                         component: Notice,
@@ -75,7 +85,8 @@ const routes = [{
             {
                 path: 'trade',
                 name: 'trade',
-                children: [{
+                children: [
+                    {
                         path: 'shopping-orders',
                         name: 'shopping-orders',
                         component: ShoppingOrders,
@@ -95,7 +106,8 @@ const routes = [{
             {
                 path: 'tasks',
                 name: 'tasks',
-                children: [{
+                children: [
+                    {
                         path: 'shopping',
                         name: 'shopping',
                         component: Shopping,
@@ -114,6 +126,11 @@ const routes = [{
                         path: 'orders-list',
                         name: 'orders-list',
                         component: OrdersList,
+                    },
+                    {
+                        path: 'orders-return-list',
+                        name: 'orders-return-list',
+                        component: OrdersReturnList,
                     },
                 ],
             },
@@ -150,6 +167,54 @@ const routes = [{
                     name: 'sinquiry',
                     component: Sinquiry,
                 }, ],
+            },
+            {
+                path: 'sales',
+                name: 'sales',
+                children: [
+                    {
+                        path: 'performance',
+                        name: 'performance',
+                        component: Performance,
+                    },
+                    {
+                        path: 'top-sales',
+                        name: 'top-sales',
+                        component: TopSales,
+                    },
+                    {
+                        path: 'profit-check',
+                        name: 'profit-check',
+                        component: ProfitCheck,
+                    },
+                ],
+            },
+            {
+                path: 'mall',
+                name: 'mall',
+                children: [
+                    {
+                        path: 'products',
+                        name: 'products',
+                        component: Products,
+                    },
+                    {
+                        path: 'cart',
+                        name: 'cart',
+                        component: Cart,
+                    },
+                ],
+            },
+            {
+                path: 'approval',
+                name: 'approval',
+                children: [
+                    {
+                        path: 'orders',
+                        name: 'orders',
+                        component: ApprovalOrders,
+                    },
+                ],
             },
         ],
     },
