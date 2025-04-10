@@ -25,6 +25,7 @@ import TopSales from '../views/Sales/TopSales.vue';
 import ProfitCheck from '../views/Sales/ProfitCheck.vue';
 import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
+import DeliveryOrdersReturnList from '../views/Delivery/DeliveryOrdersReturnList.vue';
 import Products from '../views/Mall/Products.vue';
 import Cart from '../views/Mall/Cart.vue';
 import ApprovalOrders from '../views/Approval/ApprovalOrders.vue'
@@ -136,8 +137,7 @@ const routes = [
             {
                 path: 'delivery',
                 name: 'delivery',
-                children: [
-                    {
+                children: [{
                         path: 'shopping-list',
                         name: 'shopping-list',
                         component: ShoppingList,
@@ -152,18 +152,21 @@ const routes = [
                         name: 'delivery-orders-list',
                         component: DeliveryOrdersList,
                     },
+                    {
+                        path: 'orders-return-list',
+                        name: 'orders-return-list',
+                        component: DeliveryOrdersReturnList,
+                    },
                 ],
             },
             {
                 path: 'support',
                 name: 'support',
-                children: [
-                    {
-                        path: 'inquiry',
-                        name: 'sinquiry',
-                        component: Sinquiry,
-                    },
-                ],
+                children: [{
+                    path: 'inquiry',
+                    name: 'sinquiry',
+                    component: Sinquiry,
+                }, ],
             },
             {
                 path: 'sales',

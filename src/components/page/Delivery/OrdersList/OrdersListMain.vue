@@ -23,16 +23,15 @@ const searchList = () => {
   }
   axios.post('/api/delivery/orderDirectionGroupListBody.do', param).then(res => {
     ordersList.value = res.data;
-    console.log(ordersList.value)
   });
 };
 
 const handlerSubgrid = (id, date) => {
   supplyId.value = id;
-  orderDirectionDate.value = date;;
+  orderDirectionDate.value = date;
   modalType.value = 'ordersListDetail';
   modalState.setModalState();
-}
+};
 
 const onPostSuccess = ()=> {
     modalState.setModalState(false);
