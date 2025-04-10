@@ -40,6 +40,8 @@ declare module 'vue' {
     OrdersReturnListMain: typeof import('./src/components/page/Delivery/OrdersReturnList/OrdersReturnListMain.vue')['default']
     OrdersReturnListSearch: typeof import('./src/components/page/Delivery/OrdersReturnList/OrdersReturnListSearch.vue')['default']
     OrdersReturnSubgrid: typeof import('./src/components/page/Delivery/OrdersReturnList/OrdersReturnSubgrid.vue')['default']
+    OrdersReturnListMain: typeof import('./src/components/page/Tasks/OrdersReturnList/OrdersReturnListMain.vue')['default']
+    OrdersReturnListSearch: typeof import('./src/components/page/Tasks/OrdersReturnList/OrdersReturnListSearch.vue')['default']
     OrdersSearch: typeof import('./src/components/page/Tasks/Orders/OrdersSearch.vue')['default']
     Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     PerformanceMain: typeof import('./src/components/page/Sales/Performance/PerformanceMain.vue')['default']
