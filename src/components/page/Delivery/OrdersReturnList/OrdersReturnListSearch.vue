@@ -24,15 +24,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-box">
+  <div class="search-box" >
     <select v-model="searchOption" @change="resetKeyword()">
         <option value="searchUser">업체명</option>
-        <option value="searchOrderDate">반품신청날짜</option>            
+        <option value="searchReturnDate">반품 처리일</option>            
     </select>
     <template v-if="searchOption === 'searchUser'">
       <input v-model.lazy="searchKeyword"/>
     </template>
-    <template v-else-if="searchOption === 'searchOrderDate'">
+    <template v-else-if="searchOption === 'searchReturnDate'">
       <input type="date" v-model.lazy="searchKeyword"/>
     </template>
     <button @click="handlerSearch()">검색</button>

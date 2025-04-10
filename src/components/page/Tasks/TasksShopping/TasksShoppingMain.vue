@@ -3,7 +3,7 @@ import axios from 'axios';
 import Pagination from '../../../common/Pagination.vue';
 import { onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ShoppingModal from './ShoppingModal.vue';
+import ShoppingModal from './TasksShoppingModal.vue';
 import { useModalStore } from '../../../../stores/modalState';
 
 const route = useRoute();
@@ -40,7 +40,7 @@ watch(() => route.params, searchDeliveryOrderList);
 </script>
 <template>
     <div class="divDeliveryOrderList">
-        <ShoppingModal v-if="modalState.modalState" :id="deliveryId" />
+        <TasksShoppingModal v-if="modalState.modalState" :id="deliveryId" />
         <table>
             <colgroup>
                 <col width="15%" />

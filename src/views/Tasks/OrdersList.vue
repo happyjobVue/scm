@@ -3,4 +3,7 @@
     <OrdersListSearch />
     <OrdersListMain />
 </template>
-<script setup></script>
+<script setup>
+import OrdersListSearch from '../../components/page/Tasks/OrdersList/OrdersListSearch.vue';
+import OrdersListMain from '../../components/page/Tasks/OrdersList/OrdersListMain.vue';
+</script>

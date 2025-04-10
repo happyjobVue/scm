@@ -7,7 +7,7 @@ import SupplierInfo from '../views/Management/SupplierInfo.vue';
 import Inquiry from '../views/Management/Inquiry.vue';
 
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
-import Shopping from '../views/Tasks/Shopping.vue';
+import TasksShopping from '../views/Tasks/TasksShopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
@@ -18,12 +18,17 @@ import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
 import OrdersList from '../views/Tasks/OrdersList.vue';
+import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
 import Performance from '../views/Sales/Performance.vue';
 import TopSales from '../views/Sales/TopSales.vue';
 import ProfitCheck from '../views/Sales/ProfitCheck.vue';
 import DeliveryOrdersList from '../views/Delivery/DeliveryOrdersList.vue';
 import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
+import DeliveryOrdersReturnList from '../views/Delivery/DeliveryOrdersReturnList.vue';
+import Products from '../views/Mall/Products.vue';
+import Cart from '../views/Mall/Cart.vue';
+import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
 
 const routes = [
     {
@@ -105,7 +110,7 @@ const routes = [
                     {
                         path: 'shopping',
                         name: 'shopping',
-                        component: Shopping,
+                        component: TasksShopping,
                     },
                     {
                         path: 'orders',
@@ -121,6 +126,11 @@ const routes = [
                         path: 'orders-list',
                         name: 'orders-list',
                         component: OrdersList,
+                    },
+                    {
+                        path: 'orders-return-list',
+                        name: 'orders-return-list',
+                        component: OrdersReturnList,
                     },
                 ],
             },
@@ -142,6 +152,11 @@ const routes = [
                         path: 'orders-list',
                         name: 'delivery-orders-list',
                         component: DeliveryOrdersList,
+                    },
+                    {
+                        path: 'orders-return-list',
+                        name: 'orders-return-list',
+                        component: DeliveryOrdersReturnList,
                     },
                 ],
             },
@@ -174,6 +189,33 @@ const routes = [
                         path: 'profit-check',
                         name: 'profit-check',
                         component: ProfitCheck,
+                    },
+                ],
+            },
+            {
+                path: 'mall',
+                name: 'mall',
+                children: [
+                    {
+                        path: 'products',
+                        name: 'products',
+                        component: Products,
+                    },
+                    {
+                        path: 'cart',
+                        name: 'cart',
+                        component: Cart,
+                    },
+                ],
+            },
+            {
+                path: 'approval',
+                name: 'approval',
+                children: [
+                    {
+                        path: 'orders',
+                        name: 'orders',
+                        component: ApprovalOrders,
                     },
                 ],
             },
