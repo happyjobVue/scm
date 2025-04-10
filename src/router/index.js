@@ -115,7 +115,7 @@ const routes = [
                     },
                     {
                         path: 'orders',
-                        name: 'orders',
+                        name: 'tasks-orders',
                         component: TasksOrders,
                     },
                     {
