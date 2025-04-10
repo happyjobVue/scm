@@ -31,7 +31,6 @@ import Cart from '../views/Mall/Cart.vue';
 import History from '../views/Mall/History.vue';
 import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
 
-
 const routes = [
     {
         path: '/',
