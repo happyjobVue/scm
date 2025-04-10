@@ -7,18 +7,18 @@ import SupplierInfo from '../views/Management/SupplierInfo.vue';
 import Inquiry from '../views/Management/Inquiry.vue';
 
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
-import Shopping from '../views/Tasks/Shopping.vue';
-import Orders from '../views/Tasks/Orders.vue';
+import TasksShopping from '../views/Tasks/TasksShopping.vue';
+import TasksOrders from '../views/Tasks/TasksOrders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
-import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
+import TasksShoppingReturn from '../views/Tasks/TasksShoppingReturn.vue';
 import Sinquiry from '../views/Support/Sinquiry.vue';
 
 import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
-import OrdersList from '../views/Tasks/OrdersList.vue';
-import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
+import TasksOrdersList from '../views/Tasks/TasksOrdersList.vue';
+import TasksOrdersReturnList from '../views/Tasks/TasksOrdersReturnList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
 import Performance from '../views/Sales/Performance.vue';
 import TopSales from '../views/Sales/TopSales.vue';
@@ -28,7 +28,8 @@ import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 import DeliveryOrdersReturnList from '../views/Delivery/DeliveryOrdersReturnList.vue';
 import Products from '../views/Mall/Products.vue';
 import Cart from '../views/Mall/Cart.vue';
-import ApprovalOrders from '../views/Approval/ApprovalOrders.vue'
+import History from '../views/Mall/History.vue';
+import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
 
 const routes = [
     {
@@ -110,34 +111,35 @@ const routes = [
                     {
                         path: 'shopping',
                         name: 'shopping',
-                        component: Shopping,
+                        component: TasksShopping,
                     },
                     {
                         path: 'orders',
-                        name: 'orders',
-                        component: Orders,
+                        name: 'tasks-orders',
+                        component: TasksOrders,
                     },
                     {
                         path: 'shopping-return',
                         name: 'shopping-return',
-                        component: ShoppingReturn,
+                        component: TasksShoppingReturn,
                     },
                     {
                         path: 'orders-list',
                         name: 'orders-list',
-                        component: OrdersList,
+                        component: TasksOrdersList,
                     },
                     {
                         path: 'orders-return-list',
-                        name: 'orders-return-list',
-                        component: OrdersReturnList,
+                        name: 'tasks-orders-return-list',
+                        component: TasksOrdersReturnList,
                     },
                 ],
             },
             {
                 path: 'delivery',
                 name: 'delivery',
-                children: [{
+                children: [
+                    {
                         path: 'shopping-list',
                         name: 'shopping-list',
                         component: ShoppingList,
@@ -162,11 +164,13 @@ const routes = [
             {
                 path: 'support',
                 name: 'support',
-                children: [{
-                    path: 'inquiry',
-                    name: 'sinquiry',
-                    component: Sinquiry,
-                }, ],
+                children: [
+                    {
+                        path: 'inquiry',
+                        name: 'sinquiry',
+                        component: Sinquiry,
+                    },
+                ],
             },
             {
                 path: 'sales',
@@ -203,6 +207,11 @@ const routes = [
                         name: 'cart',
                         component: Cart,
                     },
+                    {
+                        path: 'history',
+                        name: 'history',
+                        component: History,
+                    },
                 ],
             },
             {
@@ -211,7 +220,7 @@ const routes = [
                 children: [
                     {
                         path: 'orders',
-                        name: 'orders',
+                        name: 'approval-orders',
                         component: ApprovalOrders,
                     },
                 ],

@@ -1,31 +1,41 @@
 <script setup>
 import router from '@/router';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
-const searchKeyword = ref('');
+const searchTitle = ref('');
 const searchStDate = ref('');
 const searchEdDate = ref('');
 
 const handlerSearch = () => {
     const query = [];
-    !searchKeyword.value || query.push(`searchKeyword=${searchKeyword.value}`);
+    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
     !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
     !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
 };
+
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
 </script>
+
 <template>
     <div class="search-box">
-        기업 고객명:
-        <input v-model.lazy="searchKeyword" />
-        <input type="date" v-model.lazy="searchStDate" />
-        <input type="date" v-model.lazy="searchEdDate" />
-        <button @click="handlerSearch">검색</button>
+        <div class="search-module">
+            <div>
+                <span>제품명: </span>
+                <input v-model.lazy="searchTitle" />
+            </div>
+            <div>   
+                <span>주문일자: </span>
+                <input type="date" v-model.lazy="searchStDate" />
+                <span> ~ </span>
+                <input type="date" v-model.lazy="searchEdDate" />
+            </div>
+            <button @click="handlerSearch">검색</button>
+        </div>
     </div>
 </template>
 
@@ -34,6 +44,11 @@ onMounted(() => {
     margin-bottom: 10px;
     display: block;
     float: inline-end;
+}
+
+.search-module {
+    display: flex;
+    gap:8px;
 }
 
 input {
