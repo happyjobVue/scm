@@ -1,16 +1,13 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import { useModalStore } from '../../../../stores/modalState';
+import { onMounted, ref} from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const emit = defineEmits([`modalClose`, 'postSuccess']);
-const modalState = useModalStore();
 const {id, date} = defineProps(['id', 'date']);
 
 const detailList = ref();
 const orderReturnDetail = ref();
-const detailIdList = ref([]);
 
 const searchDetail = () => {
     const data = {
@@ -66,9 +63,6 @@ onMounted(() => {
     id && date && searchDetail(); 
 });
 
-onUnmounted(() => {
-    emit('modalClose', 0);
-});
 </script>
 
 <template>
@@ -113,7 +107,7 @@ onUnmounted(() => {
     </table>
     <div class="button-box">
         <button @click="returnConfirm()">재고 처리</button>
-        <button @click="modalState.setModalState()">닫기</button>
+        <button @click="emit('modalClose', '')">닫기</button>
     </div>
   </div>
 </template>

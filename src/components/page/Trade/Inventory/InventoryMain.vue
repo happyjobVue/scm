@@ -4,7 +4,6 @@ import { onMounted, ref } from 'vue';
 import Pagination from '../../../common/Pagination.vue';
 import { useRoute } from 'vue-router';
 import InventorySubgrid from './InventorySubgrid.vue';
-import { useModalStore } from '../../../../stores/modalState';
 
 const route = useRoute();
 const inventoryList = ref();
@@ -13,7 +12,6 @@ const productId = ref(0);
 const supplyId = ref(0);
 const warehouseId = ref(0);
 const cPage = ref(1);
-const modalState = useModalStore();
 const modalType = ref('');
 
 const searchList =  () => {
@@ -24,23 +22,28 @@ const searchList =  () => {
     };
 
     axios.post('/api/trade/inventoryListBody.do', param).then(res => {
-        inventoryList.value = res.data;        
+        inventoryList.value = res.data;       
     });
 };
 
 const onPostSuccess = ()=> {
-    modalState.setModalState(false);
     modalType.value = '';
     searchList();
 };
 
 const handlerSubgrid = (inventory, product, supply, warehouse) => {
-    inventoryId.value = inventory;
-    productId.value = product;
-    supplyId.value = supply;
-    warehouseId.value = warehouse;
-    modalType.value = 'inventoryDetail';
-    modalState.setModalState();
+    if (inventoryId.value === inventory) {
+        modalType.value = '';
+        inventoryId.value = undefined;
+        productId.value = undefined;
+        supplyId.value = undefined;
+        warehouseId.value = undefined;
+    } else {
+        inventoryId.value = inventory;
+        productId.value = product;
+        supplyId.value = supply;
+        warehouseId.value = warehouse;
+    }
 };
 
 onMounted(() => {
@@ -48,6 +51,12 @@ onMounted(() => {
 });
 
 watch(() => route.query, searchList);
+
+watch(supplyId, (newVal) => {
+    if (newVal) {
+        modalType.value = 'inventoryDetail';
+    }
+});
 </script>
 
 <template>
@@ -97,12 +106,13 @@ watch(() => route.query, searchList);
         v-model="cPage"
     />
     <InventorySubgrid
-        v-if="modalState.modalState && modalType === 'inventoryDetail'" 
+        v-if="modalType === 'inventoryDetail'" 
         :inventoryId="inventoryId"
         :productId="productId"
         :supplyId="supplyId"
         :warehouseId="warehouseId"
-        @modalClose="inventoryId=$event"
+        :key="inventoryId"
+        @modalClose="modalType=$event"
         @postSuccess="onPostSuccess"
     />
   </div>
