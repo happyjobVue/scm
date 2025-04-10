@@ -71,9 +71,7 @@ const handleFile = (e) => {
     selectedFileName.value = file ? file.name : '';
 
     if(fileExtension === 'jpg' || fileExtension === 'gif' || fileExtension === 'png') {
-        console.log('fileInfo[0] ', fileInfo[0]);
         imageUrl.value = URL.createObjectURL(fileInfo[0]);
-        console.log('imageUrl.value ', imageUrl.value)
     }
     fileData.value = fileInfo[0];
 };

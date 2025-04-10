@@ -10,18 +10,14 @@ const { id, groupCode } = defineProps(['id', 'groupCode']);
 
 const searchDetail = () => {
     if(id!=0){
-        console.log("id",id)
         axios.post('/api/management/commonDetailCodeDetailBody.do', {detailIdx: id})
         .then(res => {
-            console.log("res", res);
             detailCodeDetail.value = res.data.detailValue
-            console.log("detailCodeDetail.value", detailCodeDetail.value)
         })
     }
 }
 
 const handlerSave = () =>{
-    console.log("groupCode",groupCode);
     const param = new URLSearchParams({
         groupCode: groupCode
         , detailCode: detailCodeDetail.value.detailCode
@@ -29,7 +25,6 @@ const handlerSave = () =>{
         , detailNote: detailCodeDetail.value.note
         , useYn: detailCodeDetail.value.useYn
     });
-    console.log(param);
     axios.post('/api/management/commonDetailCodeSave.do', param)
     .then(res => {
         if(res.data.result ==="success"){
@@ -64,6 +59,9 @@ const handlerUpdate = () =>{
 }
 
 const handlerDelete = () =>{
+    const result = window.confirm('정말 삭제하시겠습니까?');
+    if(!result) return alert('상세코드 삭제가 취소되었습니다.')
+
     axios.post('/api/management/commonDetailCodeDeleteBody.do', {detailIdx: id})
         .then(res => {
             if(res.data.result === "success") {

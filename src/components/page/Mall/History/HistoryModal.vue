@@ -10,7 +10,7 @@ const historyState = useHistoryStore();
 const { count } = defineProps(['count']);
 
 const returnDetail = ref({
-    selectBank: 0
+    bank: 0
 });
 
 

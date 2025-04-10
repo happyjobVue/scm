@@ -20,7 +20,6 @@ const searchDetail = () => {
             requestedDeliveryDate: getToday(),
             ...res.data.detailValue
         };
-        console.log(productsDetail.value)
         imageDetail.value = res.data.attachmentValue;
 
         if(imageDetail.value == null) return;
@@ -67,6 +66,8 @@ const handlerToCart = () => {
 }
 
 const handlerToOrder = () => {
+    const result = window.confirm('입금 하시겠습니까?');
+    if(!result) return alert('주문이 취소되었습니다.')
     const param = {
         productId : productsDetail.value.productId
         ,supplyId : productsDetail.value.supplyId
@@ -139,7 +140,7 @@ onUnmounted(() => {
 										<th scope="row">판매 가격</th>
 										<td colspan="3">
                                             <input type="text"
-                                            v-model="productsDetail.sellPrice"
+                                            :value="productsDetail.sellPrice?.toLocaleString()"
                                             readonly/>
                                         </td>
 									</tr>
@@ -167,6 +168,7 @@ onUnmounted(() => {
 										<td colspan="3">
                                             <input type="date"
                                             v-model="productsDetail.requestedDeliveryDate"
+                                            :min="getToday()"
 										    />
                                         </td>
 									</tr>
