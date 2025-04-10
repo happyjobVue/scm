@@ -77,6 +77,7 @@ declare module 'vue' {
     SupplierInfoMain: typeof import('./src/components/page/Management/SupplierInfo/SupplierInfoMain.vue')['default']
     SupplierInfoModal: typeof import('./src/components/page/Management/SupplierInfo/SupplierInfoModal.vue')['default']
     SupplierInfoSearch: typeof import('./src/components/page/Management/SupplierInfo/SupplierInfoSearch.vue')['default']
+    TopSalesChart: typeof import('./src/components/page/Sales/TopSales/TopSalesChart.vue')['default']
     TasksShoppingMain: typeof import('./src/components/page/Tasks/TasksShopping/TasksShoppingMain.vue')['default']
     TasksShoppingModal: typeof import('./src/components/page/Tasks/TasksShopping/TasksShoppingModal.vue')['default']
     TasksShoppingSearch: typeof import('./src/components/page/Tasks/TasksShopping/TasksShoppingSearch.vue')['default']
