@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ApprovalOrdersMain: typeof import('./src/components/page/Approval/ApprovalOrders/ApprovalOrdersMain.vue')['default']
+    ApprovalOrdersSearch: typeof import('./src/components/page/Approval/ApprovalOrders/ApprovalOrdersSearch.vue')['default']
     CartMain: typeof import('./src/components/page/Mall/Cart/CartMain.vue')['default']
     CartSummary: typeof import('./src/components/page/Mall/Cart/CartSummary.vue')['default']
     CommonCodeMain: typeof import('./src/components/page/Management/CommonCode/CommonCodeMain.vue')['default']
