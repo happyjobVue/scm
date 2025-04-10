@@ -11,7 +11,7 @@ import TasksShopping from '../views/Tasks/TasksShopping.vue';
 import TasksOrders from '../views/Tasks/TasksOrders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
-import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
+import TasksShoppingReturn from '../views/Tasks/TasksShoppingReturn.vue';
 import Sinquiry from '../views/Support/Sinquiry.vue';
 
 import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
@@ -120,7 +120,7 @@ const routes = [
                     {
                         path: 'shopping-return',
                         name: 'shopping-return',
-                        component: ShoppingReturn,
+                        component: TasksShoppingReturn,
                     },
                     {
                         path: 'orders-list',
