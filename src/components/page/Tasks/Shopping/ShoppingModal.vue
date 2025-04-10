@@ -9,7 +9,7 @@ const deliveryDetail = ref({});
 
 const searchDeliveryOrderDetail = () => {
     axios
-        .post('/api/tasks/shopping/deliveryDetailBody.do', { deliveryId: id })
+        .post('/api/tasks/deliveryDetailBody.do', { deliveryId: id })
         .then(res => {
             deliveryDetail.value = res.data.detailValue;
         });
