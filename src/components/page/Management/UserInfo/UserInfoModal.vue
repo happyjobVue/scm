@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useModalStore, useModalStore2 } from '../../../../stores/modalState';
 import { watch } from 'vue';
 import EmailModal from './EmailModal.vue';
+import Swal from 'sweetalert2';
 
 const modalState = useModalStore();
 const modalState2 = useModalStore2();
@@ -93,8 +94,6 @@ const checkUserData = () => {
         hp: '전화번호를 입력해 주세요!',
         email: '이메일을 입력해 주세요!',
         birthday: '생년월일을 입력해 주세요!',
-        userClass: '',
-        statusYn: '',
         address: '주소를 입력해 주세요!',
         detailCode: '담당 업무를 선택해 주세요!',
         zipCode: '우편 번호를 입력해 주세요!',
@@ -120,7 +119,7 @@ const checkUserData = () => {
             userInfoDetail.value[field] === '' ||
             userInfoDetail.value[field] === 'N'
         ) {
-            alert(warningMessage[field]);
+            Swal.fire(warningMessage[field], '', 'warning');
             flag = false;
             break;
         }
@@ -137,15 +136,23 @@ const updateInfo = () => {
     const hpRules = /^\d{2,3}-\d{3,4}-\d{4}$/;
 
     if (!passwordRules.test(userInfoDetail.value.password)) {
-        alert('비밀번호 형식을 확인해 주세요! (8~15자 영문,숫자,특문자 혼용)');
+        Swal.fire(
+            '비밀번호 형식을 확인해 주세요! (8~15자 영문,숫자,특문자 혼용)',
+            '',
+            'warning'
+        );
         return;
     }
     if (userInfoDetail.value.password !== userInfoDetail.value.password2) {
-        alert('비밀번호와 비밀번호확인이 일치하지 않습니다!');
+        Swal.fire(
+            '비밀번호와 비밀번호확인이 일치하지 않습니다!',
+            '',
+            'warning'
+        );
         return;
     }
     if (!hpRules.test(userInfoDetail.value.hp)) {
-        alert('전화번호 형식을 확인해 주세요!');
+        Swal.fire('전화번호 형식을 확인해 주세요!', '', 'warning');
         return;
     }
 
@@ -153,10 +160,11 @@ const updateInfo = () => {
         .post('/api/management/UpdateScmBody2.do', userInfoDetail.value)
         .then(res => {
             if (res.data) {
-                alert('수정 성공!');
-                emit('postSuccess');
+                Swal.fire('수정 성공!', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             } else {
-                alert('수정 실패');
+                Swal.fire('수정 실패', '', 'warning');
             }
         });
 };
@@ -173,7 +181,7 @@ const searchPostcode = () => {
 const checkId = () => {
     const idRules = /^[a-z0-9]{6,20}$/g;
     if (!idRules.test(userInfoDetail.value.loginID)) {
-        alert('ID형식이 맞지 않습니다!');
+        Swal.fire('ID형식이 맞지 않습니다!', '', 'warning');
         return;
     }
 
@@ -183,10 +191,10 @@ const checkId = () => {
         })
         .then(res => {
             if (res.data.duplicCnt === 0) {
-                alert('사용가능한 ID 입니다.');
+                Swal.fire('사용가능한 ID 입니다.', '', 'success');
                 idCheck.value = true;
             } else {
-                alert('중복된 아이디가 있습니다!');
+                Swal.fire('중복된 아이디가 있습니다!', '', 'warning');
             }
         });
 };
@@ -195,7 +203,7 @@ const checkEmail = () => {
     const emailRules =
         /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     if (!emailRules.test(userInfoDetail.value.email)) {
-        alert('이메일 형식이 맞지 않습니다!');
+        Swal.fire('이메일 형식이 맞지 않습니다!', '', 'warning');
         return;
     }
 
@@ -205,10 +213,10 @@ const checkEmail = () => {
         })
         .then(res => {
             if (res.data === 0) {
-                alert('사용가능한 이메일 입니다.');
+                Swal.fire('사용가능한 이메일 입니다.', '', 'success');
                 emailCheck.value = true;
             } else {
-                alert('중복된 이메일이 존재합니다!');
+                Swal.fire('중복된 이메일이 존재합니다!', '', 'warning');
             }
         });
 };
@@ -223,32 +231,41 @@ const regiserInfo = () => {
     const hpRules = /^\d{2,3}-\d{3,4}-\d{4}$/;
 
     if (!idCheck.value) {
-        alert('아이디 중복 체크를 진행해 주세요!');
+        Swal.fire('아이디 중복 체크를 진행해 주세요!', '', 'warning');
         return;
     }
     if (!passwordRules.test(userInfoDetail.value.password)) {
-        alert('비밀번호 형식을 확인해 주세요! (8~15자 영문,숫자,특문자 혼용)');
+        Swal.fire(
+            '비밀번호 형식을 확인해 주세요! (8~15자 영문,숫자,특문자 혼용)',
+            '',
+            'warning'
+        );
         return;
     }
     if (userInfoDetail.value.password !== userInfoDetail.value.password2) {
-        alert('비밀번호와 비밀번호확인이 일치하지 않습니다!');
+        Swal.fire(
+            '비밀번호와 비밀번호확인이 일치하지 않습니다!',
+            '',
+            'warning'
+        );
         return;
     }
     if (!hpRules.test(userInfoDetail.value.hp)) {
-        alert('전화번호 형식을 확인해 주세요!');
+        Swal.fire('전화번호 형식을 확인해 주세요!', '', 'warning');
         return;
     }
     if (!emailCheck.value) {
-        alert('이메일 중복체크를 진행해 주세요!');
+        Swal.fire('이메일 중복체크를 진행해 주세요!', '', 'warning');
         return;
     }
     userInfoDetail.value.action = 'I';
     axios.put('/api/registerScmBody2.do', userInfoDetail.value).then(res => {
         if (res.data.result === 'SUCCESS') {
-            alert('가입 성공!');
-            emit('postSuccess');
+            Swal.fire('등록 성공!', '', 'success').then(() =>
+                emit('postSuccess')
+            );
         } else {
-            alert('가입 실패!');
+            Swal.fire('등록 실패!', '', 'warning');
         }
     });
 };
@@ -258,8 +275,9 @@ const deleteInfo = () => {
         .post('/api/management/userDeleteBody.do', { loginID: id })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('삭제되었습니다.');
-                emit('postSuccess');
+                Swal.fire('삭제되었습니다', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             }
         });
 };
@@ -269,8 +287,9 @@ const restoreInfo = () => {
         .post('/api/management/userRecoveryBody.do', { loginID: id })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('복구되었습니다.');
-                emit('postSuccess');
+                Swal.fire('복구되었습니다', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             }
         });
 };
@@ -279,8 +298,40 @@ const emailChage = email => {
     modalState2.modalState2 = !modalState2.modalState2;
 };
 
-watch(() => userInfoDetail.value.userType, handleUserType);
+const callFunction = name => {
+    const functionList = {
+        regiserInfo,
+        updateInfo,
+        deleteInfo,
+        restoreInfo,
+    };
+    functionList[name]?.();
+};
 
+const confirmAction = name => {
+    const msg = {
+        regiserInfo: '등록 하시겠습니까?',
+        updateInfo: '수정 하시겠습니까?',
+        deleteInfo: '삭제 하시겠습니까?',
+        restoreInfo: '복구 하시겠습니까?',
+    };
+    Swal.fire({
+        title: msg[name],
+        icon: 'question',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        reverseButtons: false, // 버튼 순서 거꾸로
+    }).then(result => {
+        if (result.isConfirmed) {
+            callFunction(name);
+        }
+    });
+};
+
+watch(() => userInfoDetail.value.userType, handleUserType);
 onMounted(() => {
     id && searchDetail();
 });
@@ -493,14 +544,14 @@ onUnmounted(() => {
                     </table>
                     <div class="button_area">
                         <button
-                            @click="regiserInfo"
+                            @click="confirmAction('regiserInfo')"
                             v-if="id === 0"
                             class="button"
                         >
                             등록
                         </button>
                         <button
-                            @click="updateInfo"
+                            @click="confirmAction('updateInfo')"
                             v-if="id !== 0 && userInfoDetail.statusYn === '1'"
                             class="button"
                         >
@@ -509,14 +560,14 @@ onUnmounted(() => {
                         <button
                             v-if="id !== 0 && userInfoDetail.statusYn === '1'"
                             class="button"
-                            @click="deleteInfo"
+                            @click="confirmAction('deleteInfo')"
                         >
                             삭제
                         </button>
                         <button
                             v-if="id !== 0 && userInfoDetail.statusYn === '0'"
                             class="button"
-                            @click="restoreInfo"
+                            @click="confirmAction('restoreInfo')"
                         >
                             복구
                         </button>

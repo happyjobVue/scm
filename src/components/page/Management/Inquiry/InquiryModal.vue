@@ -1,4 +1,5 @@
 <script setup>
+import Swal from 'sweetalert2';
 import { useModalStore } from '../../../../stores/modalState';
 import axios from 'axios';
 const { id } = defineProps(['id']);
@@ -89,7 +90,7 @@ const fileRemove = () => {
 
 const answerSave = () => {
     if (!inquiryDetail.value.ansContent) {
-        alert('답변을 입력해 주세요!');
+        Swal.fire('답변을 입력해 주세요!', '', 'warning');
         return;
     }
     const param = new URLSearchParams();
@@ -98,8 +99,9 @@ const answerSave = () => {
     axios.post('/api/management/inquiryAnsSaveBody.do', param).then(res => {
         console.log(res.data);
         if (res.data.result === 'success') {
-            alert('답변이 등록되었습니다.');
-            emit('postSuccess');
+            Swal.fire('답변이 등록되었습니다', '', 'success').then(() =>
+                emit('postSuccess')
+            );
         }
     });
 };
@@ -109,10 +111,40 @@ const deleteInquiry = () => {
         .post('/api/support/inquiryFileDeleteBody.do', { inquiryId: id })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('삭제되었습니다.');
-                emit('postSuccess');
+                Swal.fire('삭제되었습니다', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             }
         });
+};
+
+const callFunction = name => {
+    const functionList = {
+        answerSave,
+        deleteInquiry,
+    };
+    functionList[name]?.();
+};
+
+const confirmAction = name => {
+    const msg = {
+        answerSave: '답변을 등록하시겠습니까?',
+        deleteInquiry: '삭제 하시겠습니까?',
+    };
+    Swal.fire({
+        title: msg[name],
+        icon: 'question',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        reverseButtons: false, // 버튼 순서 거꾸로
+    }).then(result => {
+        if (result.isConfirmed) {
+            callFunction(name);
+        }
+    });
 };
 
 onMounted(() => {
@@ -139,12 +171,6 @@ onMounted(() => {
                         <th>카테고리</th>
                         <td colspan="3">
                             <select v-model="inquiryDetail.category">
-                                <!-- <option>이용문의</option>
-                                <option>구매</option>
-                                <option>환불/교환/반품</option>
-                                <option>제품</option>
-                                <option>개인정보</option>
-                                <option>기타</option> -->
                                 <option
                                     v-for="(list, index) in selectMenu"
                                     :key="index"
@@ -187,19 +213,14 @@ onMounted(() => {
                     </tr>
                     <tr>
                         <th>파일</th>
-                        <td colspan="2">
+                        <td :colspan="fileDetail.fileName ? 2 : 3">
                             <template v-if="fileDetail.fileName">
-                                <input
-                                    type="text"
-                                    v-model="fileDetail.fileName"
-                                />
+                                {{ fileDetail.fileName }}
                             </template>
                             <template v-else> 파일이 없습니다. </template>
                         </td>
-                        <td>
-                            <template v-if="fileDetail.fileName">
-                                <button @click="fileRemove">파일삭제</button>
-                            </template>
+                        <td v-if="fileDetail.fileName">
+                            <button @click="fileRemove">파일삭제</button>
                         </td>
                     </tr>
                     <tr>
@@ -212,8 +233,12 @@ onMounted(() => {
                     </tr>
                 </table>
                 <div class="button_area">
-                    <button @click="answerSave">답변등록</button>
-                    <button @click="deleteInquiry">삭제</button>
+                    <button @click="confirmAction('answerSave')">
+                        답변등록
+                    </button>
+                    <button @click="confirmAction('deleteInquiry')">
+                        삭제
+                    </button>
                     <button @click="modalState.setModalState()">닫기</button>
                 </div>
             </div>

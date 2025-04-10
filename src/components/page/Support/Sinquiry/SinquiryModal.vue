@@ -3,6 +3,7 @@ import { useModalStore } from '../../../../stores/modalState';
 import axios from 'axios';
 import { useUserInfo } from '../../../../stores/userInfo';
 import { onMounted, onUnmounted } from 'vue';
+import Swal from 'sweetalert2';
 const { id } = defineProps(['id']);
 const emit = defineEmits([`modalClose`, 'postSuccess']);
 
@@ -106,7 +107,33 @@ const fileRemove = () => {
     fileDetail.value.fileName = undefined;
 };
 
+const checkInsertData = () => {
+    let flag = true;
+    const warningMessage = {
+        category: '카테고리를 선택해 주세요!',
+        title: '제목을 입력해주세요!',
+        content: '내용을 입력해주세요!',
+    };
+    const fieldsToCheck = ['category', 'title', 'content'];
+    for (let field of fieldsToCheck) {
+        if (
+            inquiryDetail.value[field] === null ||
+            inquiryDetail.value[field] === undefined ||
+            inquiryDetail.value[field] === '' ||
+            inquiryDetail.value[field] === '카테고리 선택'
+        ) {
+            Swal.fire(warningMessage[field], '', 'warning');
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+};
+
 const insertInquiry = () => {
+    if (!checkInsertData()) {
+        return;
+    }
     const formData = new FormData();
     if (fileData.value) formData.append('fileInput', fileData.value);
     formData.append('fileTitle', inquiryDetail.value.title);
@@ -115,8 +142,9 @@ const insertInquiry = () => {
 
     axios.post('/api/support/inquiryFileSave.do', formData).then(res => {
         if (res.data.result === 'success') {
-            alert('문의 등록 성공');
-            emit('postSuccess');
+            Swal.fire('문의 등록 성공', '', 'success').then(() =>
+                emit('postSuccess')
+            );
         }
     });
 };
@@ -142,8 +170,9 @@ const updateInquiry = () => {
 
     axios.post('/api/support/inquiryFileUpdate.do', formData).then(res => {
         if (res.data.result === 'success') {
-            alert('문의 수정 성공');
-            emit('postSuccess');
+            Swal.fire('문의 수정 성공', '', 'success').then(() =>
+                emit('postSuccess')
+            );
         }
     });
 };
@@ -153,10 +182,42 @@ const deleteInquiry = () => {
         .post('/api/support/inquiryFileDeleteBody.do', { inquiryId: id })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('삭제되었습니다.');
-                emit('postSuccess');
+                Swal.fire('삭제되었습니다', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             }
         });
+};
+
+const callFunction = name => {
+    const functionList = {
+        insertInquiry,
+        updateInquiry,
+        deleteInquiry,
+    };
+    functionList[name]?.();
+};
+
+const confirmAction = name => {
+    const msg = {
+        insertInquiry: '등록 하시겠습니까?',
+        updateInquiry: '수정 하시겠습니까?',
+        deleteInquiry: '삭제 하시겠습니까?',
+    };
+    Swal.fire({
+        title: msg[name],
+        icon: 'question',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        reverseButtons: false, // 버튼 순서 거꾸로
+    }).then(result => {
+        if (result.isConfirmed) {
+            callFunction(name);
+        }
+    });
 };
 
 onMounted(() => {
@@ -171,12 +232,10 @@ onUnmounted(() => {
         <div class="backdrop">
             <div class="container">
                 <template v-if="inquiryDetail.inquiryId || id === 0">
-                    <h2 style="text-align: center" v-if="id !== 0">
-                        문의 상세
-                    </h2>
-                    <h2 style="text-align: center" v-if="id === 0">
-                        문의 등록
-                    </h2>
+                    <div style="text-align: center; margin-top: -10px">
+                        <h2 v-if="id !== 0">문의 상세</h2>
+                        <h2 v-if="id === 0">문의 등록</h2>
+                    </div>
                     <table>
                         <col width="20%" />
                         <col width="30%" />
@@ -291,16 +350,22 @@ onUnmounted(() => {
                         >
                             답변등록
                         </button>
-                        <button @click="insertInquiry" v-if="id === 0">
-                            저장
+                        <button
+                            @click="confirmAction('insertInquiry')"
+                            v-if="id === 0"
+                        >
+                            등록
                         </button>
                         <button
-                            @click="updateInquiry"
+                            @click="confirmAction('updateInquiry')"
                             v-if="inquiryDetail.ansState === 'N' && id !== 0"
                         >
                             수정
                         </button>
-                        <button @click="deleteInquiry" v-if="id !== 0">
+                        <button
+                            @click="confirmAction('deleteInquiry')"
+                            v-if="id !== 0"
+                        >
                             삭제
                         </button>
                         <button @click="modalState.setModalState()">

@@ -7,7 +7,6 @@ const searchStDate = ref('');
 const searchEdDate = ref('');
 
 const handlerSearch = () => {
-    console.log('check');
     const query = [];
     !searchKeyword.value || query.push(`searchKeyword=${searchKeyword.value}`);
     !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
