@@ -220,7 +220,7 @@ const routes = [
                 children: [
                     {
                         path: 'orders',
-                        name: 'orders',
+                        name: 'approval-orders',
                         component: ApprovalOrders,
                     },
                 ],
