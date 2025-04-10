@@ -28,7 +28,9 @@ import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 import DeliveryOrdersReturnList from '../views/Delivery/DeliveryOrdersReturnList.vue';
 import Products from '../views/Mall/Products.vue';
 import Cart from '../views/Mall/Cart.vue';
+import History from '../views/Mall/History.vue';
 import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
+
 
 const routes = [
     {
@@ -205,6 +207,11 @@ const routes = [
                         path: 'cart',
                         name: 'cart',
                         component: Cart,
+                    },
+                    {
+                        path: 'history',
+                        name: 'history',
+                        component: History,
                     },
                 ],
             },
