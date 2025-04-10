@@ -26,7 +26,7 @@ onMounted(() => {
     <teleport to="body">
         <div class="backdrop">
             <div class="container">
-                <h2 style="text-align: center">거래 내역</h2>
+                <h2 style="text-align: center; margin-top: 0px">거래 내역</h2>
                 <template v-if="performanceDetail">
                     <table>
                         <colgroup>

@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useModalStore2 } from '../../../../stores/modalState';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const modalState2 = useModalStore2();
 const { email } = defineProps(['email']);
@@ -13,7 +14,7 @@ const checkEmail = () => {
     const emailRules =
         /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     if (!emailRules.test(chageEmail.value)) {
-        alert('이메일 형식이 맞지 않습니다!');
+        Swal.fire('이메일 형식이 맞지 않습니다!', '', 'warning');
         return;
     }
     axios
@@ -22,17 +23,17 @@ const checkEmail = () => {
         })
         .then(res => {
             if (res.data === 0) {
-                alert('사용가능한 이메일 입니다.');
+                Swal.fire('사용가능한 이메일 입니다.', '', 'success');
                 emailCheck.value = true;
             } else {
-                alert('중복된 이메일이 존재합니다!');
+                Swal.fire('중복된 이메일이 존재합니다!', '', 'warning');
             }
         });
 };
 
 const changeEmail = () => {
     if (!emailCheck.value) {
-        alert('이메일 중복체크를 진행해 주세요!');
+        Swal.fire('이메일 중복체크를 진행해 주세요!', '', 'warning');
         return;
     }
     console.log(chageEmail.value);
