@@ -1,6 +1,6 @@
 <template>
     <ContextBox>발주 지시서 목록</ContextBox>
-    <OrdersListSearch />
-    <OrdersListMain />
+    <TasksOrdersListSearch />
+    <TasksOrdersListMain />
 </template>
 <script setup></script>
