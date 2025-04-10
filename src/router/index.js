@@ -7,7 +7,7 @@ import SupplierInfo from '../views/Management/SupplierInfo.vue';
 import Inquiry from '../views/Management/Inquiry.vue';
 
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
-import Shopping from '../views/Tasks/Shopping.vue';
+import TasksShopping from '../views/Tasks/TasksShopping.vue';
 import Orders from '../views/Tasks/Orders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
@@ -28,7 +28,7 @@ import WarehouseInfo from '../views/Management/WarehouseInfo.vue';
 import DeliveryOrdersReturnList from '../views/Delivery/DeliveryOrdersReturnList.vue';
 import Products from '../views/Mall/Products.vue';
 import Cart from '../views/Mall/Cart.vue';
-import ApprovalOrders from '../views/Approval/ApprovalOrders.vue'
+import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
 
 const routes = [
     {
@@ -110,7 +110,7 @@ const routes = [
                     {
                         path: 'shopping',
                         name: 'shopping',
-                        component: Shopping,
+                        component: TasksShopping,
                     },
                     {
                         path: 'orders',
@@ -137,7 +137,8 @@ const routes = [
             {
                 path: 'delivery',
                 name: 'delivery',
-                children: [{
+                children: [
+                    {
                         path: 'shopping-list',
                         name: 'shopping-list',
                         component: ShoppingList,
@@ -162,11 +163,13 @@ const routes = [
             {
                 path: 'support',
                 name: 'support',
-                children: [{
-                    path: 'inquiry',
-                    name: 'sinquiry',
-                    component: Sinquiry,
-                }, ],
+                children: [
+                    {
+                        path: 'inquiry',
+                        name: 'sinquiry',
+                        component: Sinquiry,
+                    },
+                ],
             },
             {
                 path: 'sales',
