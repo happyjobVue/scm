@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { useModalStore } from '../../../../stores/modalState';
 
 const { inventoryId, productId, supplyId, warehouseId } = defineProps(['inventoryId', 'productId', 'supplyId', 'warehouseId']);
 const emit = defineEmits([`modalClose`, 'postSuccess']);
-const modalState = useModalStore();
 
 const inventoryDetail = ref();
 
@@ -23,10 +21,6 @@ const searchDetail = () => {
 
 onMounted(() => {
     inventoryId && productId && supplyId && warehouseId && searchDetail();
-});
-
-onUnmounted(() => {
-    emit('modalClose', 0);
 });
 </script>
     
@@ -76,7 +70,7 @@ onUnmounted(() => {
         </tbody>
     </table>
     <div class="button-box">
-        <button @click="modalState.setModalState()">닫기</button>
+        <button @click="emit('modalClose', '')">닫기</button>
     </div>
   </div>
   
