@@ -1,6 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { useModalStore } from '../../../../stores/modalStore';
+import Swal from 'sweetalert2';
 
 const modalState = useModalStore();
 
@@ -67,7 +68,7 @@ const checkSupplyData = () => {
             supplyDetail.value[field] === undefined ||
             supplyDetail.value[field] === ''
         ) {
-            alert(warningMessage[field]);
+            Swal.fire(warningMessage[field], '', 'warning');
             flag = false;
             break;
         }
@@ -78,7 +79,7 @@ const checkSupplyData = () => {
 const checkId = () => {
     const idRules = /^[a-z0-9]{6,20}$/g;
     if (!idRules.test(supplyDetail.value.loginID)) {
-        alert('ID형식이 맞지 않습니다!');
+        Swal.fire('ID형식이 맞지 않습니다!', '', 'warning');
         return;
     }
 
@@ -88,10 +89,10 @@ const checkId = () => {
         })
         .then(res => {
             if (res.data === 0) {
-                alert('사용가능한 ID 입니다.');
+                Swal.fire('사용가능한 ID 입니다.', '', 'success');
                 idCheck.value = true;
             } else {
-                alert('중복된 아이디가 있습니다!');
+                Swal.fire('중복된 아이디가 있습니다!', '', 'warning');
             }
         });
 };
@@ -102,11 +103,11 @@ const saveSupply = () => {
     }
     const hpRules = /^\d{2,3}-\d{3,4}-\d{4}$/;
     if (!idCheck.value) {
-        alert('아이디 중복확인을 진행해 주세요!');
+        Swal.fire('아이디 중복확인을 진행해 주세요!', '', 'warning');
         return;
     }
     if (!hpRules.test(supplyDetail.value.phone)) {
-        alert('전화번호 양식을 확인해 주세요!');
+        Swal.fire('전화번호 양식을 확인해 주세요!', '', 'warning');
         return;
     }
 
@@ -117,10 +118,11 @@ const saveSupply = () => {
         })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('등록 성공!');
-                emit('postSuccess');
+                Swal.fire('등록 성공!', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             } else {
-                alert('등록 실패!');
+                Swal.fire('등록 실패!', '', 'warning');
             }
         });
 };
@@ -131,7 +133,7 @@ const updateSupply = () => {
     }
     const hpRules = /^\d{2,3}-\d{3,4}-\d{4}$/;
     if (!hpRules.test(supplyDetail.value.phone)) {
-        alert('전화번호 양식을 확인해 주세요!');
+        Swal.fire('전화번호 양식을 확인해 주세요!', '', 'warning');
         return;
     }
 
@@ -139,10 +141,11 @@ const updateSupply = () => {
         .post('/api/management/supplyUpdateBody.do', supplyDetail.value)
         .then(res => {
             if (res.data.result === 'success') {
-                alert('수정 성공!');
-                emit('postSuccess');
+                Swal.fire('수정 성공!', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             } else {
-                alert('수정 실패!');
+                Swal.fire('수정 실패!', '', 'warning');
             }
         });
 };
@@ -152,10 +155,11 @@ const deleteSupply = () => {
         .post('/api/management/supplyDeleteBody.do', { supplyId: id })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('삭제 되었습니다.');
-                emit('postSuccess');
+                Swal.fire('삭제 되었습니다.', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             } else {
-                alert('삭제 실패!');
+                Swal.fire('삭제 실패!', '', 'warning');
             }
         });
 };
@@ -165,10 +169,11 @@ const recoverySupply = () => {
         .post('/api/management/supplyRecoveryBody.do', { supplyId: id })
         .then(res => {
             if (res.data.result === 'success') {
-                alert('거래가 재개되었습니다.');
-                emit('postSuccess');
+                Swal.fire('거래가 재개되었습니다.', '', 'success').then(() =>
+                    emit('postSuccess')
+                );
             } else {
-                alert('재개 실패!');
+                Swal.fire('재개 실패!', '', 'warning');
             }
         });
 };
@@ -180,6 +185,39 @@ const searchPostcode = () => {
             supplyDetail.value.zipCode = data.zonecode;
         },
     }).open();
+};
+
+const callFunction = name => {
+    const functionList = {
+        saveSupply,
+        updateSupply,
+        deleteSupply,
+        recoverySupply,
+    };
+    functionList[name]?.();
+};
+
+const confirmAction = name => {
+    const msg = {
+        saveSupply: '등록 하시겠습니까?',
+        updateSupply: '수정 하시겠습니까?',
+        deleteSupply: '삭제 하시겠습니까?',
+        recoverySupply: '거래를 재개하시겠습니까?',
+    };
+    Swal.fire({
+        title: msg[name],
+        icon: 'question',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        reverseButtons: false, // 버튼 순서 거꾸로
+    }).then(result => {
+        if (result.isConfirmed) {
+            callFunction(name);
+        }
+    });
 };
 
 onMounted(() => {
@@ -349,29 +387,29 @@ onUnmounted(() => {
                     <div class="button_area">
                         <button
                             class="button"
-                            @click="saveSupply"
+                            @click="confirmAction('saveSupply')"
                             v-if="id === 0 && supplyDetail.tradeFlag !== 'N'"
                         >
-                            저장
+                            등록
                         </button>
                         <button
                             class="button"
                             v-if="id !== 0 && supplyDetail.tradeFlag !== 'N'"
-                            @click="updateSupply"
+                            @click="confirmAction('updateSupply')"
                         >
                             수정
                         </button>
                         <button
                             class="button"
                             v-if="id !== 0 && supplyDetail.tradeFlag !== 'N'"
-                            @click="deleteSupply"
+                            @click="confirmAction('deleteSupply')"
                         >
                             삭제
                         </button>
                         <button
                             class="button"
                             v-if="supplyDetail.tradeFlag === 'N'"
-                            @click="recoverySupply"
+                            @click="confirmAction('recoverySupply')"
                         >
                             거래 재개
                         </button>

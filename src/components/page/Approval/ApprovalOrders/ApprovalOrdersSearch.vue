@@ -1,34 +1,38 @@
 <script setup>
+import { ref } from 'vue';
 import router from '@/router';
-import { onMounted } from 'vue';
 
-const searchKeyword = ref('');
+const searchTitle = ref('');
 const searchStDate = ref('');
 const searchEdDate = ref('');
 
-const handlerSearch = () => {
-    const query = [];
-    !searchKeyword.value || query.push(`searchKeyword=${searchKeyword.value}`);
-    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+const handlersearchApprovalOrders = () => {
+    const searchParamObj = {
+        searchTitle: searchTitle.value,
+        searchStDate: searchStDate.value,
+        searchEdDate: searchEdDate.value,
+    };
 
-    router.push(queryString);
+    router.push({ params: { ...searchParamObj } });
 };
-onMounted(() => {
-    window.location.search && router.replace(window.location.pathname);
-});
 </script>
 <template>
     <div class="search-box">
-        기업 고객명:
-        <input v-model.lazy="searchKeyword" />
-        <input type="date" v-model.lazy="searchStDate" />
-        <input type="date" v-model.lazy="searchEdDate" />
-        <button @click="handlerSearch">검색</button>
+        <label
+            >제품명
+            <input v-model="searchTitle" />
+        </label>
+        <label
+            >구매일자
+            <span>
+                <input type="date" v-model="searchStDate" />
+                ~
+                <input type="date" v-model="searchEdDate" />
+            </span>
+        </label>
+        <button @click="handlersearchApprovalOrders">검색</button>
     </div>
 </template>
-
 <style lang="scss" scoped>
 .search-box {
     margin-bottom: 10px;
@@ -37,6 +41,15 @@ onMounted(() => {
 }
 
 input {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+select {
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 5px;
