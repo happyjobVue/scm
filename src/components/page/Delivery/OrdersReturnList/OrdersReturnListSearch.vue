@@ -1,40 +1,44 @@
 <script setup>
 import router from '@/router';
-import { onMounted } from 'vue';
-import { useModalStore } from '../../../../stores/modalStore';
+import { onMounted, ref } from 'vue';
 
-const modalState = useModalStore();
-
-const groupCodeSelect = ref('searchSupplier');
-const searchTitle = ref('');
+const searchOption = ref("searchUser");
+const searchKeyword = ref('');
 
 const handlerSearch = () => {
-    const query = [];
-    !groupCodeSelect.value ||
-        query.push(`searchOption=${groupCodeSelect.value}`);
-    !searchTitle.value || query.push(`searchKeyword=${searchTitle.value}`);
+  const query = [];
+    !searchOption.value || query.push(`searchOption=${searchOption.value}`);
+    !searchKeyword.value || query.push(`searchKeyword=${searchKeyword.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
+};
+
+const resetKeyword = () => {
+  searchKeyword.value = '';
 };
 
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
 </script>
+
 <template>
-    <div class="search-box">
-        <select v-model="groupCodeSelect">
-            <option value="searchSupplier">납품업체명</option>
-            <option value="searchProduct">제품명</option>
-        </select>
-        <input v-model.lazy="searchTitle" />
-        <button @click="handlerSearch">검색</button>
-        <button @click="modalState.modalState = !modalState.modalState">
-            등록
-        </button>
-    </div>
+  <div class="search-box" >
+    <select v-model="searchOption" @change="resetKeyword()">
+        <option value="searchUser">업체명</option>
+        <option value="searchReturnDate">반품 처리일</option>            
+    </select>
+    <template v-if="searchOption === 'searchUser'">
+      <input v-model.lazy="searchKeyword"/>
+    </template>
+    <template v-else-if="searchOption === 'searchReturnDate'">
+      <input type="date" v-model.lazy="searchKeyword"/>
+    </template>
+    <button @click="handlerSearch()">검색</button>
+  </div>
 </template>
+
 <style lang="scss" scoped>
 .search-box {
     margin-bottom: 10px;
@@ -76,14 +80,5 @@ button {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
-}
-select {
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 120px;
-    text-align: center;
 }
 </style>

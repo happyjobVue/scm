@@ -24,8 +24,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-box" @change="resetKeyword()">
-    <select v-model="searchOption">
+  <div class="search-box">
+    <select v-model="searchOption" @change="resetKeyword()">
         <option value="searchUser">업체명</option>
         <option value="searchOrderDate">반품신청날짜</option>            
     </select>

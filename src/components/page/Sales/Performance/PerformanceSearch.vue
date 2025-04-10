@@ -1,48 +1,35 @@
 <script setup>
 import router from '@/router';
-import { useModalStore } from '../../../../stores/modalState';
+import { onMounted } from 'vue';
 
-const modalState = useModalStore();
+const searchKeyword = ref('');
+const searchStDate = ref('');
+const searchEdDate = ref('');
 
-const groupCodeSelect = ref('name');
-const searchTitle = ref('');
-const deleteInfoCheck = ref(false);
-
-const handleCheck = () => {
-    deleteInfoCheck.value = !deleteInfoCheck.value;
-    handlerSearch();
-};
 const handlerSearch = () => {
+    console.log('check');
     const query = [];
-    query.push(`inforAll=${deleteInfoCheck.value ? 1 : 0}`);
-    !groupCodeSelect.value ||
-        query.push(`groupCodeSelect=${groupCodeSelect.value}`);
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
+    !searchKeyword.value || query.push(`searchKeyword=${searchKeyword.value}`);
+    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
+    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     router.push(queryString);
 };
-
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
 </script>
 <template>
     <div class="search-box">
-        <select v-model="groupCodeSelect">
-            <option value="name">직원명/성명</option>
-            <option value="manager">담당자</option>
-            <option value="userClass">담당업무</option>
-        </select>
-        <input v-model.lazy="searchTitle" />
-        삭제된 정보 표시
-        <input type="checkbox" @click="handleCheck" />
+        기업 고객명:
+        <input v-model.lazy="searchKeyword" />
+        <input type="date" v-model.lazy="searchStDate" />
+        <input type="date" v-model.lazy="searchEdDate" />
         <button @click="handlerSearch">검색</button>
-        <button @click="modalState.modalState = !modalState.modalState">
-            등록
-        </button>
     </div>
 </template>
+
 <style lang="scss" scoped>
 .search-box {
     margin-bottom: 10px;
@@ -84,14 +71,5 @@ button {
         box-shadow: 0 2px #666;
         transform: translateY(2px);
     }
-}
-select {
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 120px;
-    text-align: center;
 }
 </style>
