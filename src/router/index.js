@@ -17,7 +17,7 @@ import Sinquiry from '../views/Support/Sinquiry.vue';
 import DeliveryShoppingReturnList from '../views/Delivery/ShoppingReturnList.vue';
 import ShoppingList from '../views/Delivery/ShoppingList.vue';
 import CommonCode from '../views/Management/CommonCode.vue';
-import OrdersList from '../views/Tasks/OrdersList.vue';
+import TasksOrdersList from '../views/Tasks/TasksOrdersList.vue';
 import OrdersReturnList from '../views/Tasks/OrdersReturnList.vue';
 import ProductInfo from '../views/Management/ProductInfo.vue';
 import Performance from '../views/Sales/Performance.vue';
@@ -125,7 +125,7 @@ const routes = [
                     {
                         path: 'orders-list',
                         name: 'orders-list',
-                        component: OrdersList,
+                        component: TasksOrdersList,
                     },
                     {
                         path: 'orders-return-list',
