@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue';
 import Pagination from '../../../common/Pagination.vue';
 import { useRoute } from 'vue-router';
 import { useModalStore } from '../../../../stores/modalState';
-import OrdersModal from './OrdersModal.vue';
+import TasksOrdersModal from './TasksOrdersModal.vue';
 
 const route = useRoute();
 
@@ -42,7 +42,7 @@ watch(() => route.params, searchOrderList);
 </script>
 <template>
     <div class="divOrderList">
-        <OrdersModal v-if="modalState.modalState" :id="orderId" />
+        <TasksOrdersModal v-if="modalState.modalState" :id="orderId" />
         <table>
             <colgroup>
                 <col width="20%" />

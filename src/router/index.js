@@ -8,7 +8,7 @@ import Inquiry from '../views/Management/Inquiry.vue';
 
 import ShoppingOrders from '../views/Trade/ShoppingOrders.vue';
 import TasksShopping from '../views/Tasks/TasksShopping.vue';
-import Orders from '../views/Tasks/Orders.vue';
+import TasksOrders from '../views/Tasks/TasksOrders.vue';
 import ShoppingReturnList from '../views/Trade/ShoppingReturnList.vue';
 import Inventory from '../views/Trade/Inventory.vue';
 import ShoppingReturn from '../views/Tasks/ShoppingReturn.vue';
@@ -115,7 +115,7 @@ const routes = [
                     {
                         path: 'orders',
                         name: 'orders',
-                        component: Orders,
+                        component: TasksOrders,
                     },
                     {
                         path: 'shopping-return',
