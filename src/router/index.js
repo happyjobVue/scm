@@ -130,7 +130,7 @@ const routes = [
                     },
                     {
                         path: 'orders-return-list',
-                        name: 'orders-return-list',
+                        name: 'tasks-orders-return-list',
                         component: TasksOrdersReturnList,
                     },
                 ],

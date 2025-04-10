@@ -67,8 +67,6 @@ declare module 'vue' {
     ShoppingReturnListMain: typeof import('./src/components/page/Delivery/ShoppingReturnList/ShoppingReturnListMain.vue')['default']
     ShoppingReturnListModal: typeof import('./src/components/page/Delivery/ShoppingReturnList/ShoppingReturnListModal.vue')['default']
     ShoppingReturnListSearch: typeof import('./src/components/page/Delivery/ShoppingReturnList/ShoppingReturnListSearch.vue')['default']
-    ShoppingReturnMain: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppingReturnMain.vue')['default']
-    ShoppingReturnSearch: typeof import('./src/components/page/Tasks/ShoppingReturn/ShoppingReturnSearch.vue')['default']
     SignUpModal: typeof import('./src/components/page/Login/SignUpModal.vue')['default']
     SinquiryMain: typeof import('./src/components/page/Support/Sinquiry/SinquiryMain.vue')['default']
     SinquiryModal: typeof import('./src/components/page/Support/Sinquiry/SinquiryModal.vue')['default']
