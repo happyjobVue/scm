@@ -3,11 +3,9 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Pagination from '../../../common/Pagination.vue';
-import { useModalStore } from '../../../../stores/modalState';
 import OrdersReturnSubgrid from './OrdersReturnSubgrid.vue';
 
 const route = useRoute();
-const modalState = useModalStore();
 const modalType = ref('');
 
 const returnList = ref();
@@ -28,14 +26,17 @@ const searchList = () => {
 };
 
 const handlerSubgrid = (id, date) => {
-  supplyId.value = id;
-  orderReturnDate.value = date;
-  modalType.value = 'ordersReturnListDetail';
-  modalState.setModalState();
+    if(supplyId.value + orderReturnDate.value === id + date) {
+        modalType.value = '';
+        supplyId.value = undefined;
+        orderReturnDate.value = undefined;
+    } else {
+        supplyId.value = id;
+        orderReturnDate.value = date;
+    }  
 };
 
 const onPostSuccess = ()=> {
-    modalState.setModalState(false);
     modalType.value = '';
     searchList();
 };
@@ -45,6 +46,12 @@ onMounted(() => {
 });
 
 watch(() => route.query, searchList);
+
+watch(supplyId, (newVal) => {
+    if (newVal) {
+        modalType.value = 'ordersReturnListDetail';
+    }
+});
 </script>
 
 <template>
@@ -94,10 +101,11 @@ watch(() => route.query, searchList);
         v-model="cPage"
     />
     <OrdersReturnSubgrid 
-        v-if="modalState.modalState && modalType === 'ordersReturnListDetail'"
+        v-if="modalType === 'ordersReturnListDetail'"
         :id="supplyId"
         :date="orderReturnDate"
-        @modalClose="supplyId=$event"
+        :key="supplyId + '_' + orderReturnDate"
+        @modalClose="modalType=$event"
         @postSuccess="onPostSuccess"
     />
   </div>

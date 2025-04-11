@@ -33,6 +33,7 @@ const orderApproveUpdate = id => {
                     searchApprovalOrders();
                 }
             });
+        alert(`발주번호 ${id}의 구매를 승인 처리하였습니다.`);
     }
 };
 

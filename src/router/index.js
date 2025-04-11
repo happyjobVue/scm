@@ -31,7 +31,6 @@ import Cart from '../views/Mall/Cart.vue';
 import History from '../views/Mall/History.vue';
 import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
 
-
 const routes = [
     {
         path: '/',
@@ -116,7 +115,7 @@ const routes = [
                     },
                     {
                         path: 'orders',
-                        name: 'orders',
+                        name: 'tasks-orders',
                         component: TasksOrders,
                     },
                     {
@@ -131,7 +130,7 @@ const routes = [
                     },
                     {
                         path: 'orders-return-list',
-                        name: 'orders-return-list',
+                        name: 'tasks-orders-return-list',
                         component: TasksOrdersReturnList,
                     },
                 ],
@@ -221,7 +220,7 @@ const routes = [
                 children: [
                     {
                         path: 'orders',
-                        name: 'orders',
+                        name: 'approval-orders',
                         component: ApprovalOrders,
                     },
                 ],

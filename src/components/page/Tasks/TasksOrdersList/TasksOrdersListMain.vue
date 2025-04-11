@@ -3,10 +3,14 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Pagination from '../../../common/Pagination.vue';
 import { useRoute } from 'vue-router';
+import TasksOrdersListModal from './TasksOrdersListModal.vue';
+import { useModalStore } from '../../../../stores/modalState';
 
 const route = useRoute();
 const orderDirectionList = ref({});
 const cPage = ref(1);
+const modalState = useModalStore();
+const orderId = ref(0);
 
 const searchOrderDirectionList = () => {
     const param = {
@@ -20,6 +24,15 @@ const searchOrderDirectionList = () => {
     axios.post('/api/tasks/orderDirectionListBody.do', param).then(res => {
         orderDirectionList.value = res.data;
     });
+};
+
+const handlerTasksOrdersListModal = id => {
+    orderId.value = id;
+    modalState.setModalState();
+};
+
+const onPostSuccess = () => {
+    modalState.setModalState();
 };
 
 const updateOrderPaid = id => {
@@ -44,6 +57,12 @@ watch(() => route.params, searchOrderDirectionList);
 </script>
 <template>
     <div class="divOrderDirectionList">
+        <TasksOrdersListModal
+            v-if="modalState.modalState"
+            :id="orderId"
+            @modalClose="orderId = $event"
+            @postSuccess="onPostSuccess"
+        />
         <table>
             <colgroup>
                 <col width="11%" />
@@ -72,7 +91,16 @@ watch(() => route.params, searchOrderDirectionList);
                             v-for="orderDirection in orderDirectionList.orderDirection"
                             :key="orderDirection.orderId"
                         >
-                            <td>{{ orderDirection.orderId }}</td>
+                            <td
+                                class="td-hover"
+                                @click="
+                                    handlerTasksOrdersListModal(
+                                        orderDirection.orderId
+                                    )
+                                "
+                            >
+                                {{ orderDirection.orderId }}
+                            </td>
                             <td>{{ orderDirection.supplyName }}</td>
                             <td>{{ orderDirection.productName }}</td>
                             <td>{{ orderDirection.count }}</td>
@@ -144,6 +172,14 @@ table {
         opacity: 0.9;
         cursor: pointer;
     }
+}
+.td-hover {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.td-hover:hover {
+  text-decoration: underline;
+  color: #fe1414;
 }
 button {
     text-align: center;

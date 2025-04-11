@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
-import { useModalStore } from '../../../../stores/modalStore';
 import Swal from 'sweetalert2';
+import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();
 
@@ -415,7 +415,7 @@ onUnmounted(() => {
                         </button>
                         <button
                             class="button"
-                            @click="modalState.modalState = false"
+                            @click="modalState.setModalState()"
                         >
                             취소
                         </button>
