@@ -42,9 +42,9 @@ onMounted(() => {
         </select>
         <input v-model.lazy="searchTitle" />
         <span>
-            <input type="date" v-model="searchStDate" />
+            <input type="date" v-model.lazy="searchStDate" />
             ~
-            <input type="date" v-model="searchEdDate" />
+            <input type="date" v-model.lazy="searchEdDate" />
         </span>
         <button @click="handlerSearchOrderList">검색</button>
     </div>
