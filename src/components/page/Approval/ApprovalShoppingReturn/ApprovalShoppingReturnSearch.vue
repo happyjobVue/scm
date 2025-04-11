@@ -20,14 +20,14 @@ const handlerSearchApprovalShoppingReturn = () => {
     <div class="search-box">
         <label
             >제품명
-            <input v-model="searchTitle" />
+            <input v-model.lazy="searchTitle" />
         </label>
         <label
             >반품일자
             <span>
-                <input type="date" v-model="searchStDate" />
+                <input type="date" v-model.lazy="searchStDate" />
                 ~
-                <input type="date" v-model="searchEdDate" />
+                <input type="date" v-model.lazy="searchEdDate" />
             </span>
         </label>
         <button @click="handlerSearchApprovalShoppingReturn">검색</button>
