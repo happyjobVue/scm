@@ -15,6 +15,7 @@ const generatedCode = ref('');
 const userInputCode = ref('');
 
 const modalStore = useModalStore();
+const emit = defineEmits(['loginID']);
 
 /* ======================= handler ==================== */
 const handlerFindId = () =>{
@@ -114,6 +115,7 @@ const handlerValidateFindPwdCode = () =>{
                 /* alert("비밀번호: " + res.data.resultModel.password); */
                 alert('인증에 성공하였습니다. 비밀번호를 변경해주세요.');
                 stopTimer();
+                emit('loginID', loginID.value);
                 modalStore.close('findInfo');
                 modalStore.open('changeInfo');
             } else {
@@ -400,5 +402,7 @@ div {
     display: flex;
     flex-direction: column;
 }
-
+dd {
+  margin-inline-start: 0;
+}
 </style>

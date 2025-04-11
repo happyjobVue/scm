@@ -1,16 +1,59 @@
 <script setup>
+import axios from 'axios';
 import { useModalStore } from '../../../stores/modalStore';
 
 
 const modalStore = useModalStore();
 
+const{ loginID } = defineProps(['loginID']);
+const password = ref('');
+const passwordError = ref('');
+const confirmPassword = ref('');
+const confirmError = ref('');
+
+
+const validatePassword = () => {
+    const regex = /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,15}$/;
+    if (!regex.test(password.value)) {
+        passwordError.value = '비밀번호는 영문 특수문자 숫자 조합으로 8~15자여야 합니다.';
+        return false;
+  } else {
+        passwordError.value = '';
+        return true;
+  }
+}
+
+const validateConfirmPassword = () => {
+    if (password.value === confirmPassword.value) {
+        confirmError.value = '';
+        return true;
+    }
+    else{
+        confirmError.value = '입력하신 비밀번호와 다릅니다.'
+        return false;
+    }
+
+}
+
+const handlerUpdate = () => {
+    if(!(validatePassword()&validateConfirmPassword())) return alert('옳바르지 않은 형식이 있습니다.')
+    const param = {
+        loginID: loginID
+        , chPassword: password.value
+    }
+    axios.post('/api/changePwd.do', param).then(res=> {
+        if(res.data.result != 'success') return alert('비밀번호 재설정에 실패하였습니다.');
+        alert('비밀번호 재설정에 성공하였습니다 로그인 해주세요!');
+        modalStore.close('changeInfo');
+    })
+}
 
 
 </script>
 
 <template>
     <div class="backdrop">
-        <div class="container" style="width: 500px;">
+        <div class="container" style="width: 600px;">
 		<dl>
 			<dt>
 				<strong>비밀번호 변경</strong>
@@ -20,14 +63,32 @@ const modalStore = useModalStore();
 					<tbody>
                         <tr>
                             <th scope="row">아이디 </th>
-                            <td colspan="4"><input type="text" disabled /></td> 
+                            <td>
+                                <div class="input-box">
+                                    <input
+                                    type="text"
+                                    :value="loginID"
+                                    disabled
+                                    />
+                                </div>
+                            </td>
                         </tr> 	
                         <tr>
                             <th scope="row">비밀번호 <span class="font_red">*</span></th>
                             <td colspan="4">
-                                <input type="password"
-                                placeholder="숫자, 영문자, 특수문자 조합으로 8~15자리 " 
-                                />
+                                <div class="input-box">
+                                    <input 
+                                    type="password"
+                                    placeholder="숫자, 영문자, 특수문자 조합으로 8~15자리 " 
+                                    v-model="password"
+                                    @blur="validatePassword" 
+                                    />
+                                    <span 
+                                    class="valid-text"
+                                    v-if="passwordError">
+                                    {{ passwordError }}
+                                    </span>
+                                </div>
                             </td>
                         </tr>
 
@@ -35,15 +96,25 @@ const modalStore = useModalStore();
                             <th scope="row" style="padding: 0 0">비밀번호 확인<span
                                 class="font_red">*</span></th>
                             <td colspan="4">
-                                <input type="password"
-                                    placeholder="숫자, 영문자, 특수문자 조합으로 8~15자리 "
-                                />
+                                <div class="input-box">
+                                    <input type="password"
+                                        placeholder="숫자, 영문자, 특수문자 조합으로 8~15자리 "
+                                        v-model="confirmPassword"
+                                        @blur="validateConfirmPassword"
+                                        />
+                                        <span 
+                                        class="valid-text"
+                                        v-if="confirmError">
+                                            {{ confirmError }} </span>
+                                </div>
                             </td>
                         </tr>
 					</tbody>
 				</table>
 				<div class="btn_areaC mt30">
-					<button>비밀번호 변경</button> 
+					<button
+                    @click="handlerUpdate()"
+                    >비밀번호 변경</button> 
 					<button
                     @click="modalStore.close('changeInfo')"
                     >취소</button>
@@ -149,7 +220,26 @@ button {
     }
 }
 
+input{
+    width: 400px;
+}
+
 .font_red {
     color: #fe1414;
+}
+
+.input-box{
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+}
+.valid-text{
+    color: #fe1414; 
+    font-size: 0.8em; 
+    margin-top: 4px;
+}
+dd {
+  margin-inline-start: 0;
 }
 </style>

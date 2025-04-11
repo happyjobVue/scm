@@ -256,4 +256,7 @@ button {
 .font_red {
     color: #fe1414;
 }
+dd {
+  margin-inline-start: 0;
+}
 </style>

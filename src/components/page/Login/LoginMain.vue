@@ -7,10 +7,12 @@ import { useModalStore } from '../../../stores/modalStore';
 import SignUpModal from './SignUpModal.vue';
 import FindInfoMoal from './FindInfoModal.vue'
 import ChangeInfoModal from './ChangeInfoModal.vue';
+import { ref } from 'vue';
 
 const loginInfo = ref({});
 const userInfo = useUserInfo();
 const router = useRouter();
+const loginID = ref('');
 
 const modalStore = useModalStore();
 
@@ -35,8 +37,13 @@ const handlerLogin = async () => {
 <template>
     <div class="login-container">
         <SignUpModal v-if="modalStore.isOpen('signUp')" />
-        <FindInfoMoal v-if="modalStore.isOpen('findInfo')"/>
-        <ChangeInfoModal v-if="modalStore.isOpen('changeInfo')" />
+        <FindInfoMoal 
+        v-if="modalStore.isOpen('findInfo')"
+        @loginID="loginID = $event"
+        />
+        <ChangeInfoModal v-if="modalStore.isOpen('changeInfo')" 
+        :loginID="loginID"
+        />
         <div>
             
             <div class="login-text">
