@@ -3,7 +3,7 @@ import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import SupplierInfoModal from './SupplierInfoModal.vue';
-import { useModalStore } from '../../../../stores/modalStore';
+import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();
 

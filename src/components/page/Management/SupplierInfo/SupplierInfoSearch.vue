@@ -1,7 +1,7 @@
 <script setup>
 import router from '@/router';
 import { onMounted } from 'vue';
-import { useModalStore } from '../../../../stores/modalStore';
+import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();
 
