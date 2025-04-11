@@ -30,6 +30,7 @@ import Products from '../views/Mall/Products.vue';
 import Cart from '../views/Mall/Cart.vue';
 import History from '../views/Mall/History.vue';
 import ApprovalOrders from '../views/Approval/ApprovalOrders.vue';
+import ApprovalShoppingReturn from '../views/Approval/ApprovalShoppingReturn.vue';
 
 const routes = [
     {
@@ -222,6 +223,11 @@ const routes = [
                         path: 'orders',
                         name: 'approval-orders',
                         component: ApprovalOrders,
+                    },
+                    {
+                        path: 'shopping-return',
+                        name: 'approval-shopping-return',
+                        component: ApprovalShoppingReturn,
                     },
                 ],
             },
