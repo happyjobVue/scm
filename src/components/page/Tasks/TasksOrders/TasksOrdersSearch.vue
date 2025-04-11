@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 <template>
     <div class="search-box">
-        <select v-model="searchTag">
+        <select v-model.lazy="searchTag">
             <option
                 v-for="option in options"
                 :key="option.value"
