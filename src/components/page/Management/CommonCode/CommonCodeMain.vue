@@ -123,6 +123,7 @@ watch(() => route.query, searchList);
 .td-hover {
     cursor: pointer;
     transition: color 0.3s ease;
+    font-weight: bold;
 }
 .td-hover:hover {
   text-decoration: underline;

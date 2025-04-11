@@ -47,6 +47,8 @@ const handlerUpdate = () =>{
 }
 
 const handlerDelete = () =>{
+    const result = window.confirm('정말 삭제하시겠습니까?');
+    if(!result) return alert('공통코드 삭제가 취소되었습니다.')
     axios.post('/api/management/commonCodeDeleteBody.do', {groupIdx: id})
         .then(res => {
             if(res.data.result === "success") {
@@ -229,5 +231,8 @@ button {
 
 .font_red {
     color: #fe1414;
+}
+dd {
+  margin-inline-start: 0;
 }
 </style>

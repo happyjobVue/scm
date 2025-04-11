@@ -15,6 +15,7 @@ const generatedCode = ref('');
 const userInputCode = ref('');
 
 const modalStore = useModalStore();
+const emit = defineEmits(['loginID']);
 
 /* ======================= handler ==================== */
 const handlerFindId = () =>{
@@ -45,7 +46,6 @@ const handlerSendMail = () => {
     const param = new URLSearchParams({email: email.value});
     axios.post('/api/selectFindInfoId.do', param)
         .then(res => {
-            console.log(res)
             if(res.data.result === "SUCCESS"){
                 checkEmail.value = true;
                 sendVerificationCode();
@@ -64,6 +64,7 @@ const handlerValidateFindIdCode = () => {
         .then(res => {
             if(res.data.result === "SUCCESS"){
                 alert("아이디: " + res.data.resultModel.loginID);
+                stopTimer();
             } else {
                 alert("존재하지 않는 메일입니다.");
             }
@@ -76,7 +77,6 @@ const handlerCheckId = () => {
     const param = new URLSearchParams({loginID: loginID.value});
     axios.post('/api/registerIdCheck.do', param)
         .then(res => {
-            console.log(res)
             if(res.data.result === "SUCCESS"){
                 checkLoginID.value = true;
             } else {
@@ -93,7 +93,6 @@ const handlerCheckInfo = () => {
     });
     axios.post('/api/selectFindInfoPw.do', param)
         .then(res => {
-            console.log(res)
             if(res.data.result === "SUCCESS"){
                 checkEmail.value = true;
                 sendVerificationCode();
@@ -113,7 +112,12 @@ const handlerValidateFindPwdCode = () =>{
     axios.post('/api/selectFindInfoPw.do', param)
         .then(res => {
             if(res.data.result === "SUCCESS"){
-                alert("비밀번호: " + res.data.resultModel.password);
+                /* alert("비밀번호: " + res.data.resultModel.password); */
+                alert('인증에 성공하였습니다. 비밀번호를 변경해주세요.');
+                stopTimer();
+                emit('loginID', loginID.value);
+                modalStore.close('findInfo');
+                modalStore.open('changeInfo');
             } else {
                 alert("존재하지 않는 정보입니다.");
             }
@@ -157,7 +161,9 @@ const timerText = computed(() => {
   const sec = String(timer.value % 60).padStart(2, '0');
   return `${min}:${sec}`;
 });
+
 let timerInterval = null;
+
 const startTimer = () => {
   clearInterval(timerInterval);
   timer.value = 180;
@@ -169,6 +175,11 @@ const startTimer = () => {
       alert("인증 시간이 만료되었습니다.");
     }
   }, 1000);
+};
+
+const stopTimer = () => {
+  clearInterval(timerInterval);
+  timerInterval = null; 
 };
 </script>
 
@@ -192,9 +203,9 @@ const startTimer = () => {
 
                 <dd>
                     <!-- 아이디/비밀번호 찾기 폼 -->
-                    <table v-if="findId" class="row" id="findForm">
+                    <table v-if="findId" >
                         <tbody>
-                            <tr id="registerEmailId">
+                            <tr>
                                 <th scope="row" style="width: 85px;" >
                                     이메일<span class="font_red">*</span>
                                 </th>
@@ -206,7 +217,7 @@ const startTimer = () => {
                                 size="34" 
                                 style="height: 30px;" /> 
                                     <button @click="handlerSendMail()">
-                                        <span id="timerBtn">이메일 전송</span></button>
+                                        <span>이메일 전송</span></button>
                                     </td>
                             </tr>
                             <tr v-if="checkEmail">		
@@ -235,9 +246,9 @@ const startTimer = () => {
                         </tbody>
                     </table>
 
-                    <table v-if="findPwd" class="row" id="findPwdForm">
+                    <table v-if="findPwd">
                         <tbody>
-                            <tr id="loginRegister">
+                            <tr>
                                 <th scope="row" style="width: 85px;" >
                                     아이디<span class="font_red">*</span>
                                 </th>
@@ -391,5 +402,7 @@ div {
     display: flex;
     flex-direction: column;
 }
-
+dd {
+  margin-inline-start: 0;
+}
 </style>

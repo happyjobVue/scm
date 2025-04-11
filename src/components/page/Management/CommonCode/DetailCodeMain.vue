@@ -16,7 +16,6 @@ const modalStore = useModalStore();
 
 
 const searchList = () => {
-    console.log('detail code',groupCode);
 
     const param ={
         ...route.query,
@@ -24,7 +23,6 @@ const searchList = () => {
         currentPage: cPage.value,
         groupCode: groupCode
     };
-    console.log(param);
     axios.post('/api/management/commonDetailCodeListJson.do', param).then(res => {
         detailCodeList.value = res.data;
     });
