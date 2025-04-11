@@ -30,9 +30,11 @@ onMounted(() => {
         </label>
         <label
             >기간:
-            <input type="date" v-model="searchStDate" />
-            ~
-            <input type="date" v-model="searchEdDate" />
+            <span>
+                <input type="date" v-model.lazy="searchStDate" />
+                ~
+                <input type="date" v-model.lazy="searchEdDate" />
+            </span>
         </label>
         <button @click="handlerSearchDeliveryOrderList">검색</button>
     </div>
