@@ -6,10 +6,13 @@ import { useUserInfo } from '../../../stores/userInfo';
 import { useModalStore } from '../../../stores/modalStore';
 import SignUpModal from './SignUpModal.vue';
 import FindInfoMoal from './FindInfoModal.vue'
+import ChangeInfoModal from './ChangeInfoModal.vue';
+import { ref } from 'vue';
 
 const loginInfo = ref({});
 const userInfo = useUserInfo();
 const router = useRouter();
+const loginID = ref('');
 
 const modalStore = useModalStore();
 
@@ -29,15 +32,18 @@ const handlerLogin = async () => {
     }
 };
 
-const handlerSignUpModal = () => {
-    
-}
 </script>
 
 <template>
     <div class="login-container">
         <SignUpModal v-if="modalStore.isOpen('signUp')" />
-        <FindInfoMoal v-if="modalStore.isOpen('findInfo')"/>
+        <FindInfoMoal 
+        v-if="modalStore.isOpen('findInfo')"
+        @loginID="loginID = $event"
+        />
+        <ChangeInfoModal v-if="modalStore.isOpen('changeInfo')" 
+        :loginID="loginID"
+        />
         <div>
             
             <div class="login-text">
@@ -65,7 +71,7 @@ const handlerSignUpModal = () => {
                     </div>
                     <div>
                         <label> 비밀번호 </label>
-                        <input required type="password" v-model="loginInfo.pwd" />
+                        <input required type="password" v-model="loginInfo.pwd" @keyup.enter="handlerLogin"/>
                     </div>
                     <div class="joinDiv">
                         <strong class="strong" @click="modalStore.open('signUp');">[일반회원가입]</strong>

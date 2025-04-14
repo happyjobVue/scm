@@ -51,6 +51,7 @@ watch(() => route.query, searchList);
         @postSuccess="onPostSuccess"
         @modalClose="warehouseId = $event"
         />
+        현재 페이지: {{ cPage }} 총 개수 : {{ warehouseInfoList.warehouseInfoCnt }}
         <div>
             <table class="col">
                 <colgroup>
@@ -120,7 +121,13 @@ watch(() => route.query, searchList);
             </table>
                 
             <!-- 페이징 처리  -->
-            <div class="paging_area" id="pagingNavi"></div>				
+            <Pagination 
+            :totalItems = "warehouseInfoList?.warehouseInfoCnt"
+            :items-per-page="5"
+            :max-pages-shown="5"
+            :onClick="searchList"
+            v-model="cPage"
+        />   
         </div>
     </div>
 </template>

@@ -85,7 +85,7 @@ onMounted(() => {
                             :key="history.orderId"
                             >
                                 <td> {{ history.orderId }} </td>
-                                <td> {{ history.price.toLocaleString() }} </td>
+                                <td> {{ (history.price*history.count).toLocaleString() }} </td>
                                 <td> {{ history.salesDate.slice(0, 10) }} </td>
                                 <td> {{ getSalesStateText(history.salesState) }} </td>
                                 <td> {{ history.requestedDeliveryDate.slice(0, 10) }} </td>
