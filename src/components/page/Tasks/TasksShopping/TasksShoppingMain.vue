@@ -3,7 +3,6 @@ import axios from 'axios';
 import Pagination from '../../../common/Pagination.vue';
 import { onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ShoppingModal from './TasksShoppingModal.vue';
 import { useModalStore } from '../../../../stores/modalState';
 
 const route = useRoute();
