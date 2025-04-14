@@ -35,7 +35,13 @@ onMounted(() => {
     searchDeliveryOrderList();
 });
 
-watch(() => route.params, searchDeliveryOrderList);
+watch(
+    () => route.params,
+    () => {
+        cPage.value = 1;
+        searchDeliveryOrderList();
+    }
+);
 </script>
 <template>
     <div class="divDeliveryOrderList">
