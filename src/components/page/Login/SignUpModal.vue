@@ -536,5 +536,8 @@ div {
     display: flex;
     flex-direction: column;
 }
+dd {
+  margin-inline-start: 0;
+}
 
 </style>

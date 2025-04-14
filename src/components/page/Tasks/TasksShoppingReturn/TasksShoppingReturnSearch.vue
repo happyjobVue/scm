@@ -24,14 +24,14 @@ onMounted(() => {
     <div class="search-box">
         <label
             >제품명:
-            <input v-model="searchKeyword" />
+            <input v-model.lazy="searchKeyword" />
         </label>
         <label
             >기간:
             <span>
-                <input type="date" v-model="searchStDate" />
+                <input type="date" v-model.lazy="searchStDate" />
                 ~
-                <input type="date" v-model="searchEdDate" />
+                <input type="date" v-model.lazy="searchEdDate" />
             </span>
         </label>
         <button @click="handlerSearchShoppingReturnList">검색</button>

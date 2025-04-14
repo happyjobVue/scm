@@ -9,8 +9,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     ApprovalOrdersMain: typeof import('./src/components/page/Approval/ApprovalOrders/ApprovalOrdersMain.vue')['default']
     ApprovalOrdersSearch: typeof import('./src/components/page/Approval/ApprovalOrders/ApprovalOrdersSearch.vue')['default']
+    ApprovalShoppingReturnMain: typeof import('./src/components/page/Approval/ApprovalShoppingReturn/ApprovalShoppingReturnMain.vue')['default']
+    ApprovalShoppingReturnSearch: typeof import('./src/components/page/Approval/ApprovalShoppingReturn/ApprovalShoppingReturnSearch.vue')['default']
     CartMain: typeof import('./src/components/page/Mall/Cart/CartMain.vue')['default']
     CartSummary: typeof import('./src/components/page/Mall/Cart/CartSummary.vue')['default']
+    ChangeInfoModal: typeof import('./src/components/page/Login/ChangeInfoModal.vue')['default']
     CommonCodeMain: typeof import('./src/components/page/Management/CommonCode/CommonCodeMain.vue')['default']
     CommonCodeModal: typeof import('./src/components/page/Management/CommonCode/CommonCodeModal.vue')['default']
     CommonCodeSearch: typeof import('./src/components/page/Management/CommonCode/CommonCodeSearch.vue')['default']

@@ -66,9 +66,7 @@ onMounted(() => {
                     <tr>
                         <th>발주날짜</th>
                         <td>
-                            {{
-                                (orderDetailJson?.orderDate || '').split(' ')[0]
-                            }}
+                            {{ orderDetailJson?.orderDate?.split(' ')[0] }}
                         </td>
                     </tr>
                     <tr>

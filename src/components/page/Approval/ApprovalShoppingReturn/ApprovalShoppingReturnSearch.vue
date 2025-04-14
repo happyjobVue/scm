@@ -6,7 +6,7 @@ const searchTitle = ref('');
 const searchStDate = ref('');
 const searchEdDate = ref('');
 
-const handlersearchApprovalOrders = () => {
+const handlerSearchApprovalShoppingReturn = () => {
     const searchParamObj = {
         searchTitle: searchTitle.value,
         searchStDate: searchStDate.value,
@@ -23,14 +23,14 @@ const handlersearchApprovalOrders = () => {
             <input v-model.lazy="searchTitle" />
         </label>
         <label
-            >구매일자
+            >반품일자
             <span>
                 <input type="date" v-model.lazy="searchStDate" />
                 ~
                 <input type="date" v-model.lazy="searchEdDate" />
             </span>
         </label>
-        <button @click="handlersearchApprovalOrders">검색</button>
+        <button @click="handlerSearchApprovalShoppingReturn">검색</button>
     </div>
 </template>
 <style lang="scss" scoped>

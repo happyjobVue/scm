@@ -24,7 +24,6 @@ const searchList = () => {
     axios.post('/api/management/productListBody.do', param)
     .then(res => {
         productInfoList.value = res.data;
-        console.log(productInfoList.value)
     });
 };
 
@@ -56,6 +55,7 @@ watch(() => route.query, searchList);
     @modalClose="productId = $event"
     :id="productId"
     />
+    현재 페이지: {{ cPage }} 총 개수 : {{ productInfoList.productCnt }}
     <div>
         <table style="width: 100%;">
             <colgroup>
@@ -82,7 +82,7 @@ watch(() => route.query, searchList);
                             @click="handlerUpdate(productInfo.productId)"
                             >{{ productInfo.name }}</td>
                             <td>{{ productInfo.supplier }}</td>
-                            <td>{{ productInfo.sellPrice }}</td>
+                            <td>{{ productInfo.sellPrice.toLocaleString() }}</td>
                         </tr>
                     </template>
                     <template v-else>
@@ -109,6 +109,7 @@ watch(() => route.query, searchList);
 .td-hover {
     cursor: pointer;
     transition: color 0.3s ease;
+    font-weight: bold;
 }
 .td-hover:hover {
   text-decoration: underline;

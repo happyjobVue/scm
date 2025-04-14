@@ -89,7 +89,7 @@ watch(() => route.query, searchList);
                                 >{{ products.productNumber }}</td>
                                 <td>{{ products.name }}</td>
                                 <td>{{ products.supplyName }}</td>
-                                <td>{{ products.sellPrice }}</td>
+                                <td>{{ products.sellPrice.toLocaleString() }}</td>
                             </tr>
                         </template>
                         <template v-else>

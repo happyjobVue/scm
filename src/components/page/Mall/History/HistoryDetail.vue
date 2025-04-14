@@ -95,14 +95,21 @@ watch(() => historyState.orderId, (newVal)=> {
                             <td>
                                 <input
                                 type="checkbox"
-                                :disabled="!!historyDetail.returnResultCount"
+                                :disabled="(!!historyDetail.returnResultCount)
+                                || historyDetail.historyDetail.salesState=='salesRequest'
+                                || historyDetail.historyDetail.salesState=='salesComplete'"
                                 v-model="isChecked"
                                 />
                             </td>
 
                             <td>
                                 <template v-if="historyDetail.returnResultCount">
-                                <span class="font_red">{{ historyDetail.returnResultCount }}</span>
+                                    <span class="font_red">{{ historyDetail.returnResultCount }}</span>
+                                </template>
+                                <template 
+                                v-else-if="historyDetail.historyDetail.salesState=='salesRequest'
+                                || historyDetail.historyDetail.salesState=='salesComplete'">
+                                    <span> 0 </span>
                                 </template>
                                 <template v-else>
                                 <input
@@ -124,14 +131,22 @@ watch(() => historyState.orderId, (newVal)=> {
                     </template>
                 </tbody>
             </table>
-            <div class="button-box">
-                <button
-                @click="handlerReturn()"
-                >반품 신청</button> 
-                <button
-                @click="handlerSalesComplete()"
-                >구매 확인</button> 
-            </div>
+            <template v-if="!historyDetail || !historyDetail.historyDetail">
+                <div></div>
+            </template>
+            <template v-else>
+                <div
+                v-if="historyDetail.historyDetail.salesState =='delivery'
+                || historyDetail.historyDetail.salesState =='deliveryComplete'" 
+                class="button-box">
+                    <button
+                    @click="handlerReturn()"
+                    >반품 신청</button> 
+                    <button
+                    @click="handlerSalesComplete()"
+                    >구매 확인</button> 
+                </div>
+            </template>
         </div>
     </div>
 </template>
