@@ -3,7 +3,7 @@ import { useModalStore } from '../../../../stores/modalState';
 import router from '@/router';
 
 const modalState = useModalStore();
-const searchOption = ref('searchAll');
+const searchOption = ref('searchProduct');
 const searchKeyword = ref('');
 
 
@@ -28,7 +28,6 @@ onMounted(() => {
     <div class="search-box">
         <div class="search-container">        
             <select v-model="searchOption">
-                <option value="searchAll">전체</option>
                 <option value="searchProduct">제품명</option>
                 <option value="searchSupplier">납품업체</option>
             </select>
