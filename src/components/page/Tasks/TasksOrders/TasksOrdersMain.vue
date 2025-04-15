@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUpdated, ref, watch } from 'vue';
 import Pagination from '../../../common/Pagination.vue';
 import { useRoute } from 'vue-router';
 import { useModalStore } from '../../../../stores/modalState';
@@ -38,7 +38,13 @@ onMounted(() => {
     searchOrderList();
 });
 
-watch(() => route.params, searchOrderList);
+watch(
+    () => route.params,
+    () => {
+        cPage.value = 1;
+        searchOrderList();
+    }
+);
 </script>
 <template>
     <div class="divOrderList">
