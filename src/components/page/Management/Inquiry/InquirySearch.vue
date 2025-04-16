@@ -16,6 +16,7 @@ const handlerSearch = () => {
     router.push(queryString);
 };
 onMounted(() => {
+    searchTitle.value = '';
     window.location.search && router.replace(window.location.pathname);
 });
 </script>

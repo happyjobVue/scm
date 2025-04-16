@@ -36,6 +36,7 @@ onMounted(() => {
                 yearArray.value.push(i + minYear.value);
             }
         }
+        handlerSearch();
     });
     window.location.search && router.replace(window.location.pathname);
 });

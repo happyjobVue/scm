@@ -43,6 +43,9 @@ const searchList = () => {
                 } else if (pLank !== 0 && pLank < cLank) {
                     changeLank = `${change}↓`;
                     upDown = 'DOWN';
+                } else if (pLank === 0) {
+                    changeLank = 'new!';
+                    upDown = 'N';
                 }
                 topSalesList.value.topSalesList[i] = {
                     ...topSalesList.value.topSalesList[i],
@@ -64,6 +67,9 @@ const addClass = flag => {
     let addClass = '';
     if (flag) {
         flag === 'UP' ? (addClass = 'up') : (addClass = 'down');
+        if (flag === 'N') {
+            addClass = 'new';
+        }
         return addClass;
     }
 };
@@ -195,5 +201,8 @@ button {
 }
 .down {
     color: #d83f3f;
+}
+.new {
+    color: #45a049;
 }
 </style>
