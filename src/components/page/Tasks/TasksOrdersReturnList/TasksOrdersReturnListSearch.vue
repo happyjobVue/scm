@@ -1,7 +1,9 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import router from '@/router';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const searchTitle = ref('name');
 const searchKeyword = ref('');
 const searchStDate = ref('');
@@ -22,6 +24,22 @@ const handlerSearchOrderDirectionList = () => {
 
     router.push({ params: { ...searchParamObj } });
 };
+
+onMounted(() => {
+    window.location.search && router.replace(window.location.pathname);
+});
+
+watch(
+    () => route.params,
+    () => {
+        if (Object.keys(route.params).length === 0) {
+            searchTitle.value = 'name';
+            searchKeyword.value = '';
+            searchStDate.value = '';
+            searchEdDate.value = '';
+        }
+    }
+);
 </script>
 <template>
     <div class="search-box">
