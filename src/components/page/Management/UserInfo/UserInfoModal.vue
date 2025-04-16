@@ -447,7 +447,6 @@ onUnmounted(() => {
                                 <input
                                     type="text"
                                     v-model="userInfoDetail.manager"
-                                    v-bind:readonly="id !== 0"
                                 />
                             </td>
                             <th>전화번호<span class="font_red">*</span></th>

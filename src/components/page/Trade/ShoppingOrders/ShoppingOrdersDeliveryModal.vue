@@ -18,10 +18,10 @@ const selectedWarehouseValue = ref([]);
 const inputCount = ref(0);
 const addedWarehouseItems = ref([]);
 const totalCount = ref(0);
-const selectManagerValue = ref("");
+const selectManagerValue = ref('');
 
 const searchDetail = () => {
-    axios.post('/api/trade/deliveryOrderBody.do', {orderId: id}).then(res => {
+    axios.post('/api/trade/deliveryOrderBody.do', { orderId: id }).then(res => {
         deliveryOrder.value = res.data.deliveryOrder;
         deliveryManager.value = res.data.deliveryManager;
         warehouseSelectList.value = res.data.warehouseSelectList;
@@ -30,17 +30,17 @@ const searchDetail = () => {
 
 const handlerAddBtn = () => {
     if (!selectedWarehouse.value || selectedWarehouseId.value === 0) {
-        alert("창고를 선택해주세요.");
+        alert('창고를 선택해주세요.');
         return;
     }
 
-    if(inputCount.value <= 0) {
-        alert("주문 개수를 1개이상 입력해주세요.");
+    if (inputCount.value <= 0) {
+        alert('주문 개수를 1개이상 입력해주세요.');
         return;
     }
 
-    if((totalCount.value+inputCount.value) > deliveryOrder.value.count) {
-        alert("주문수량을 초과할 수 없습니다.");
+    if (totalCount.value + inputCount.value > deliveryOrder.value.count) {
+        alert('주문수량을 초과할 수 없습니다.');
         return;
     }
 
@@ -53,7 +53,7 @@ const handlerAddBtn = () => {
 
     selectedWarehouseValue.value.push({
         orderCount: inputCount.value,
-        warehouseId: selectedWarehouseId.value
+        warehouseId: selectedWarehouseId.value,
     });
     console.log(selectedWarehouseValue.value);
 
@@ -69,26 +69,30 @@ const handlerAddBtn = () => {
 
 const handlerDeleteBtn = () => {
     const isConfirmed = confirm('초기화하시겠습니까?');
-    if(isConfirmed) {
+    if (isConfirmed) {
         addedWarehouseItems.value = [];
         tableState.value = false;
-    };
-   
+    }
 };
 
 const updateShoopingDelivery = () => {
+    if (totalCount.value !== deliveryOrder.value.count) {
+        alert('주문수량에 맞게 신청해주세요!');
+        return;
+    }
+
     const textData = {
         orderId: id,
         productId: deliveryOrder.value.productId,
         deliveryManager: selectManagerValue.value,
-        warehouseList: selectedWarehouseValue.value
+        warehouseList: selectedWarehouseValue.value,
     };
 
     axios.post('/api/tasks/deliveryOrderSaveBody.do', textData).then(res => {
-        if(res.data.result === "success") {
+        if (res.data.result === 'success') {
             emit('postSuccess');
         }
-    })
+    });
 };
 
 onMounted(() => {
@@ -100,15 +104,17 @@ onUnmounted(() => {
 });
 
 watch(selectedWarehouseId, () => {
-    for(let i = 0; i < warehouseSelectList.value.length; i++) {
-        if(selectedWarehouseId.value === warehouseSelectList.value[i].warehouseId) {
+    for (let i = 0; i < warehouseSelectList.value.length; i++) {
+        if (
+            selectedWarehouseId.value ===
+            warehouseSelectList.value[i].warehouseId
+        ) {
             selectedWarehouse.value = warehouseSelectList.value[i];
         }
     }
 
     // 창고 바뀔 때마다 입력값 초기화
     inputCount.value = 0;
-    
 });
 </script>
 
@@ -144,12 +150,15 @@ watch(selectedWarehouseId, () => {
                                 <td>{{ deliveryOrder.count }}</td>
                                 <td>
                                     <select v-model="selectManagerValue">
-                                        <option value="">배송담당자 선택</option>
-                                        <option 
-                                            v-for="manager in deliveryManager" 
-                                            :key="manager.loginID" 
-                                            :value="manager.name">
-                                                {{ manager.name }}
+                                        <option value="">
+                                            배송담당자 선택
+                                        </option>
+                                        <option
+                                            v-for="manager in deliveryManager"
+                                            :key="manager.loginID"
+                                            :value="manager.name"
+                                        >
+                                            {{ manager.name }}
                                         </option>
                                     </select>
                                 </td>
@@ -158,8 +167,8 @@ watch(selectedWarehouseId, () => {
                     </tbody>
                 </table>
                 <br />
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3 style="margin: 0;">창고별 품목 추가</h3>
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <h3 style="margin: 0">창고별 품목 추가</h3>
                     <button @click="handlerAddBtn()">추가</button>
                     <!--TODO: 밑에 테이블 있을때만 초기화버튼 생성-->
                     <template v-if="addedWarehouseItems !== null">
@@ -183,20 +192,31 @@ watch(selectedWarehouseId, () => {
                                 <td>
                                     <select v-model="selectedWarehouseId">
                                         <option value="0">창고 선택</option>
-                                        <option 
-                                            v-for="warehouse in warehouseSelectList" 
-                                            :key="warehouse.warehouseId" 
-                                            :value="warehouse.warehouseId">
-                                                {{ warehouse.name }}
+                                        <option
+                                            v-for="warehouse in warehouseSelectList"
+                                            :key="warehouse.warehouseId"
+                                            :value="warehouse.warehouseId"
+                                        >
+                                            {{ warehouse.name }}
                                         </option>
                                     </select>
                                 </td>
                                 <td>
-                                    <span v-if="selectedWarehouse">{{ selectedWarehouseId.value === 0 ?  0 : selectedWarehouse.totalProductStock }}</span>
+                                    <span v-if="selectedWarehouse">{{
+                                        selectedWarehouseId.value === 0
+                                            ? 0
+                                            : selectedWarehouse.totalProductStock
+                                    }}</span>
                                 </td>
                                 <td>
-                                    <input type="number" v-model="inputCount" 
-                                        :max="selectedWarehouse ? selectedWarehouse.totalProductStock : 0" 
+                                    <input
+                                        type="number"
+                                        v-model="inputCount"
+                                        :max="
+                                            selectedWarehouse
+                                                ? selectedWarehouse.totalProductStock
+                                                : 0
+                                        "
                                     />
                                 </td>
                             </tr>
@@ -215,14 +235,17 @@ watch(selectedWarehouseId, () => {
                             <th scope="col">주문 개수</th>
                         </thead>
                         <tbody>
-                            <tr v-for="(item, index) in addedWarehouseItems" :key="index">
+                            <tr
+                                v-for="(item, index) in addedWarehouseItems"
+                                :key="index"
+                            >
                                 <td>{{ item.warehouseName }}</td>
-                                <td> {{ item.count }}</td>
+                                <td>{{ item.count }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </template>
-                
+
                 <div class="button-box">
                     <button @click="updateShoopingDelivery()">신청</button>
                     <button @click="modalState.setModalState()">나가기</button>
@@ -230,98 +253,98 @@ watch(selectedWarehouseId, () => {
             </div>
         </div>
     </teleport>
-  
 </template>
 
 <style lang="scss" scoped>
 .backdrop {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-  font-weight: bold;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    font-weight: bold;
 }
 
 .container {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  position: relative;
-  width: 90%;
-  max-width: 800px;
-  z-index: 11;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    z-index: 11;
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
 }
 
 th {
-  background: #f4f4f4;
-  text-align: center;
+    background: #f4f4f4;
+    text-align: center;
 }
 
 .product-image {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-  border: 1px solid #ddd;
-  background: white;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    background: white;
 }
 
 .text-area {
-  width: 100%;
-  height: 60px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: none;
-  box-sizing: border-box;
+    width: 100%;
+    height: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+    box-sizing: border-box;
 }
 
 .button-box {
-  text-align: right;
-  margin-top: 10px;
+    text-align: right;
+    margin-top: 10px;
 }
 
 button {
-  background-color: #3bb2ea;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-  box-shadow: 0 2px #999;
-  transition: 0.3s;
-  margin: 5px;
+    background-color: #3bb2ea;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 2px #999;
+    transition: 0.3s;
+    margin: 5px;
 
-  &:hover {
-    background-color: #45a049;
-  }
+    &:hover {
+        background-color: #45a049;
+    }
 
-  &:active {
-    background-color: #3e8e41;
-    box-shadow: 0 2px #666;
-    transform: translateY(2px);
-  }
+    &:active {
+        background-color: #3e8e41;
+        box-shadow: 0 2px #666;
+        transform: translateY(2px);
+    }
 }
 
 .font_red {
-  color: #fe1414;
+    color: #fe1414;
 }
 </style>
