@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useHistoryStore } from '../../../../stores/historyState'
 
@@ -43,7 +43,12 @@ watch(() => historyState.rendering, (val) => {
 })
 
 onMounted(() => {
+    historyState.detailState = false;
     searchList();
+})
+
+onUnmounted(() => {
+
 })
 
 </script>
