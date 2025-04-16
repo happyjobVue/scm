@@ -41,7 +41,13 @@ const UpdateShoppingReturnApprove = id => {
     }
 };
 
-watch(() => route.params, searchApprovalShoppingReturn);
+watch(
+    () => route.params,
+    () => {
+        cPage.value = 1;
+        searchApprovalShoppingReturn();
+    }
+);
 </script>
 <template>
     <div class="divApprovalShoppingReturnMain">

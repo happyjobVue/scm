@@ -1,6 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import router from '@/router';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const customerName = ref('');
 const searchStDate = ref('');
@@ -21,6 +24,17 @@ const handlerSearchDeliveryOrderList = () => {
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
+
+watch(
+    () => route.params,
+    () => {
+        if (Object.keys(route.params).length === 0) {
+            customerName.value = '';
+            searchStDate.value = '';
+            searchEdDate.value = '';
+        }
+    }
+);
 </script>
 <template>
     <div class="search-box">

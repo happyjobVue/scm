@@ -65,11 +65,11 @@ const handlerValidateFindIdCode = () => {
             if(res.data.result === "SUCCESS"){
                 alert("아이디: " + res.data.resultModel.loginID);
                 stopTimer();
+                modalStore.close('findInfo');
             } else {
                 alert("존재하지 않는 메일입니다.");
             }
         });
-    alert("아이디: " + loginID.value);
 }
 
 

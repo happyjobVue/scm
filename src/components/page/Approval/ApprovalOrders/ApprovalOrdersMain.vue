@@ -41,7 +41,13 @@ onMounted(() => {
     searchApprovalOrders();
 });
 
-watch(() => route.params, searchApprovalOrders);
+watch(
+    () => route.params,
+    () => {
+        cPage.value = 1;
+        searchApprovalOrders();
+    }
+);
 </script>
 <template>
     <div class="divApprovalOrdersMain">
