@@ -53,7 +53,13 @@ onMounted(() => {
     searchOrderDirectionList();
 });
 
-watch(() => route.params, searchOrderDirectionList);
+watch(
+    () => route.params,
+    () => {
+        cPage.value = 1;
+        searchOrderDirectionList();
+    }
+);
 </script>
 <template>
     <div class="divOrderDirectionList">
@@ -178,8 +184,8 @@ table {
     transition: color 0.3s ease;
 }
 .td-hover:hover {
-  text-decoration: underline;
-  color: #fe1414;
+    text-decoration: underline;
+    color: #fe1414;
 }
 button {
     text-align: center;
