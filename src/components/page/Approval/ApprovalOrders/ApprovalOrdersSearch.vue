@@ -1,6 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import router from '@/router';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const searchTitle = ref('');
 const searchStDate = ref('');
@@ -15,6 +18,21 @@ const handlersearchApprovalOrders = () => {
 
     router.push({ params: { ...searchParamObj } });
 };
+
+onMounted(() => {
+    window.location.search && router.replace(window.location.pathname);
+});
+
+watch(
+    () => route.params,
+    () => {
+        if (Object.keys(route.params).length === 0) {
+            searchTitle.value = '';
+            searchStDate.value = '';
+            searchEdDate.value = '';
+        }
+    }
+);
 </script>
 <template>
     <div class="search-box">
