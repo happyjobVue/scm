@@ -22,15 +22,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-box">
-    업체명:
-    <input v-model.lazy="searchKeyword"/>
-    기간:
-    <input type="date" v-model.lazy="searchStDate"/>
-    ~
-    <input type="date" v-model.lazy="searchEdDate"/>
-    <button @click="handlerSearch()">검색</button>
-  </div>
+    <div class="search-box">
+        업체명:
+        <input v-model.lazy="searchKeyword" />
+        기간:
+        <span>
+            <input type="date" v-model.lazy="searchStDate" />
+            ~
+            <input type="date" v-model.lazy="searchEdDate" />
+        </span>
+        <button @click="handlerSearch()">검색</button>
+    </div>
 </template>
 
 <style lang="scss" scoped>
