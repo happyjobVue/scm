@@ -1,5 +1,5 @@
 <template>
-    <a href="">
+    <a href="/vue">
         <img :src="logo" alt="happyjob" />
     </a>
     <div class="logo-box">
