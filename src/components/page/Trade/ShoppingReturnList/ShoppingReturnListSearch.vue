@@ -14,7 +14,7 @@ const handlerSearch = () => {
     !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
     !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
-    
+
     router.push(queryString);
 };
 
@@ -24,33 +24,41 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-box">
-    선택:
-    <select v-model="searchOption">
-        <option value="">전체</option>
-        <option value="searchProduct">반품제품명</option>
-        <option value="searchReturnDate">반품신청날짜</option>            
-    </select>
-    <template v-if="searchOption === ''">        
-        검색어:
-        <input v-model.lazy="searchKeyword" placeholder="검색어를 입력하세요."/>
-        기간:
-        <input type="date" v-model.lazy="searchStDate"/>
-        ~
-        <input type="date" v-model.lazy="searchEdDate"/>
-    </template>    
-    <template v-else-if="searchOption === 'searchProduct'">
-        검색어:
-        <input v-model.lazy="searchKeyword" placeholder="검색어를 입력하세요."/>
-    </template>
-    <template v-else-if="searchOption === 'searchReturnDate'">
-        기간:
-        <input type="date" v-model.lazy="searchStDate"/>
-        ~
-        <input type="date" v-model.lazy="searchEdDate"/>
-    </template>    
-    <button @click="handlerSearch()">검색</button>
-  </div>
+    <div class="search-box">
+        선택:
+        <select v-model="searchOption">
+            <option value="">전체</option>
+            <option value="searchProduct">반품제품명</option>
+            <option value="searchReturnDate">반품신청날짜</option>
+        </select>
+        <template v-if="searchOption === ''">
+            검색어:
+            <input
+                v-model.lazy="searchKeyword"
+                placeholder="검색어를 입력하세요."
+            />
+            기간:
+            <span>
+                <input type="date" v-model.lazy="searchStDate" />
+                ~
+                <input type="date" v-model.lazy="searchEdDate" />
+            </span>
+        </template>
+        <template v-else-if="searchOption === 'searchProduct'">
+            검색어:
+            <input
+                v-model.lazy="searchKeyword"
+                placeholder="검색어를 입력하세요."
+            />
+        </template>
+        <template v-else-if="searchOption === 'searchReturnDate'">
+            기간:
+            <input type="date" v-model.lazy="searchStDate" />
+            ~
+            <input type="date" v-model.lazy="searchEdDate" />
+        </template>
+        <button @click="handlerSearch()">검색</button>
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -61,6 +69,15 @@ onMounted(() => {
 }
 
 input {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+select {
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 5px;

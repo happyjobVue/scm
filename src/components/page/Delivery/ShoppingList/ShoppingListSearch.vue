@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 
 const customerName = ref();
 const searchStDate = ref('');
-const searchEdDate = ref(''); 
+const searchEdDate = ref('');
 
 const handlerSearch = () => {
     const query = [];
@@ -19,18 +19,20 @@ const handlerSearch = () => {
 onMounted(() => {
     window.location.search && router.replace(window.location.pathname);
 });
-
 </script>
 
 <template>
-  <div class="search-box">
-    고객기업명:
-    <input v-model.lazy="customerName"/>
-    기간:
-    <input type="date" v-model.lazy="searchStDate"/>
-    <input type="date" v-model.lazy="searchEdDate"/>
-    <button @click="handlerSearch()">검색</button>
-  </div>
+    <div class="search-box">
+        고객기업명:
+        <input v-model.lazy="customerName" />
+        기간:
+        <span>
+            <input type="date" v-model.lazy="searchStDate" />
+            ~
+            <input type="date" v-model.lazy="searchEdDate" />
+        </span>
+        <button @click="handlerSearch()">검색</button>
+    </div>
 </template>
 
 <style lang="scss" scoped>

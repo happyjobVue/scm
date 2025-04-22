@@ -10,7 +10,7 @@ const handlerSearch = () => {
     !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
     !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
-    
+
     router.push(queryString);
 };
 
@@ -20,12 +20,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-box">
-    기간:
-    <input type="date" v-model.lazy="searchStDate"/>
-    <input type="date" v-model.lazy="searchEdDate"/>
-    <button @click="handlerSearch">검색</button>
-  </div>
+    <div class="search-box">
+        기간:
+        <span>
+            <input type="date" v-model.lazy="searchStDate" />
+            ~
+            <input type="date" v-model.lazy="searchEdDate" />
+        </span>
+        <button @click="handlerSearch">검색</button>
+    </div>
 </template>
 
 <style lang="scss" scoped>
