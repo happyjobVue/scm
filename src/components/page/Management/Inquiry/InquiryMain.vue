@@ -4,27 +4,39 @@ import { useRoute } from 'vue-router';
 import { useModalStore } from '../../../../stores/modalState';
 import InquiryModal from './InquiryModal.vue';
 import { useUserInfo } from '../../../../stores/userInfo';
+import { inject } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
 
-const route = useRoute();
-const inquiryList = ref();
 const modalState = useModalStore();
 const inquiryId = ref(0);
 const cPage = ref(1);
 
 const userInfo = useUserInfo();
 
-const searchList = () => {
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
+
+const searchList = async () => {
+    flag.value && (cPage.value = 1);
     const param = new URLSearchParams({
-        ...route.query,
+        ...injectedValue.value,
         pageSize: 5,
         currentPage: cPage.value,
         userType: userInfo.user.userType,
     });
 
-    axios.post('/api/management/inquiryListBody.do', param).then(res => {
-        inquiryList.value = res.data;
-    });
+    const result = await axios.post(
+        '/api/management/inquiryListBody.do',
+        param
+    );
+
+    return result.data;
 };
+
+const { data: inquiryList, refetch } = useQuery({
+    queryKey: ['inquiryList', injectedValue], // 필수항목
+    queryFn: searchList,
+});
 
 const handlerModal = id => {
     inquiryId.value = id;
@@ -35,17 +47,6 @@ const onPostSuccess = () => {
     modalState.setModalState();
     searchList();
 };
-
-onMounted(() => {
-    searchList();
-});
-watch(
-    () => route.query,
-    () => {
-        cPage.value = 1;
-        searchList();
-    }
-);
 </script>
 <template>
     <div>
@@ -96,7 +97,7 @@ watch(
             :totalItems="inquiryList?.inquiryCnt"
             :items-per-page="5"
             :max-pages-shown="5"
-            :onClick="searchList"
+            :onClick="refetch"
             v-model="cPage"
         />
     </div>

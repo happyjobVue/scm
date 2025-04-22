@@ -1,7 +1,7 @@
 <!-- setup을 적어야 Composition API를 사용할 수 있다.  -->
 <script setup>
 import router from '@/router';
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useModalStore } from '../../../../stores/modalState';
 
 const modalState = useModalStore();
@@ -9,22 +9,33 @@ const searchTitle = ref('');
 const searchStDate = ref('');
 const searchEdDate = ref('');
 
-const handlerSearch = () => {
-    const query = [];
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
 
-    router.push(queryString);
+const handlerSearch = () => {
+    flag.value = true;
+    injectedValue.value = {
+        searchTitle: searchTitle.value,
+        searchStDate: searchStDate.value,
+        searchEdDate: searchEdDate.value,
+        isSearch: true,
+    };
+
+    // const query = [];
+    // !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
+    // !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
+    // !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
+    // const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+    // router.push(queryString);
 };
 
 // 새로고침 시 queryParam만 없애고 싶음
 // 1. 만약에, noticeSearch라는 컴포넌트가 열릴 때, url에 queryParam이 남아있는지를 확인을 할겁니다.
 // 2. 남아 있는 경우, 경로(queryParam을 제외한 나머지)로 현재 url을 대체 시킬 것
-onMounted(() => {
-    window.location.search && router.replace(window.location.pathname);
-});
+// onMounted(() => {
+//     window.location.search && router.replace(window.location.pathname);
+// });
 </script>
 
 <template>

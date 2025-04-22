@@ -1,24 +1,21 @@
 <script setup>
-import router from '@/router';
-import { onMounted } from 'vue';
+import { inject, onMounted } from 'vue';
 
 const searchTitle = ref('');
 const searchStDate = ref('');
 const searchEdDate = ref('');
 
-const handlerSearch = () => {
-    const query = [];
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !searchStDate.value || query.push(`searchStDate=${searchStDate.value}`);
-    !searchEdDate.value || query.push(`searchEdDate=${searchEdDate.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
 
-    router.push(queryString);
+const handlerSearch = () => {
+    flag.value = true;
+    injectedValue.value = {
+        searchTitle: searchTitle.value,
+        searchStDate: searchStDate.value,
+        searchEdDate: searchEdDate.value,
+    };
 };
-onMounted(() => {
-    searchTitle.value = '';
-    window.location.search && router.replace(window.location.pathname);
-});
 </script>
 <template>
     <div class="search-box">

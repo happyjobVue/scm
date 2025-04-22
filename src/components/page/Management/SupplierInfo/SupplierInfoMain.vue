@@ -1,14 +1,13 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import SupplierInfoModal from './SupplierInfoModal.vue';
 import { useModalStore } from '../../../../stores/modalState';
+import { useQuery } from '@tanstack/vue-query';
 
 const modalState = useModalStore();
 
-const route = useRoute();
-const supplierInfoList = ref();
 const cPage = ref(1);
 const supplyId = ref(0);
 const supplierDetail = ref();
@@ -16,21 +15,36 @@ const gridFlag = ref('none');
 const cPageDetail = ref(1);
 const selectedRowIndex = ref(null);
 
-const searchList = () => {
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
+
+const searchList = async () => {
     supplierDetail.value = '';
+    flag.value && (cPage.value = 1);
     const param = new URLSearchParams({
-        ...route.query,
+        ...injectedValue.value,
         pageSize: 5,
         currentPage: cPage.value,
         searchOption:
-            route.query.searchOption && route.query.searchKeyword !== undefined
-                ? route.query.searchOption
+            injectedValue.value &&
+            injectedValue.value.searchKeyword !== undefined
+                ? injectedValue.value.searchOption
                 : 'searchSupplier',
     });
-    axios.post('/api/management/supplierListBody.do', param).then(res => {
-        supplierInfoList.value = res.data;
-    });
+    flag.value && (flag.value = false);
+
+    const result = await axios.post(
+        '/api/management/supplierListBody.do',
+        param
+    );
+
+    return result.data;
 };
+
+const { data: supplierInfoList, refetch } = useQuery({
+    queryKey: ['supplierInfoList', injectedValue], // 필수항목
+    queryFn: searchList,
+});
 
 const openModal = id => {
     supplyId.value = id;
@@ -73,17 +87,6 @@ const searchDetailList = id => {
         supplierDetail.value = res.data;
     });
 };
-
-watch(
-    () => route.query,
-    () => {
-        cPage.value = 1;
-        searchList();
-    }
-);
-onMounted(() => {
-    searchList();
-});
 </script>
 <template>
     <div>
@@ -148,7 +151,7 @@ onMounted(() => {
                     </template>
                     <template v-else>
                         <tr>
-                            <td colspan="4">일치하는 검색 결과가 없습니다</td>
+                            <td colspan="6">일치하는 검색 결과가 없습니다</td>
                         </tr>
                     </template>
                 </template>
@@ -158,7 +161,7 @@ onMounted(() => {
             :totalItems="supplierInfoList?.supplierCnt"
             :items-per-page="5"
             :max-pages-shown="5"
-            :onClick="searchList"
+            :onClick="refetch"
             v-model="cPage"
         />
         <template v-if="supplierDetail">

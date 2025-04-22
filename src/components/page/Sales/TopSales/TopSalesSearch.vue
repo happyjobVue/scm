@@ -1,13 +1,14 @@
 <script setup>
-import router from '@/router';
 import axios from 'axios';
-import { onMounted } from 'vue';
+import { inject, onMounted } from 'vue';
 
 const searchYear = ref();
 const searchMonth = ref();
 const monthArray = ref([]);
 const yearArray = ref([]);
 const minYear = ref();
+
+const injectedValue = inject('selectValue');
 
 const today = new Date();
 
@@ -19,12 +20,10 @@ for (let i = 1; i < 13; i++) {
 }
 
 const handlerSearch = () => {
-    const query = [];
-    !searchYear.value || query.push(`searchYear=${searchYear.value}`);
-    !searchMonth.value || query.push(`searchMonth=${searchMonth.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
-
-    router.push(queryString);
+    injectedValue.value = {
+        searchYear: searchYear.value,
+        searchMonth: searchMonth.value,
+    };
 };
 onMounted(() => {
     axios.post('/api/sales/selectDateJson').then(res => {
@@ -38,7 +37,6 @@ onMounted(() => {
         }
         handlerSearch();
     });
-    window.location.search && router.replace(window.location.pathname);
 });
 </script>
 <template>

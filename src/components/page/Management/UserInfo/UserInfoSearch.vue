@@ -1,6 +1,6 @@
 <script setup>
-import router from '@/router';
 import { useModalStore } from '../../../../stores/modalState';
+import { inject } from 'vue';
 
 const modalState = useModalStore();
 
@@ -8,24 +8,19 @@ const groupCodeSelect = ref('name');
 const searchTitle = ref('');
 const deleteInfoCheck = ref(false);
 
-const handleCheck = () => {
-    deleteInfoCheck.value = !deleteInfoCheck.value;
-    handlerSearch();
-};
-const handlerSearch = () => {
-    const query = [];
-    query.push(`inforAll=${deleteInfoCheck.value ? 1 : 0}`);
-    !groupCodeSelect.value ||
-        query.push(`groupCodeSelect=${groupCodeSelect.value}`);
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
 
-    router.push(queryString);
+const handlerSearch = infor => {
+    infor
+        ? (deleteInfoCheck.value = !deleteInfoCheck.value)
+        : (flag.value = true);
+    injectedValue.value = {
+        inforAll: deleteInfoCheck.value ? 1 : 0,
+        groupCodeSelect: groupCodeSelect.value,
+        searchTitle: searchTitle.value,
+    };
 };
-
-onMounted(() => {
-    window.location.search && router.replace(window.location.pathname);
-});
 </script>
 <template>
     <div class="search-box">
@@ -36,8 +31,8 @@ onMounted(() => {
         </select>
         <input v-model.lazy="searchTitle" />
         삭제된 정보 표시
-        <input type="checkbox" @click="handleCheck" />
-        <button @click="handlerSearch">검색</button>
+        <input type="checkbox" @click="handlerSearch(true)" />
+        <button @click="handlerSearch(false)">검색</button>
         <button @click="modalState.modalState = !modalState.modalState">
             등록
         </button>
