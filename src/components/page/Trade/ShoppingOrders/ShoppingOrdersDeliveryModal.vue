@@ -46,16 +46,23 @@ const handlerAddBtn = () => {
 
     tableState.value = true;
 
-    addedWarehouseItems.value.push({
-        warehouseName: selectedWarehouse.value.name,
-        count: inputCount.value,
-    });
+    const existingItem = addedWarehouseItems.value.find(
+        item => item.warehouseName === selectedWarehouse.value.name
+    );
+
+    if (existingItem) {
+        existingItem.count += inputCount.value;
+    } else {
+        addedWarehouseItems.value.push({
+            warehouseName: selectedWarehouse.value.name,
+            count: inputCount.value,
+        });
+    }
 
     selectedWarehouseValue.value.push({
         orderCount: inputCount.value,
         warehouseId: selectedWarehouseId.value,
     });
-    console.log(selectedWarehouseValue.value);
 
     totalCount.value = addedWarehouseItems.value.reduce(
         (sum, item) => sum + item.count,
@@ -72,10 +79,15 @@ const handlerDeleteBtn = () => {
     if (isConfirmed) {
         addedWarehouseItems.value = [];
         tableState.value = false;
+        totalCount.value = 0;
     }
 };
 
 const updateShoopingDelivery = () => {
+    if (!selectManagerValue.value) {
+        alert('배송담당자를 선택해 주세요!');
+        return;
+    }
     if (totalCount.value !== deliveryOrder.value.count) {
         alert('주문수량에 맞게 신청해주세요!');
         return;
@@ -90,6 +102,7 @@ const updateShoopingDelivery = () => {
 
     axios.post('/api/tasks/deliveryOrderSaveBody.do', textData).then(res => {
         if (res.data.result === 'success') {
+            alert('배송요청 완료!');
             emit('postSuccess');
         }
     });

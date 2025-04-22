@@ -6,4 +6,12 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { provide, ref } from 'vue';
+
+const provideValue = ref();
+const flagValue = ref();
+
+provide('selectValue', provideValue);
+provide('prFlag', flagValue);
+</script>

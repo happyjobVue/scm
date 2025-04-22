@@ -1,29 +1,43 @@
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { inject, ref } from 'vue';
 import { useModalStore } from '../../../../stores/modalState';
 import UserInfoModal from './UserInfoModal.vue';
+import { useQuery } from '@tanstack/vue-query';
 
 const modalState = useModalStore();
 
-const route = useRoute();
-const userInfoList = ref();
 const cPage = ref(1);
 const loginId = ref(0);
 
-const searchList = () => {
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
+
+const searchList = async () => {
+    flag.value && (cPage.value = 1);
     const param = new URLSearchParams({
-        ...route.query,
+        ...injectedValue.value,
         pageSize: 8,
         currentPage: cPage.value,
-        inforAll: route.query.inforAll === undefined ? 0 : route.query.inforAll,
+        inforAll:
+            injectedValue.value === undefined
+                ? 0
+                : injectedValue.value.inforAll,
     });
+    flag.value && (flag.value = false);
 
-    axios.post('/api/management/userInfoListBody.do', param).then(res => {
-        userInfoList.value = res.data;
-    });
+    const result = await axios.post(
+        '/api/management/userInfoListBody.do',
+        param
+    );
+
+    return result.data;
 };
+
+const { data: userInfoList, refetch } = useQuery({
+    queryKey: ['userInfoList', injectedValue], // 필수항목
+    queryFn: searchList,
+});
 
 const openModal = id => {
     loginId.value = id;
@@ -35,16 +49,9 @@ const onPostSuccess = () => {
     searchList();
 };
 
-watch(
-    () => route.query,
-    () => {
-        cPage.value = 1;
-        searchList();
-    }
-);
-onMounted(() => {
-    searchList();
-});
+// onMounted(() => {
+//     searchList();
+// });
 </script>
 <template>
     <div>
@@ -97,7 +104,7 @@ onMounted(() => {
                     </template>
                     <template v-else>
                         <tr>
-                            <td colspan="4">일치하는 검색 결과가 없습니다</td>
+                            <td colspan="7">일치하는 검색 결과가 없습니다</td>
                         </tr>
                     </template>
                 </template>
@@ -107,7 +114,7 @@ onMounted(() => {
             :totalItems="userInfoList?.userInfoCnt"
             :items-per-page="8"
             :max-pages-shown="5"
-            :onClick="searchList"
+            :onClick="refetch"
             v-model="cPage"
         />
     </div>

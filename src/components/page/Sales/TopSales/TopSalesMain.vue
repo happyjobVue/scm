@@ -1,67 +1,77 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import TopSalesChart from './TopSalesChart.vue';
+import { useQuery } from '@tanstack/vue-query';
 
-const route = useRoute();
-const topSalesList = ref();
+const topSalesListData = ref();
 const chartFlag = ref(false);
 const chartData = ref();
 
-const searchList = () => {
-    chartFlag.value = false;
-    axios
-        .post('/api/sales/topSalesListBody.do', {
-            ...route.query,
-            pageSize: 10,
-        })
-        .then(res => {
-            const startCount = res.data.topSalesList.length;
-            if (res.data.topSalesList.length > 0) {
-                chartData.value = [];
-                for (let i = 0; i < startCount; i++) {
-                    chartData.value.push({
-                        supplierName: res.data.topSalesList[i].supplierName,
-                        currentRank: res.data.topSalesList[i].currentRank,
-                        performance: res.data.topSalesList[i].performance,
-                        previousRank: res.data.topSalesList[i].previousRank,
-                    });
-                }
-                chartFlag.value = true;
-            }
-            topSalesList.value = res.data;
-            for (let i = 0; i < startCount; i++) {
-                let changeLank = '-';
-                let upDown = '';
-                const cLank = topSalesList.value.topSalesList[i].currentRank;
-                const pLank = topSalesList.value.topSalesList[i].previousRank;
-                const change = Math.abs(pLank - cLank);
-                if (pLank !== 0 && pLank > cLank) {
-                    changeLank = `${change}↑`;
-                    upDown = 'UP';
-                } else if (pLank !== 0 && pLank < cLank) {
-                    changeLank = `${change}↓`;
-                    upDown = 'DOWN';
-                } else if (pLank === 0) {
-                    changeLank = 'new!';
-                    upDown = 'N';
-                }
-                topSalesList.value.topSalesList[i] = {
-                    ...topSalesList.value.topSalesList[i],
-                    changeLank: changeLank,
-                    upDown: upDown,
-                };
-            }
-            for (let i = startCount; i < 10; i++) {
-                topSalesList.value.topSalesList.push({
-                    currentRank: '-',
-                    supplierName: '-',
-                    performance: '-',
-                });
-            }
+const injectedValue = inject('selectValue');
+
+const searchList = async () => {
+    chartFlag.value = '';
+    const result = await axios.post('/api/sales/topSalesListBody.do', {
+        ...injectedValue.value,
+        pageSize: 10,
+    });
+
+    const startCount = result.data.topSalesList.length;
+    if (result.data.topSalesList.length > 0) {
+        chartData.value = [];
+        for (let i = 0; i < startCount; i++) {
+            chartData.value.push({
+                supplierName: result.data.topSalesList[i].supplierName,
+                currentRank: result.data.topSalesList[i].currentRank,
+                performance: result.data.topSalesList[i].performance,
+                previousRank: result.data.topSalesList[i].previousRank,
+            });
+        }
+        chartFlag.value = true;
+    } else {
+        chartFlag.value = false;
+    }
+    topSalesListData.value = result.data;
+    for (let i = 0; i < startCount; i++) {
+        let changeLank = '-';
+        let upDown = '';
+        const cLank = topSalesListData.value.topSalesList[i].currentRank;
+        const pLank = topSalesListData.value.topSalesList[i].previousRank;
+        const change = Math.abs(pLank - cLank);
+        if (pLank !== 0 && pLank > cLank) {
+            changeLank = `${change}↑`;
+            upDown = 'UP';
+        } else if (pLank !== 0 && pLank < cLank) {
+            changeLank = `${change}↓`;
+            upDown = 'DOWN';
+        } else if (pLank === 0) {
+            changeLank = 'new!';
+            upDown = 'N';
+        }
+        topSalesListData.value.topSalesList[i] = {
+            ...topSalesListData.value.topSalesList[i],
+            changeLank: changeLank,
+            upDown: upDown,
+        };
+    }
+    for (let i = startCount; i < 10; i++) {
+        topSalesListData.value.topSalesList.push({
+            currentRank: '-',
+            supplierName: '-',
+            performance: '-',
         });
+    }
+
+    return topSalesListData.value;
 };
+
+const { data: topSalesList, refetch } = useQuery({
+    queryKey: ['topSalesList', injectedValue], // 필수항목
+    queryFn: searchList,
+    enabled: false,
+});
 
 const addClass = flag => {
     let addClass = '';
@@ -74,10 +84,14 @@ const addClass = flag => {
     }
 };
 
-watch(() => route.query, searchList);
-onMounted(() => {
-    searchList();
-});
+watch(
+    injectedValue,
+    (newVal, oldVal) => {
+        if (JSON.stringify(newVal) === JSON.stringify(oldVal)) return;
+        refetch();
+    },
+    { deep: true }
+);
 </script>
 <template>
     <div class="topsales">
@@ -117,10 +131,10 @@ onMounted(() => {
             </tbody>
         </table>
         <div class="chart_div">
-            <template v-if="chartFlag">
+            <template v-if="chartFlag === true">
                 <TopSalesChart v-if="chartFlag" :dataSet="chartData" />
             </template>
-            <template v-else>
+            <template v-else-if="chartFlag === false">
                 <img src="../../../../assets/noSalesImg2.png" />
             </template>
         </div>
