@@ -44,7 +44,6 @@ const userInfo = useUserInfo();
 
 // 사용자의 iframe src 목록
 const iframeSrcs = userType => {
-    console.log('userType', userType);
     const ArrIframeSrcs = [];
     if (userType === 'S') {
         ArrIframeSrcs.push(
@@ -73,7 +72,6 @@ const iframeSrcs = userType => {
             '/vue/mall/history'
         );
     }
-    console.log('ArrIframeSrcs', ArrIframeSrcs);
     return ArrIframeSrcs;
 };
 
