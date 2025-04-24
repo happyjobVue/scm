@@ -101,6 +101,8 @@ const validateEmail = () => {
 /* ======================== 중복 확인 ======================== */
 
 const checkDuplicateId = () => {
+    if(!validateLoginId()) return alert('옳바른 형식이 아닙니다.')
+
     const param = {
         loginID: loginId.value
     }
@@ -118,6 +120,8 @@ const checkDuplicateId = () => {
 }
 
 const checkDuplicateEmail = () => {
+    if(!validateEmail()) return alert('옳바른 형식이 아닙니다.')
+
     const param = {
         email: email.value
     }
@@ -199,19 +203,19 @@ const handlerSave = () => {
         loginID: loginId.value
         , password: password.value
         , name: name.value
-        , sex: sex.value
+        , gender_cd: sex.value
         , hp: hp.value
-        , email: email.value
+        , user_email: email.value
         , birthday: birthday.value
-        , address: address.value
-        , detailAddress: detailAdress.value
-        , zipCode: zipCode.value
+        , user_address: address.value
+        , user_dt_address: detailAdress.value
+        , user_zipcode: zipCode.value
         , manager: manager.value
         , action: "I"
-        , groupCode: "G00001A1"
-        , detailCode: "GB0000T13"
-        , userType: "C"
-        , userClass: "기업고객"
+        , group_code: "G00001A1"
+        , detail_code: "GB0000T13"
+        , user_type: "C"
+        , classType: "기업고객"
     });
     axios.post('/api/registerScm.do', param)
         .then(res => {
