@@ -1,8 +1,9 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useModalStore } from '../../../../stores/modalState';
 import axios from 'axios';
 import { useUserInfo } from '../../../../stores/userInfo';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 
 const { id } = defineProps(['id']);
 const emit = defineEmits([`modalClose`, 'postSuccess']);
@@ -12,167 +13,267 @@ const modalState = useModalStore();
 const imageUrl = ref('');
 const fileData = ref('');
 const userInfo = useUserInfo();
+const queryClient = useQueryClient();
 
-const searchDetail = () => {
-    axios.post('/api/management/noticeFileDetailBody.do', {noticeId: id}).then(res => {
-        noticeDetail.value = res.data.detailValue;
-        if(noticeDetail.value.fileExt === 'jpg' || noticeDetail.value.fileExt === 'gif' || noticeDetail.value.fileExt === 'png') {
-            // db에 있는 파일 데이터를 가지고 썸네일을 만들어 줌
-            getFileImage();
-        }
-    })
+const searchDetail = async () => {
+    const result = await axios.post('/api/management/noticeFileDetailBody.do', {
+        noticeId: id,
+    });
+
+    return result.data.detailValue;
+
+    // axios.post('/api/management/noticeFileDetailBody.do', {noticeId: id}).then(res => {
+    //     noticeDetail.value = res.data.detailValue;
+    //     if(noticeDetail.value.fileExt === 'jpg' || noticeDetail.value.fileExt === 'gif' || noticeDetail.value.fileExt === 'png') {
+    //         // db에 있는 파일 데이터를 가지고 썸네일을 만들어 줌
+    //         getFileImage();
+    //     }
+    // })
 };
+
+const { data: queryData, isSuccess } = useQuery({
+    queryKey: ['noticeDetail', id],
+    queryFn: searchDetail,
+    staleTime: 1000 * 60 * 5,
+    enabled: !!id,
+});
 
 const getFileImage = () => {
     const param = new URLSearchParams();
     param.append('noticeId', id);
-    axios.post('/api/management/noticeDownload.do', param, {responseType: 'blob'}).then(res => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        imageUrl.value = url;
-    });
+    axios
+        .post('/api/management/noticeDownload.do', param, {
+            responseType: 'blob',
+        })
+        .then(res => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            imageUrl.value = url;
+        });
 };
+
+watchEffect(() => {
+    if (isSuccess && queryData.value) {
+        noticeDetail.value = { ...queryData.value };
+        if (
+            noticeDetail.value.fileExt === 'jpg' ||
+            noticeDetail.value.fileExt === 'gif' ||
+            noticeDetail.value.fileExt === 'png'
+        ) {
+            //         // db에 있는 파일 데이터를 가지고 썸네일을 만들어 줌
+            getFileImage();
+        }
+    }
+});
 
 const downloadFile = () => {
     const param = new URLSearchParams();
     param.append('noticeId', id);
 
-    axios.post('/api/management/noticeDownload.do', param, {responseType: 'blob'}).then(res => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', noticeDetail.value.fileName);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    });
+    axios
+        .post('/api/management/noticeDownload.do', param, {
+            responseType: 'blob',
+        })
+        .then(res => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', noticeDetail.value.fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        });
 };
 
 const noticeSave = () => {
-    const param = new URLSearchParams(noticeDetail.value);  
-    param.append('file', fileData.value);  
+    const param = new URLSearchParams(noticeDetail.value);
+    param.append('file', fileData.value);
     axios.post('/api/management/noticeSave.do', param).then(res => {
-        if(res.data.result === "success") {
+        if (res.data.result === 'success') {
             emit('postSuccess');
         }
     });
 };
 
-const noticeSaveFile =  () => {
+const noticeSaveFile = async () => {
     const textData = {
         fileContent: noticeDetail.value.content,
         fileTitle: noticeDetail.value.title,
         loginId: userInfo.user.loginId,
-    }
+    };
 
     const formData = new FormData();
-    if(fileData.value) formData.append('file', fileData.value);
+    if (fileData.value) formData.append('file', fileData.value);
 
-    formData.append('text', 
-        new Blob([JSON.stringify(textData)], {type: 'application/json'})
+    formData.append(
+        'text',
+        new Blob([JSON.stringify(textData)], { type: 'application/json' })
     );
 
-    axios.post('/api/management/noticeSaveFileForm.do', formData).then(res => {
-        if(res.data.result === "success") {
-            emit('postSuccess');
-        }
-    });
+    return await axios.post('/api/management/noticeSaveFileForm.do', formData);
 
+    // axios.post('/api/management/noticeSaveFileForm.do', formData).then(res => {
+    //     if (res.data.result === 'success') {
+    //         emit('postSuccess');
+    //     }
+    // });
 };
+
+const { mutate: saveFile } = useMutation({
+    mutationKey: ['noticeSave'],
+    mutationFn: noticeSaveFile,
+    onSuccess: result => {
+        if (result.data.result === 'success') {
+            //1. 리스트를 재조회 할껍니다. queryKey를 이용할꺼입니다.
+            modalState.setModalState();
+            queryClient.invalidateQueries({ queryKey: ['noticeList'] });
+        }
+    },
+});
 
 const noticeUpdate = () => {
     const param = new URLSearchParams(noticeDetail.value);
-    param.append("noticeId", id);
+    param.append('noticeId', id);
     axios.post('/api/management/noticeUpdate.do', param).then(res => {
-        if(res.data.result === "success") {
+        if (res.data.result === 'success') {
             emit('postSuccess');
         }
     });
 };
 
-const noticeUpdateFile =  () => {
+const noticeUpdateFile = async () => {
     const textData = {
         fileContent: noticeDetail.value.content,
         fileTitle: noticeDetail.value.title,
         noticeId: id,
-    }
+    };
 
     const formData = new FormData();
-    if(fileData.value) formData.append('file', fileData.value);
+    if (fileData.value) formData.append('file', fileData.value);
 
-    formData.append('text', 
-        new Blob([JSON.stringify(textData)], {type: 'application/json'})
+    formData.append(
+        'text',
+        new Blob([JSON.stringify(textData)], { type: 'application/json' })
     );
 
-    axios.post('/api/management/noticeUpdateFileForm.do', formData).then(res => {
-        if(res.data.result === "success") {
-            emit('postSuccess');
-        }
-    });
+    return await axios.post(
+        '/api/management/noticeUpdateFileForm.do',
+        formData
+    );
 
+    // axios
+    //     .post('/api/management/noticeUpdateFileForm.do', formData)
+    //     .then(res => {
+    //         if (res.data.result === 'success') {
+    //             emit('postSuccess');
+    //         }
+    //     });
 };
 
-const noticeDelete = () => {
-    axios.post('/api/management/noticeFileDeleteJson.do', {noticeId: id}).then(res => {
-        if(res.data.result === "success") {
-            emit('postSuccess');
+const { mutate: updateFile } = useMutation({
+    mutationKey: ['noticeUpdate'],
+    mutationFn: noticeUpdateFile,
+    onSuccess: result => {
+        if (result.data.result === 'success') {
+            //1. 리스트를 재조회 할껍니다. queryKey를 이용할꺼입니다.
+            modalState.setModalState();
+            queryClient.invalidateQueries({ queryKey: ['noticeList'] });
+
+            //exact -> querykey가 noticeDetail이고 id가 정확히 같은 것의 캐시를 무효화시킴
+            queryClient.invalidateQueries({
+                queryKey: ['noticeDetail', id],
+                exact: true,
+            });
         }
+    },
+});
+
+const noticeDelete = async () => {
+    return await axios.post('/api/management/noticeFileDeleteJson.do', {
+        noticeId: id,
     });
+
+    // axios
+    //     .post('/api/management/noticeFileDeleteJson.do', { noticeId: id })
+    //     .then(res => {
+    //         if (res.data.result === 'success') {
+    //             emit('postSuccess');
+    //         }
+    //     });
 };
 
-const handlerFile = (e) => {
+const { mutate: deleteFile } = useMutation({
+    mutationKey: ['noticeDelete'],
+    mutationFn: noticeDelete,
+    onSuccess: result => {
+        if (result.data.result === 'success') {
+            //1. 리스트를 재조회 할껍니다. queryKey를 이용할꺼입니다.
+            modalState.setModalState();
+            queryClient.invalidateQueries({ queryKey: ['noticeList'] });
+        }
+    },
+});
+
+const handlerFile = e => {
     const fileInfo = e.target.files;
     const fileInfoSplit = fileInfo[0].name.split('.');
     const fileExtension = fileInfoSplit[1].toLowerCase();
 
-    if(fileExtension === 'jpg' || fileExtension === 'gif' || fileExtension === 'png') {
+    if (
+        fileExtension === 'jpg' ||
+        fileExtension === 'gif' ||
+        fileExtension === 'png'
+    ) {
         imageUrl.value = URL.createObjectURL(fileInfo[0]);
     }
     fileData.value = fileInfo[0];
-}
+};
 
-
-onMounted(() => {
-    id && searchDetail();
-});
+// onMounted(() => {
+//     id && searchDetail();
+// });
 
 onUnmounted(() => {
     emit('modalClose', 0);
 });
-
 </script>
 
 <template>
     <teleport to="body">
         <div class="backdrop">
             <div class="container">
-                <label> 제목 :<input type="text" v-model="noticeDetail.title"/> </label>
+                <label>
+                    제목 :<input type="text" v-model="noticeDetail.title" />
+                </label>
                 <label>
                     내용 :
-                    <input type="text" v-model="noticeDetail.content"/>
+                    <input type="text" v-model="noticeDetail.content" />
                 </label>
-                파일 :<input type="file" style="display: none" id="fileInput" @change="handlerFile"/>
+                파일 :<input
+                    type="file"
+                    style="display: none"
+                    id="fileInput"
+                    @change="handlerFile"
+                />
                 <label class="img-label" htmlFor="fileInput">
                     파일 첨부하기
                 </label>
                 <div @click="downloadFile">
                     <div>
                         <label>미리보기</label>
-                        <img :src="imageUrl"/>
+                        <img :src="imageUrl" />
                     </div>
                 </div>
                 <div class="button-box">
-                    <button @click="id ? noticeUpdateFile() : noticeSaveFile()">
-                        {{ id ? '수정': '저장' }}
+                    <button @click="id ? updateFile() : saveFile()">
+                        {{ id ? '수정' : '저장' }}
                     </button>
-                    <button v-if="id" @click="noticeDelete">삭제</button>
+                    <button v-if="id" @click="deleteFile()">삭제</button>
                     <button @click="modalState.setModalState()">나가기</button>
                 </div>
             </div>
         </div>
     </teleport>
 </template>
-
-
 
 <style lang="scss" scoped>
 .backdrop {

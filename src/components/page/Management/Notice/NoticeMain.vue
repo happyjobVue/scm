@@ -3,55 +3,78 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useModalStore } from '../../../../stores/modalState';
 import NoticeModal from './NoticeModal.vue';
-import Pagination from '../../../common/Pagination.vue'
+import Pagination from '../../../common/Pagination.vue';
+import { inject, watch } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
 
 const route = useRoute();
-const noticeList = ref();
+// const noticeList = ref();
 const modalState = useModalStore();
 const noticeId = ref(0);
 const cPage = ref(1);
 
-const searchList = () => {
+const injectedValue = inject('selectValue');
+const flag = inject('prFlag');
+
+const searchList = async () => {
+    flag.value && (cPage.value = 1);
     const param = new URLSearchParams({
-        ...route.query,
+        // ...route.query,
+        ...injectedValue.value,
         pageSize: 5,
         currentPage: cPage.value,
     });
+    flag.value && (flag.value = false);
 
-    axios.post('/api/management/noticeListBody.do', param).then(res => {
-        noticeList.value = res.data;
-    });
-}
+    const result = await axios.post('/api/management/noticeListBody.do', param);
 
-const handlerModal = (id) => {
+    return result.data;
+
+    // axios.post('/api/management/noticeListBody.do', param).then(res => {
+    //     noticeList.value = res.data;
+    // });
+};
+
+const {
+    data: noticeList,
+    isLoading,
+    isSuccess,
+    refetch,
+} = useQuery({
+    queryKey: ['noticeList', injectedValue], // 필수항목
+    queryFn: searchList,
+    // staleTime: 1000 * 60,
+    // gcTime: 1000 * 60,
+    // refetchInterval: 1000 * 10,
+});
+
+const handlerModal = id => {
     noticeId.value = id;
     modalState.setModalState();
 };
 
-const onPostSuccess = ()=> {
+const onPostSuccess = () => {
     modalState.setModalState();
     searchList();
-}
+};
 
-onMounted(() => {
-    searchList();
-});
+// onMounted(() => {
+//     searchList();
+// });
 
-watch(() => route.query, searchList);
-
-watch(noticeId, () => {
-    console.log(noticeId.value);
-})
+// // watch(() => route.query, searchList);
+// watch(injectedValue, searchList);
 </script>
 
 <template>
     <div class="divNoticeList">
-        <NoticeModal v-if="modalState.modalState" 
-            :id="noticeId" 
+        <NoticeModal
+            v-if="modalState.modalState"
+            :id="noticeId"
             @modalClose="noticeId = $event"
             @postSuccess="onPostSuccess"
         />
-        현재 페이지: {{ cPage }} 총 개수: {{ noticeList?.noticeCnt }} 
+        현재 페이지: {{ cPage }} 총 개수: {{ noticeList?.noticeCnt }}
         <table>
             <colgroup>
                 <col width="10%" />
@@ -66,13 +89,13 @@ watch(noticeId, () => {
                     <th scope="col">제목</th>
                     <th scope="col">작성일</th>
                     <th scope="col">작성자</th>
-
                 </tr>
             </thead>
             <tbody>
-                <template v-if="noticeList">
+                <template v-if="isSuccess">
                     <template v-if="noticeList.noticeCnt > 0">
-                        <tr v-for="notice in noticeList.noticeList" 
+                        <tr
+                            v-for="notice in noticeList.noticeList"
                             :key="notice.noticeId"
                             @click="handlerModal(notice.noticeId)"
                         >
@@ -87,16 +110,15 @@ watch(noticeId, () => {
                             <td colspan="4">일치하는 검색 결과가 없습니다</td>
                         </tr>
                     </template>
-                    
                 </template>
-                
+                <template v-if="isLoading">로딩중...</template>
             </tbody>
         </table>
-        <Pagination 
-            :totalItems = "noticeList?.noticeCnt"
+        <Pagination
+            :totalItems="noticeList?.noticeCnt"
             :items-per-page="5"
             :max-pages-shown="5"
-            :onClick="searchList"
+            :onClick="refetch"
             v-model="cPage"
         />
     </div>

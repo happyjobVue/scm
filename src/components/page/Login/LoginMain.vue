@@ -1,6 +1,51 @@
+<script setup>
+import { useRouter } from 'vue-router';
+import logo from '../../../assets/logo.png';
+import { nullCheck } from '../../../common/nullCheck';
+import { useUserInfo } from '../../../stores/userInfo';
+import { useModalStore } from '../../../stores/modalStore';
+import SignUpModal from './SignUpModal.vue';
+import FindInfoMoal from './FindInfoModal.vue'
+import ChangeInfoModal from './ChangeInfoModal.vue';
+import { ref } from 'vue';
+
+const loginInfo = ref({});
+const userInfo = useUserInfo();
+const router = useRouter();
+const loginID = ref('');
+
+const modalStore = useModalStore();
+
+const handlerLogin = async () => {
+    const isNull = nullCheck([
+        { inval: loginInfo.value.lgn_Id, msg: 'id 입력 좀' },
+        { inval: loginInfo.value.pwd, msg: '비밀번호 입력 좀' },
+    ]);
+    if (!isNull) return;
+    const param = new URLSearchParams(loginInfo.value);
+    const result = await userInfo.setUserData(param);
+    if (result === 'SUCCESS') {
+        router.push('/vue');
+    } else {
+        alert('아이디 혹은 비밀번호가 일치하지 않아요');
+        return;
+    }
+};
+
+</script>
+
 <template>
     <div class="login-container">
+        <SignUpModal v-if="modalStore.isOpen('signUp')" />
+        <FindInfoMoal 
+        v-if="modalStore.isOpen('findInfo')"
+        @loginID="loginID = $event"
+        />
+        <ChangeInfoModal v-if="modalStore.isOpen('changeInfo')" 
+        :loginID="loginID"
+        />
         <div>
+            
             <div class="login-text">
                 <div class="login-image">
                     <img alt="" :src="logo" />
@@ -26,11 +71,11 @@
                     </div>
                     <div>
                         <label> 비밀번호 </label>
-                        <input required type="password" v-model="loginInfo.pwd" />
+                        <input required type="password" v-model="loginInfo.pwd" @keyup.enter="handlerLogin"/>
                     </div>
                     <div class="joinDiv">
-                        <strong class="strong">[일반회원가입]</strong>
-                        <strong class="strong">[기업회원가입]</strong>
+                        <strong class="strong" @click="modalStore.open('signUp');">[일반회원가입]</strong>
+                        <strong class="strong" @click="modalStore.open('findInfo');">[아이디/비밀번호 찾기]</strong>
                     </div>
                     <div>
                         <button class="login-button" @click="handlerLogin">Login</button>
@@ -41,32 +86,7 @@
     </div>
 </template>
 
-<script setup>
-import { useRouter } from 'vue-router';
-import logo from '../../../assets/logo.png';
-import { nullCheck } from '../../../common/nullCheck';
-import { useUserInfo } from '../../../stores/userInfo';
 
-const loginInfo = ref({});
-const userInfo = useUserInfo();
-const router = useRouter();
-
-const handlerLogin = async () => {
-    const isNull = nullCheck([
-        { inval: loginInfo.value.lgn_Id, msg: 'id 입력 좀' },
-        { inval: loginInfo.value.pwd, msg: '비밀번호 입력 좀' },
-    ]);
-    if (!isNull) return;
-    const param = new URLSearchParams(loginInfo.value);
-    const result = await userInfo.setUserData(param);
-    if (result === 'SUCCESS') {
-        router.push('/vue');
-    } else {
-        alert('아이디 혹은 비밀번호가 일치하지 않아요');
-        return;
-    }
-};
-</script>
 
 <style scoped>
 .login-container {
@@ -77,6 +97,7 @@ const handlerLogin = async () => {
     width: 100%;
     text-align: center;
     background-image: radial-gradient(ellipse farthest-corner at 0 140%, #5d9dff 0%, #2178ff 70%, #3585ff 70%);
+
 }
 
 .login-image {
@@ -152,4 +173,5 @@ button:hover {
 .strong {
     cursor: pointer;
 }
+
 </style>
