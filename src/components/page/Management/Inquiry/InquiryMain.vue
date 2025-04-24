@@ -45,7 +45,7 @@ const handlerModal = id => {
 
 const onPostSuccess = () => {
     modalState.setModalState();
-    searchList();
+    refetch();
 };
 </script>
 <template>
