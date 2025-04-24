@@ -97,7 +97,6 @@ const answerSave = () => {
     param.append('inquiryId', id);
     param.append('fileAnsContent', inquiryDetail.value.ansContent);
     axios.post('/api/management/inquiryAnsSaveBody.do', param).then(res => {
-        console.log(res.data);
         if (res.data.result === 'success') {
             Swal.fire('답변이 등록되었습니다', '', 'success').then(() =>
                 emit('postSuccess')

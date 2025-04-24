@@ -101,6 +101,8 @@ const validateEmail = () => {
 /* ======================== 중복 확인 ======================== */
 
 const checkDuplicateId = () => {
+    if(!validateLoginId()) return alert('옳바른 형식이 아닙니다.')
+
     const param = {
         loginID: loginId.value
     }
@@ -118,6 +120,8 @@ const checkDuplicateId = () => {
 }
 
 const checkDuplicateEmail = () => {
+    if(!validateEmail()) return alert('옳바른 형식이 아닙니다.')
+
     const param = {
         email: email.value
     }
@@ -181,6 +185,19 @@ const handlerSave = () => {
     && validateHp()
     && validateLoginId()
     )) return alert('옳바르지 않은 형식이 있습니다.');
+
+    if(!(loginId.value 
+    && password.value 
+    && name.value 
+    && confirmPassword.value 
+    && manager.value
+    && hp.value
+    && sex.value
+    && email.value
+    && zipCode.value
+    && address.value
+    && birthday.value
+    )) return alert('필수 입력란을 모두 입력해주세요.')
         
     const param = new URLSearchParams({
         loginID: loginId.value

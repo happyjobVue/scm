@@ -65,7 +65,6 @@ const handlerFile = e => {
         imageUrl.value = URL.createObjectURL(fileInfo[0]);
     }
     fileData.value = fileInfo[0];
-    console.log(fileData.value);
     removeFlag.value = false;
 };
 

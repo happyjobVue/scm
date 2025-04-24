@@ -454,6 +454,7 @@ onUnmounted(() => {
                                 <input
                                     type="text"
                                     v-model="userInfoDetail.hp"
+                                    placeholder="000-0000-0000"
                                 />
                             </td>
                         </tr>

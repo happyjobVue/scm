@@ -53,7 +53,7 @@ const openModal = id => {
 
 const onPostSuccess = () => {
     modalState.modalState = !modalState.modalState;
-    searchList();
+    refetch();
 };
 
 // 선택된 행이 하이라이트되는지 확인하는 함수
