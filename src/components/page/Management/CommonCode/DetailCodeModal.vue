@@ -18,6 +18,11 @@ const searchDetail = () => {
 }
 
 const handlerSave = () =>{
+    if(!(detailCodeDetail.value.detailCode
+    && detailCodeDetail.value.detailName
+    && detailCodeDetail.value.note
+    && detailCodeDetail.value.useYn
+    )) return alert('필수 입력란을 모두 입력해주세요.')
     const param = new URLSearchParams({
         groupCode: groupCode
         , detailCode: detailCodeDetail.value.detailCode
@@ -38,6 +43,11 @@ const handlerSave = () =>{
 }
 
 const handlerUpdate = () =>{
+    if(!(detailCodeDetail.value.detailCode
+    && detailCodeDetail.value.detailName
+    && detailCodeDetail.value.note
+    && detailCodeDetail.value.useYn
+    )) return alert('필수 입력란을 모두 입력해주세요.')
     const param = new URLSearchParams({
         groupCode: groupCode
         , detailCode: detailCodeDetail.value.detailCode
