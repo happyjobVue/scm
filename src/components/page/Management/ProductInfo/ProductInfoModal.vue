@@ -79,6 +79,13 @@ const handleFile = (e) => {
 const handlerSave = () => {
     if(productInfoDetail.value.supplyId == 0) return alert("납품업체를 선택해주세요.");
     if(productInfoDetail.value.categoryCode == 0) return alert("카테고리를 선택해주세요.");
+    if(!(productInfoDetail.value.name
+    && productInfoDetail.value.productNumber
+    && productInfoDetail.value.sellPrice
+    && productInfoDetail.value.description
+    && productInfoDetail.value.supplyId
+    && productInfoDetail.value.categoryCode
+    )) return alert('필수 입력란을 모두 입력해주세요.')
 
     const formData = new FormData();
     for (const key in productInfoDetail.value) {
@@ -99,7 +106,14 @@ const handlerSave = () => {
 const handlerUpdate = () => {
     if(productInfoDetail.value.supplyId == 0) return alert("납품업체를 선택해주세요.");
     if(productInfoDetail.value.categoryCode == 0) return alert("카테고리를 선택해주세요.");
-
+    if(!(productInfoDetail.value.name
+    && productInfoDetail.value.productNumber
+    && productInfoDetail.value.sellPrice
+    && productInfoDetail.value.description
+    && productInfoDetail.value.supplyId
+    && productInfoDetail.value.categoryCode
+    )) return alert('필수 입력란을 모두 입력해주세요.')
+    
     const formData = new FormData();
     for (const key in productInfoDetail.value) {
         formData.append(key, productInfoDetail.value[key]);
