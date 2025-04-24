@@ -36,7 +36,6 @@ const changeEmail = () => {
         Swal.fire('이메일 중복체크를 진행해 주세요!', '', 'warning');
         return;
     }
-    console.log(chageEmail.value);
     emit('changeSuccess', chageEmail.value);
 };
 

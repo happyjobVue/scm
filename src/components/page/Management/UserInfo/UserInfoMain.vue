@@ -46,7 +46,7 @@ const openModal = id => {
 
 const onPostSuccess = () => {
     modalState.modalState = !modalState.modalState;
-    searchList();
+    refetch();
 };
 
 // onMounted(() => {

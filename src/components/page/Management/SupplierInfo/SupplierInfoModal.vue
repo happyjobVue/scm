@@ -336,7 +336,7 @@ onUnmounted(() => {
                                 </td>
                             </tr>
                             <tr>
-                                <th>상세주소<span class="font_red">*</span></th>
+                                <th>상세주소</th>
                                 <td colspan="3">
                                     <input
                                         type="text"
