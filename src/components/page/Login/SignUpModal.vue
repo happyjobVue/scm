@@ -203,19 +203,19 @@ const handlerSave = () => {
         loginID: loginId.value
         , password: password.value
         , name: name.value
-        , gender_cd: sex.value
+        , sex: sex.value
         , hp: hp.value
-        , user_email: email.value
+        , email: email.value
         , birthday: birthday.value
-        , user_address: address.value
-        , user_dt_address: detailAdress.value
-        , user_zipcode: zipCode.value
+        , address: address.value
+        , detailAddress: detailAdress.value
+        , zipCode: zipCode.value
         , manager: manager.value
         , action: "I"
-        , group_code: "G00001A1"
-        , detail_code: "GB0000T13"
-        , user_type: "C"
-        , classType: "기업고객"
+        , groupCode: "G00001A1"
+        , detailCode: "GB0000T13"
+        , userType: "C"
+        , userClass: "기업고객"
     });
     axios.post('/api/registerScm.do', param)
         .then(res => {
