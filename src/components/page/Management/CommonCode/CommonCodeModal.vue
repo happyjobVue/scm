@@ -18,6 +18,12 @@ const searchDetail = () => {
 }
 
 const handlerSave = () =>{
+    if(!(commonCodeDetail.value.groupCode
+    && commonCodeDetail.value.groupName
+    && commonCodeDetail.value.note
+    && commonCodeDetail.value.useYn
+    )) return alert('필수 입력란을 모두 입력해주세요.')
+
     const param = new URLSearchParams(commonCodeDetail.value);
     axios.post('/api/management/commonCodeSave.do', param)
     .then(res => {
@@ -32,6 +38,11 @@ const handlerSave = () =>{
 }
 
 const handlerUpdate = () =>{
+    if(!(commonCodeDetail.value.groupCode
+    && commonCodeDetail.value.groupName
+    && commonCodeDetail.value.note
+    && commonCodeDetail.value.useYn
+    )) return alert('필수 입력란을 모두 입력해주세요.')
     const param = new URLSearchParams(commonCodeDetail.value);
     param.append("groupIdx", id);
     axios.post('/api/management/commonCodeUpdate.do', param)
