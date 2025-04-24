@@ -151,7 +151,7 @@ const insertInquiry = () => {
 const updateInquiry = () => {
     const formData = new FormData();
 
-    if (removeFlag) {
+    if (removeFlag.value) {
         axios
             .post('/api/support/inquiryFileRemoveBody.do', { inquiryId: id })
             .then(res => {
@@ -160,7 +160,7 @@ const updateInquiry = () => {
                 }
             });
     }
-
+    console.log('check2');
     if (fileData.value) formData.append('fileInput', fileData.value);
     formData.append('fileTitle', inquiryDetail.value.title);
     formData.append('fileCategory', inquiryDetail.value.category);
