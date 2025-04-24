@@ -64,6 +64,18 @@ function daumPostcode() {
 }
 
 const handlerSave = () => {
+    if(!(warehouseInfoDetail.value.warehouseCode
+    && warehouseInfoDetail.value.name
+    && warehouseInfoDetail.value.manager
+    && warehouseInfoDetail.value.email
+    && warehouseInfoDetail.value.emailDomain
+    && warehouseInfoDetail.value.phone1
+    && warehouseInfoDetail.value.phone2
+    && warehouseInfoDetail.value.phone3
+    && warehouseInfoDetail.value.zipCode
+    && warehouseInfoDetail.value.address
+    )) return alert('필수 입력란을 모두 입력해주세요.')
+    
     const param = new URLSearchParams(warehouseInfoDetail.value);
 
     axios.post('/api/management/warehouseInfoSave.do', param).then(res => {
@@ -75,6 +87,17 @@ const handlerSave = () => {
 }
 
 const handlerUpdate = () => {
+    if(!(warehouseInfoDetail.value.warehouseCode
+    && warehouseInfoDetail.value.name
+    && warehouseInfoDetail.value.manager
+    && warehouseInfoDetail.value.email
+    && warehouseInfoDetail.value.emailDomain
+    && warehouseInfoDetail.value.phone1
+    && warehouseInfoDetail.value.phone2
+    && warehouseInfoDetail.value.phone3
+    && warehouseInfoDetail.value.zipCode
+    && warehouseInfoDetail.value.address
+    )) return alert('필수 입력란을 모두 입력해주세요.')
     const param = new URLSearchParams(warehouseInfoDetail.value);
     param.append('warehouseId', id);
 
