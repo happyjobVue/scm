@@ -16,8 +16,9 @@ const searchList = async () => {
     const formatCartList = res.data.cartDetailWithImage;
 
     for (const item of formatCartList) {
-        item.imageUrl = await getImageURL(item.image.filePath);
-
+        if (item.image && item.image.filePath){
+            item.imageUrl = await getImageURL(item.image.filePath);
+        }
         const rawDate = item.cartDetail.requestedDeliveryDate;
         if (rawDate) {
             item.cartDetail.requestedDeliveryDate = rawDate.slice(0, 10);
@@ -35,16 +36,20 @@ const searchList = async () => {
 };
 
 const getImageURL = async (filePath) => {
-    const basePath = "V:\\FileRepository";
-    const fileName = filePath.slice(basePath.length);
+    
+    try{
+        const basePath = "V:\\FileRepository";
+        const fileName = filePath.slice(basePath.length);
+        const res = await axios.get('/api/image/showImg.do', {
+            params: { fileName },
+            responseType: 'arraybuffer'
+        });
 
-    const res = await axios.get('/api/image/showImg.do', {
-        params: { fileName },
-        responseType: 'arraybuffer'
-    });
-
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    return url;
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        return url;
+    }catch(error){
+        return null;
+    }
 };
 
 
