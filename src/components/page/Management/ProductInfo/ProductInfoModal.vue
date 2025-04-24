@@ -115,7 +115,7 @@ const handlerUpdate = () => {
     )) return alert('필수 입력란을 모두 입력해주세요.')
     
     const formData = new FormData();
-    for (const key in productInfoDetail.value) {
+    for (const key in productInfoDetail.value) { 
         formData.append(key, productInfoDetail.value[key]);
     }
     if(fileData.value) formData.append('file', fileData.value);
