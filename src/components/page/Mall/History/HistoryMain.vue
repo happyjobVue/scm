@@ -47,10 +47,6 @@ onMounted(() => {
     searchList();
 })
 
-onUnmounted(() => {
-
-})
-
 </script>
 
 <template>
