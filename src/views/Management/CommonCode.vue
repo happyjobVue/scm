@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { provide, ref, watch } from 'vue';
 import CommonCodeMain from '../../components/page/Management/CommonCode/CommonCodeMain.vue';
 import CommonCodeSearch from '../../components/page/Management/CommonCode/CommonCodeSearch.vue';
 import DetailCodeSearch from '../../components/page/Management/CommonCode/DetailCodeSearch.vue';
@@ -11,6 +11,10 @@ const selectedGroupCode = ref(null)
 const handlerOpenDetail = (groupCode) => {
     selectedGroupCode.value = groupCode;
 }
+
+const provideValue = ref({});
+
+provide('selectValue', provideValue);
 </script>
 
 <template>

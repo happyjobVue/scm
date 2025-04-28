@@ -1,27 +1,40 @@
 <script setup>
 import { useRoute } from 'vue-router';
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, inject } from 'vue';
 import axios from 'axios';
 import { useModalStore } from '../../../../stores/modalStore';
+import { useQuery } from '@tanstack/vue-query';
 
 const route = useRoute();
-const commonCodeList = ref();
+// const commonCodeList = ref();
 const commonCodeId = ref(0);
 
 const cPage = ref(1);
 const modalStore = useModalStore();
 const emit = defineEmits(['openDetail']);
+const injectedValue = inject('selectValue');
 
-const searchList = () => {
+
+const searchList = async () => {
     const param ={
-        ...route.query,
+        ...injectedValue.value,
         pageSize: 5,
         currentPage: cPage.value,
     };
-    axios.post('/api/management/commonCodeListBody.do', param).then(res => {
-        commonCodeList.value = res.data;
-    });
+    const result = await axios.post('/api/management/commonCodeListBody.do', param);
+
+    return result.data;
 }
+
+const {
+    data: commonCodeList,
+    isLoading,
+    isSuccess,
+    refetch,
+} = useQuery({
+    queryKey: ['commonCodeList', cPage, injectedValue],
+    queryFn: searchList
+});
 
 const handlerOpenDetail = (groupCode) => {
     emit('openDetail', groupCode);
@@ -33,11 +46,9 @@ const handlerUpdate = (id) => {
 }
 
 
-onMounted(() => {
-    searchList();
-});
 
-watch(() => route.query, searchList);
+
+// watch(() => injectedValue.value, searchList);
 
 </script>
 
@@ -77,7 +88,7 @@ watch(() => route.query, searchList);
             
             <!-- 리스트 내용행 -->
             <tbody>
-                <template v-if="commonCodeList">
+                <template v-if="isSuccess">
                     <template v-if="commonCodeList.commonCodeCnt > 0">
                         <tr v-for="commonCode in commonCodeList.commonCode" 
                             :key="commonCode.groupIdx"
@@ -96,12 +107,13 @@ watch(() => route.query, searchList);
                                 </td>
                         </tr>
                     </template>
-                    <template v-else>
-                        <tr>
-                            <td colspan="7">일치하는 검색 결과가 없습니다</td>
-                        </tr>
-                    </template>
                 </template>
+                <template v-else>
+                    <tr>
+                        <td colspan="7">일치하는 검색 결과가 없습니다</td>
+                    </tr>
+                </template>
+                <template v-if="isLoading">로딩중...</template>
             </tbody>
         </table>
             
@@ -110,7 +122,7 @@ watch(() => route.query, searchList);
             :totalItems = "commonCodeList?.commonCodeCnt"
             :items-per-page="5"
             :max-pages-shown="5"
-            :onClick="searchList"
+            :onClick="refetch"
             v-model="cPage"
         />       
     </div>

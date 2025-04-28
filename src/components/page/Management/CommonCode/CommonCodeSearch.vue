@@ -1,4 +1,5 @@
 <script setup>
+import { inject } from 'vue';
 import { useModalStore } from '../../../../stores/modalStore';
 import router from '@/router';
 
@@ -6,20 +7,16 @@ const modalStore = useModalStore();
 const groupCodeSelect = ref('groupName');
 const searchTitle = ref('');
 
+const injectedValue = inject('selectValue');
 
 
 const handlerSearch = () => {
-    const query = [];
-    !searchTitle.value || query.push(`searchTitle=${searchTitle.value}`);
-    !groupCodeSelect.value || query.push(`groupCodeSelect=${groupCodeSelect.value}`);
-    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
-    router.push(queryString);
+    injectedValue.value = {
+        searchTitle: searchTitle.value
+        , groupCodeSelect: groupCodeSelect.value
+    }
 }
-
-onMounted(() => {
-    window.location.search && router.replace(window.location.pathname);
-});
 </script>
 
 <template>

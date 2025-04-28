@@ -1,23 +1,35 @@
 <script setup>
 import axios from 'axios';
 import { useModalStore } from '../../../../stores/modalStore';
-import { onMounted } from 'vue';
+import { onMounted, watchEffect } from 'vue';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 
 const modalStore = useModalStore();
 const commonCodeDetail = ref({});
-const emit = defineEmits(['postSuccess'])
+const emit = defineEmits(['modalClose','postSuccess'])
 const { id } = defineProps(['id']);
 
-const searchDetail = () => {
-    if(id != 0){
-        axios.post('/api/management/commonCodeDetailJson.do', {groupIdx: id})
-        .then(res => {
-            commonCodeDetail.value = res.data.detailValue
-        })
-    }   
-}
+const queryClient = useQueryClient();
 
-const handlerSave = () =>{
+const searchDetail = async () => {
+       const result = await axios.post('/api/management/commonCodeDetailJson.do', {groupIdx: id})
+
+       return result.data.detailValue;
+
+};
+
+const {
+    data: queryData,
+    isSuccess
+} = useQuery({
+    queryKey: ['commonCodeDetail', id],
+    queryFn: searchDetail,
+    staleTime: 1000 * 60 * 5,
+    enabled: !!id,
+})
+
+
+const handlerSave = async () =>{
     if(!(commonCodeDetail.value.groupCode
     && commonCodeDetail.value.groupName
     && commonCodeDetail.value.note
@@ -25,17 +37,24 @@ const handlerSave = () =>{
     )) return alert('필수 입력란을 모두 입력해주세요.')
 
     const param = new URLSearchParams(commonCodeDetail.value);
-    axios.post('/api/management/commonCodeSave.do', param)
-    .then(res => {
-        if(res.data.result ==="success"){
-            emit('postSuccess');
+    const result =  await axios.post('/api/management/commonCodeSave.do', param);
+
+    return result.data;
+}
+
+const  { mutate: save } = useMutation({
+    mutationKey: ['commonCodeSave'],
+    mutationFn: handlerSave,
+    onSuccess: (res) => {
+        if(res.result ==="success"){
             modalStore.close('commonCode');
+            queryClient.invalidateQueries({queryKey: ['commonCodeList']});
             alert('공통코드 정보가 저장되었습니다.');
         } else {
             return alert('요청에 실패하였습니다.');
         }
-    });
-}
+    }
+})
 
 const handlerUpdate = () =>{
     if(!(commonCodeDetail.value.groupCode
@@ -45,43 +64,59 @@ const handlerUpdate = () =>{
     )) return alert('필수 입력란을 모두 입력해주세요.')
     const param = new URLSearchParams(commonCodeDetail.value);
     param.append("groupIdx", id);
-    axios.post('/api/management/commonCodeUpdate.do', param)
-    .then(res => {
+    const result = axios.post('/api/management/commonCodeUpdate.do', param);
+    
+    return result;
+}
+
+const { mutate: update } = useMutation({
+    mutationKey: ['commonCodeUpdate'],
+    mutationFn: handlerUpdate,
+    onSuccess: (res) => {
         if(res.data.result ==="success"){
-            emit('postSuccess');
             modalStore.close('commonCode');
+            queryClient.invalidateQueries({queryKey: ['commonCodeList']});
             alert('공통코드 정보가 수정되었습니다.');
         } else {
             return alert('요청에 실패하였습니다.');
         }
-    });
-}
+    }
+})
 
 const handlerDelete = () =>{
-    const result = window.confirm('정말 삭제하시겠습니까?');
-    if(!result) return alert('공통코드 삭제가 취소되었습니다.')
-    axios.post('/api/management/commonCodeDeleteBody.do', {groupIdx: id})
-        .then(res => {
-            if(res.data.result === "success") {
-                emit('postSuccess');
-                modalStore.close('commonCode');
+    const confirm = window.confirm('정말 삭제하시겠습니까?');
+    if(!confirm) return alert('공통코드 삭제가 취소되었습니다.')
+    const result =  axios.post('/api/management/commonCodeDeleteBody.do', {groupIdx: id});
 
-                return alert('공통코드가 삭제되었습니다.');
-            }
-            else {
-                return alert('요청에 실패하였습니다.')
-            }
-        })
+    return result;
 }
 
-onMounted(() => {
-    searchDetail()
+const { mutate: del } = useMutation({
+    mutationKey: ['commonCodeDelete'],
+    mutationFn: handlerDelete,
+    onSuccess: (res) => {
+        if(res.data.result === "success") {
+            queryClient.invalidateQueries({queryKey: ['commonCodeList']});
+            modalStore.close('commonCode');
+
+            return alert('공통코드가 삭제되었습니다.');
+        }
+        else {
+            return alert('요청에 실패하였습니다.')
+        }
+    }
+})
+
+watchEffect(() => {
+    if(isSuccess && queryData.value){
+        commonCodeDetail.value = {...queryData.value};
+
+    }
 })
 
 onUnmounted(() => {
     emit('modalClose', 0);
-});
-
+})
 
 </script>
 
@@ -136,8 +171,8 @@ onUnmounted(() => {
                         </tbody>
                     </table>
                     <div class="button-box">
-                        <button @click="id? handlerUpdate() : handlerSave()">{{ id ? '수정' : '저장' }}</button> 
-                        <button v-if="id" @click="handlerDelete()">삭제</button>
+                        <button @click="id? update() : save()">{{ id ? '수정' : '저장' }}</button> 
+                        <button v-if="id" @click="del()">삭제</button>
                         <button @click="modalStore.close('commonCode')"><span>취소</span></button>
                     </div>
                 </dd>
